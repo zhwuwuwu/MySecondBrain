@@ -41,8 +41,8 @@ Other question
 ### 训练难度
 
 资源需求
-![[Algorithm Summary_assets/Pasted image 20260309040215.png|697]]
-![[Algorithm Summary_assets/Pasted image 20260309040243.png]]
+![[Pasted image 20260309040215.png|697]]
+![[Pasted image 20260309040243.png]]
 
 训练数据数量：[TODO]
 
@@ -52,22 +52,22 @@ Other question
 
 ### EmbedLLM Detail：
 和routeLLM对比
-![[Algorithm Summary_assets/Pasted image 20260306021701.png]]
+![[Pasted image 20260306021701.png]]
 训练过程
-![[Algorithm Summary_assets/Pasted image 20260306021724.png]]
+![[Pasted image 20260306021724.png]]
 inference，eval，KNN变体：
-![[Algorithm Summary_assets/Pasted image 20260306021822.png]]
+![[Pasted image 20260306021822.png]]
 
 ### FrugalGPT Detail:
 
 Scorer 模型结构：
-![[Algorithm Summary_assets/Pasted image 20260306014021.png]]
+![[Pasted image 20260306014021.png]]
 Scorer 模型参数量：
-![[Algorithm Summary_assets/Pasted image 20260306013825.png]]
+![[Pasted image 20260306013825.png]]
 Scorer 训练数据量：
-![[Algorithm Summary_assets/Pasted image 20260306013411.png]]
+![[Pasted image 20260306013411.png]]
 问题总结：
-![[Algorithm Summary_assets/Pasted image 20260306013452.png]]
+![[Pasted image 20260306013452.png]]
 
 ### GraphRouter
 
@@ -258,7 +258,7 @@ Step 4: model_sat_train.py
     → 训练 CompositeModel → checkpoints/
 
 #### 六、训练难度
-![[Algorithm Summary_assets/Pasted image 20260308202725.png]]
+![[Pasted image 20260308202725.png]]
 
 
 ### RouteDC
@@ -335,6 +335,6 @@ def compute_sample_llm_loss(x, index_true, top_k, last_k):
 
 ### HybridLLM/Best-Route
 基本算法：
-![[Algorithm Summary_assets/Pasted image 20260309035412.png]]
+![[Pasted image 20260309035412.png]]
 Loss function （二分类/多分类）
-![[Algorithm Summary_assets/Pasted image 20260309035527.png]]
+![[Pasted image 20260309035527.png]]
