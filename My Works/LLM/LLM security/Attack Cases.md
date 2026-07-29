@@ -1,0 +1,1 @@
+[OpenAI and Hugging Face partner to address security incident during model evaluation | OpenAI](https://openai.com/index/hugging-face-model-evaluation-security-incident/)
