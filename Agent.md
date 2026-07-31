@@ -4,42 +4,48 @@ This is Zihan's personal **Obsidian vault** ("an external knowledge base shared 
 
 ## Vault map
 
+Three top-level modules, each with a **narrow, non-overlapping scope** and its own `Agent.md` for module-specific detail. Read the relevant module's `Agent.md` before writing into it — this file only covers what's vault-wide.
+
 ```
-Agent.md              ← this file
+Agent.md              ← this file (vault-wide)
 Quicknotes.md         ← ACTIVE agent task queue, read this first (see below)
 README.md
-My Works/
-  My works root.md     ← top-level index, links out via [[wiki-links]]
-  IntelProjects/        ← gitignored (see below). Work/company-sensitive notes, debug transcripts.
-  LLM/
-    LLM  Root.md        ← index for the LLM knowledge domain (note: literal double space in filename)
-    Agent Framework/     agent framework comparisons/notes (opencode, Claude Code, Claws, MetaEquipe)
-    Agent Prompt/        numbered notes (1..5) on prompting/benchmarks/RL
-    Biz/                 commercial/market research (OpenClaw use cases, WAIC, etc.)
-    LLM security/        security/attack-case notes
-    Techs/
-      Agent Platform/    raw agent system-prompt dumps (e.g. cline)
-      LLM router/        most mature research area — see LLMRouter.md as the gold-standard note format
-    models/               currently empty
-    实用模板/             curated reference links/articles (NOT literal note templates despite the name)
+My Notes/              learning notes + organized content absorbed from external sources
+  Agent.md              ← module-specific instructions
+  My notes root.md      ← top-level index
+  LLM/                   the only knowledge domain so far (agent frameworks, prompting, base models, security, techs...)
+My Creations/           personal ideas → research → PRD/方案 → implementation
+  Agent.md              ← module-specific instructions
+  My creations root.md  ← top-level index (currently empty, no ideas logged yet)
+My Works/               specific work-project records ONLY (not general learning, not personal ideas)
+  Agent.md              ← module-specific instructions
+  My works root.md      ← top-level index
+  IntelProjects/         ← gitignored (see below). Work/company-sensitive notes, debug transcripts.
 ```
+
+**Routing rule for new content** (check before writing anywhere):
+- Learned/organized fact from an external source (article, paper, tech blog, "survey this topic") → `My Notes/`
+- Zihan's own idea/venture being developed (idea → research → spec → build) → `My Creations/`
+- A record tied to a specific, named work project (his day job) → `My Works/`
+
+If genuinely unsure which module a piece of content belongs to, ask rather than guessing — the three scopes are intentionally kept from overlapping.
 
 ## Existing agent protocol — `Quicknotes.md` (do not skip this)
 
 `Quicknotes.md` is a live checklist the user maintains for agents:
 1. Read the "Topic List" checkboxes (`- [ ]`).
 2. For each unfinished topic, do the research yourself.
-3. Decide which existing folder (see map above) the finding belongs in, and write a note there — reuse the folder taxonomy, don't invent a new top-level category without a good reason.
+3. Decide which module + folder the finding belongs in (see routing rule above — research/survey topics almost always land in `My Notes/`), and write a note there — reuse the existing folder taxonomy inside that module, don't invent a new top-level category without a good reason.
 4. Check the box (`- [x]`) in `Quicknotes.md` once the note is written.
 
 If asked to "survey/research topics", this file is the source of truth for what's pending.
 
-## Note conventions (Obsidian-specific — preserve these)
+## Note conventions (Obsidian-specific — preserve these, vault-wide)
 
-- **Internal links use wiki-link syntax**: `[[Note Name]]`, not markdown `[text](path)`. Use the exact filename including quirks (e.g. `LLM  Root` has a double space) — do not "fix" filenames when linking or renaming, it breaks existing backlinks.
+- **Internal links use wiki-link syntax**: `[[Note Name]]`, not markdown `[text](path)`. Use the exact filename including quirks (e.g. `LLM  Root` has a double space) — do not "fix" filenames when linking or renaming, it breaks existing backlinks. **Caveat**: every module now has its own `Agent.md` — these are *not* mutually unique note titles, so don't wiki-link them (`[[Agent]]` would be ambiguous); reference them by relative path in prose instead.
 - **Images/attachments** live in auto-generated sibling folders named `<Note Name> assets/` or `<Note Name>_assets/` (Obsidian manages these inconsistently — don't rename or restructure them). Embed with `![[Pasted image ....png]]`.
 - `==text==` is used for inline highlight emphasis.
-- Note quality varies intentionally: many notes are just a single pasted URL (bookmark-style) or raw pasted AI-chat transcripts — this is fine and expected. When writing a genuinely new researched note, prefer the structured style of `My Works/LLM/Techs/LLM router/LLMRouter.md` (blockquote summary, TOC with anchor links, tables, code fences) as the target quality bar, not the one-line bookmark style.
+- Note quality varies intentionally: many notes are just a single pasted URL (bookmark-style) or raw pasted AI-chat transcripts — this is fine and expected. When writing a genuinely new researched note, prefer the structured style of `My Notes/LLM/Techs/LLM router/LLMRouter.md` (blockquote summary, TOC with anchor links, tables, code fences) as the target quality bar, not the one-line bookmark style.
 
 ## Git behavior
 
