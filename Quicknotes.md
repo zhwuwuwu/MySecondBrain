@@ -8,11 +8,11 @@ The checklist in this file includes the topics of interest, which are new knowle
 	
 ### Topic List
 
-- [ ] MCP 协议无状态更新
+- [x] MCP 协议无状态更新 → [[MCP update]]
 - [ ] Loop, graph Engineering v.s. Langchain, Langgraph
 - [ ] WAIC
-- [ ] Gpt2 -> Kimi K3
-- [ ] Kimi 1-bit model
+- [x] Gpt2 -> Kimi K3 → [[GPT2 to Kimi K3 技术路径]]
+- [x] Kimi 1-bit model → [[Kimi 1-bit 模型]]（结论：非 Kimi 官方工作，是 Unsloth 对开源权重的第三方量化；已补充 K3 的实测数据 —— 1-bit GGUF 594GB/~78.9%准确率）
 - [ ] LLM agent 自进化
 	- [ ] agent真实任务测评数据集
 	- [ ] prompt自动优化
