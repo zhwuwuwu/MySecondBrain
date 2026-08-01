@@ -8,7 +8,7 @@ Three top-level modules, each with a **narrow, non-overlapping scope** and its o
 
 ```
 Agent.md              ← this file (vault-wide)
-Quicknotes.md         ← ACTIVE agent task queue, read this first (see below)
+Quicknotes.md         ← ACTIVE task queue for LEARNING topics only (see below) — feeds My Notes/
 README.md
 My Notes/              learning notes + organized content absorbed from external sources
   Agent.md              ← module-specific instructions
@@ -16,7 +16,8 @@ My Notes/              learning notes + organized content absorbed from external
   LLM/                   the only knowledge domain so far (agent frameworks, prompting, base models, security, techs...)
 My Creations/           personal ideas → research → PRD/方案 → implementation
   Agent.md              ← module-specific instructions
-  My creations root.md  ← top-level index (currently empty, no ideas logged yet)
+  My creations root.md  ← top-level index (currently empty, no ideas promoted yet)
+  Quick Ideas.md        ← ACTIVE capture-only list of spontaneous ideas (lighter-weight than Quicknotes.md — see below)
 My Works/               specific work-project records ONLY (not general learning, not personal ideas)
   Agent.md              ← module-specific instructions
   My works root.md      ← top-level index
@@ -30,15 +31,16 @@ My Works/               specific work-project records ONLY (not general learning
 
 If genuinely unsure which module a piece of content belongs to, ask rather than guessing — the three scopes are intentionally kept from overlapping.
 
-## Existing agent protocol — `Quicknotes.md` (do not skip this)
+## Two parallel task queues (do not conflate them)
 
-`Quicknotes.md` is a live checklist the user maintains for agents:
-1. Read the "Topic List" checkboxes (`- [ ]`).
-2. For each unfinished topic, do the research yourself.
-3. Decide which module + folder the finding belongs in (see routing rule above — research/survey topics almost always land in `My Notes/`), and write a note there — reuse the existing folder taxonomy inside that module, don't invent a new top-level category without a good reason.
-4. Check the box (`- [x]`) in `Quicknotes.md` once the note is written.
+- **`Quicknotes.md`** (vault root) — *learning* topics. Heavyweight protocol: research the topic yourself, write a real note, file it under the right module (almost always `My Notes/`), then check it off.
+  1. Read the "Topic List" checkboxes (`- [ ]`).
+  2. For each unfinished topic, do the research yourself.
+  3. Decide which module + folder the finding belongs in (see routing rule above), and write a note there — reuse the existing folder taxonomy inside that module, don't invent a new top-level category without a good reason.
+  4. Check the box (`- [x]`) in `Quicknotes.md` once the note is written.
+- **`My Creations/Quick Ideas.md`** — *build* ideas ("灵机一动"). Capture-only: just log the idea as a checklist item, don't research or build anything unprompted. Only promote an idea into its own `My Creations/<Idea Name>/` subfolder when the user explicitly says to move forward with it — see `My Creations/Agent.md` for that pipeline.
 
-If asked to "survey/research topics", this file is the source of truth for what's pending.
+If asked to "survey/research topics" → `Quicknotes.md`. If the user drops a spontaneous idea/thing-to-build → `My Creations/Quick Ideas.md`, not `Quicknotes.md`.
 
 ## Note conventions (Obsidian-specific — preserve these, vault-wide)
 

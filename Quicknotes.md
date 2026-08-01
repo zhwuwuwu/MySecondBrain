@@ -1,5 +1,7 @@
 ### For LLM Agent Helpers:
 
+**Scope**: this queue is for *learning topics* — things Zihan wants to study/look into, whose output is a note under `My Notes/`. It does **NOT** cover things he wants to build/do — those are "ideas", and live in `My Creations/Quick Ideas.md` instead (see that file's own protocol, which is deliberately lighter-weight than this one — capture only, no research-and-write-a-note step).
+
 The checklist in this file includes the topics of interest, which are new knowledge to be surveyed, learned and noted in the notes system.
 
 - You should first check the checklist here and start a research task for every unfinished task.

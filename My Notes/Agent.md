@@ -25,7 +25,7 @@ This folder listing is a snapshot — the user actively reorganizes subfolders h
 
 ## Primary workflow: `Quicknotes.md` (at vault root, not here)
 
-The vault-root `Quicknotes.md` is the live task queue that feeds this module: it lists topics to survey, and the resulting notes get filed under here (usually `LLM/...`, or a new sibling domain folder). See the root `Agent.md` for the full checklist protocol. When a research task's output is a "learned/organized fact from an external source", it lands in `My Notes/` — that's the defining criterion for this module.
+The vault-root `Quicknotes.md` is the live task queue that feeds this module: it lists topics to survey, and the resulting notes get filed under here (usually `LLM/...`, or a new sibling domain folder). See the root `Agent.md` for the full checklist protocol. When a research task's output is a "learned/organized fact from an external source", it lands in `My Notes/` — that's the defining criterion for this module. Spontaneous build-ideas do NOT belong here even if tech-related — those go in `My Creations/Quick Ideas.md`.
 
 ## Note conventions (Obsidian-specific — preserve these)
 
