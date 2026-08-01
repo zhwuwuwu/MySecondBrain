@@ -9,13 +9,12 @@ My notes root.md      ← index, links out via [[wiki-links]]
 LLM/
   LLM  Root.md          ← index for the LLM knowledge domain (note: literal double space in filename)
   Agent Application/     agent application/use-case notes
-  Agent Framework/       agent framework comparisons/notes (opencode, Claude Code, Claws, MetaEquipe)
+  Agent Framework/       agent framework comparisons/notes (opencode, Claude Code, Claws, cline, MetaEquipe)
   Agent Self Evo/        agent self-evolution / RL / prompt auto-optimization notes
   Base Models/           architecture/training evolution surveys (e.g. GPT-2 → Kimi K3), model-specific deep dives
   Biz/                   commercial/market research (OpenClaw use cases, WAIC, etc.)
   LLM security/          security/attack-case notes
   Techs/
-    Agent Platform/      raw agent system-prompt dumps (e.g. cline)
     LLM router/          most mature research area — see LLMRouter.md as the gold-standard note format
 ```
 

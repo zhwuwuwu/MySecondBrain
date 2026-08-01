@@ -8,11 +8,11 @@
 
 ## Current state
 
-Otherwise empty — no idea has been promoted into its own subfolder yet. The structure below is a **proposed convention** for the first agent/session that promotes one; adjust if the user directs otherwise, but don't invent a wildly different structure without checking with the user first, since it will become the precedent for everything after it.
+One idea sits loose at the top level, not yet promoted into the pipeline below: `MetaEquipe 打造任意AI agent 团队.md` (a meta-agent-team-builder concept). It predates this module's current structure and hasn't been formalized into its own `My Creations/<Idea Name>/idea.md` yet — don't move/restructure it unprompted, that's a scope decision for the user. No idea has otherwise gone through the pipeline below.
 
 ## Proposed structure
 
-One subfolder per idea/project:
+The structure below is a **proposed convention** for whichever idea gets promoted first — adjust if the user directs otherwise, but don't invent a wildly different structure without checking with the user first, since it will become the precedent for everything after it. One subfolder per idea/project:
 
 ```
 My Creations/
