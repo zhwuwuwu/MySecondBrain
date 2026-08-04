@@ -11,7 +11,7 @@ The checklist in this file includes the topics of interest, which are new knowle
 ### Topic List
 
 - [x] MCP 协议无状态更新 → [[MCP update]]
-- [ ] Loop, graph Engineering v.s. Langchain, Langgraph
+- [x] Loop, graph Engineering v.s. Langchain, Langgraph → [[Loop Graph Engineering vs LangGraph]]（结论：graph engineering 是旧有 graph-based orchestration 的新行业命名，不是 LangGraph 的新替代技术；loop 是 graph 的特例）
 - [ ] WAIC
 - [x] Gpt2 -> Kimi K3 → [[GPT2 to Kimi K3 技术路径]]
 - [x] Kimi 1-bit model → [[Kimi 1-bit 模型]]（结论：非 Kimi 官方工作，是 Unsloth 对开源权重的第三方量化；已补充 K3 的实测数据 —— 1-bit GGUF 594GB/~78.9%准确率）
