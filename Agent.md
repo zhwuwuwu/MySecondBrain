@@ -33,11 +33,13 @@ If genuinely unsure which module a piece of content belongs to, ask rather than 
 
 ## Two parallel task queues (do not conflate them)
 
-- **`Quicknotes.md`** (vault root) — *learning* topics. Heavyweight protocol: research the topic yourself, write a real note, file it under the right module (almost always `My Notes/`), then check it off.
-  1. Read the "Topic List" checkboxes (`- [ ]`).
-  2. For each unfinished topic, do the research yourself.
+- **`Quicknotes.md`** (vault root) — *learning* topics. It is a Markdown table with five columns: topic, note address, analysis completion, description/conclusion, and read status.
+  1. Treat each table row as one topic; represent subtopics as separate indented rows, not nested checklists.
+  2. For each row whose **分析完成** box is unchecked, do the research yourself.
   3. Decide which module + folder the finding belongs in (see routing rule above), and write a note there — reuse the existing folder taxonomy inside that module, don't invent a new top-level category without a good reason.
-  4. Check the box (`- [x]`) in `Quicknotes.md` once the note is written.
+  4. Add the resulting Obsidian wiki-link in **笔记地址**, then check **分析完成** (`[x]`) only after the note is written.
+  5. **已读** is independent from analysis completion. New rows and newly generated notes must start with **已读** unchecked (`[ ]`); Zihan checks it manually after reading the note. Never mark it automatically just because analysis is complete.
+  6. Keep **描述 / 结论** short and clear; preserve the research question while unfinished and replace or supplement it with the key conclusion after research.
 - **`My Creations/Quick Ideas.md`** — *build* ideas ("灵机一动"). Capture-only: just log the idea as a checklist item, don't research or build anything unprompted. Only promote an idea into its own `My Creations/<Idea Name>/` subfolder when the user explicitly says to move forward with it — see `My Creations/Agent.md` for that pipeline.
 
 If asked to "survey/research topics" → `Quicknotes.md`. If the user drops a spontaneous idea/thing-to-build → `My Creations/Quick Ideas.md`, not `Quicknotes.md`.

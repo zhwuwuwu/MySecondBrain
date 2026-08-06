@@ -10,4 +10,10 @@
 
 [[Loop Graph Engineering vs LangGraph]] — loop/graph engineering 概念溯源及与 LangChain/LangGraph 的差异
 
+[[多模态模型定价与缓存]] — 多模态理解/生成的计费单位、缓存层次、Seedance 与 MiniMax-H3 价格
+
+[[MiniMax 离线上下文组织与 Model Dreaming]] — MiniMax 长上下文/上下文管理与后台记忆整合概念的关系
+
+[[WAIC Summary]] — WAIC 2026 展会、模型/Agent、具身智能、机器人及战略/投资分析（含展品证据等级）
+
 
