@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="面向管理层的 LLM Agent Security 全景与 Claw 类个人助手平台安全切入方向简报">
+  <title>LLM Agent Security · Executive Brief</title>
+  <style>
+    :root {
+      --ink: #f4f1e8;
+      --muted: #a9aca5;
+      --bg: #101313;
+      --panel: #171b1b;
+      --panel-2: #202625;
+      --line: #35403d;
+      --amber: #f4b860;
+      --amber-soft: #44351f;
+      --cyan: #8fd7ce;
+      --cyan-soft: #1c3b39;
+      --red: #ff806c;
+      --red-soft: #452622;
+      --lime: #c4dd76;
+      --shadow: 0 18px 50px rgba(0,0,0,.24);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: "Trebuchet MS", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+      letter-spacing: .01em;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .22;
+      background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+    a { color: var(--cyan); }
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(16,19,19,.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(143,215,206,.14);
+    }
+    .topbar-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 13px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
+    .brand-mark { width: 26px; height: 26px; border: 2px solid var(--amber); border-radius: 50%; position: relative; }
+    .brand-mark::after { content: ""; position: absolute; width: 7px; height: 7px; background: var(--amber); border-radius: 50%; left: 7px; top: 7px; }
+    nav { display: flex; gap: 18px; flex-wrap: wrap; justify-content: flex-end; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 12px; }
+    nav a:hover { color: var(--ink); }
+    .hero { padding: 92px 0 70px; position: relative; overflow: hidden; }
+    .hero::after { content: "C / I / A"; position: absolute; right: -20px; top: 48px; color: rgba(244,184,96,.08); font: 900 clamp(100px, 20vw, 250px)/1 Georgia, serif; letter-spacing: -.1em; }
+    .eyebrow { color: var(--amber); text-transform: uppercase; font-size: 12px; letter-spacing: .18em; font-weight: bold; }
+    h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; line-height: 1.12; margin: 0; }
+    h1 { max-width: 820px; font-size: clamp(44px, 7vw, 82px); letter-spacing: -.055em; margin: 18px 0 24px; }
+    h1 em { color: var(--amber); font-style: normal; }
+    .hero-lead { max-width: 700px; color: #d2d5ce; font-size: 18px; }
+    .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px; }
+    .tag { border: 1px solid var(--line); color: var(--muted); border-radius: 99px; padding: 5px 11px; font-size: 12px; }
+    .section { padding: 72px 0; border-top: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: minmax(220px, .7fr) 1fr; gap: 40px; margin-bottom: 32px; align-items: start; }
+    .section-number { color: var(--amber); font: 700 14px/1 Georgia, serif; }
+    h2 { font-size: clamp(32px, 4vw, 53px); letter-spacing: -.04em; }
+    .section-intro { color: var(--muted); max-width: 620px; margin: 0; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .card h3 { font-size: 25px; margin-bottom: 9px; }
+    .card p { color: var(--muted); margin: 0; font-size: 14px; }
+    .card .index { color: var(--amber); font-size: 12px; font-weight: bold; letter-spacing: .12em; }
+    .accent-amber { border-top: 3px solid var(--amber); }
+    .accent-cyan { border-top: 3px solid var(--cyan); }
+    .accent-red { border-top: 3px solid var(--red); }
+    .accent-lime { border-top: 3px solid var(--lime); }
+    .callout { background: linear-gradient(120deg, var(--amber-soft), #241e17); border: 1px solid #755528; border-radius: var(--radius); padding: 25px 28px; margin: 22px 0; }
+    .callout strong { color: var(--amber); }
+    .diagram { background: #0c0f0f; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; overflow-x: auto; }
+    .diagram-title { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .14em; margin-bottom: 17px; }
+    .flow { display: flex; align-items: stretch; min-width: 850px; }
+    .flow-node { flex: 1; min-height: 92px; padding: 15px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; position: relative; }
+    .flow-node:not(:last-child)::after { content: "→"; position: absolute; right: -21px; top: 32px; color: var(--amber); font-size: 22px; z-index: 1; }
+    .flow-node + .flow-node { margin-left: 25px; }
+    .flow-node b { display: block; color: var(--cyan); font-size: 14px; margin-bottom: 5px; }
+    .flow-node span { display: block; color: var(--muted); font-size: 12px; }
+    .stack { display: grid; gap: 7px; }
+    .stack-row { display: grid; grid-template-columns: 170px 1fr 150px; align-items: center; gap: 17px; padding: 15px 18px; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); }
+    .stack-row b { color: var(--ink); }
+    .stack-row span { color: var(--muted); font-size: 13px; }
+    .stack-row i { color: var(--amber); font-size: 12px; font-style: normal; text-align: right; }
+    .risk { display: inline-block; color: var(--red); background: var(--red-soft); border-radius: 4px; padding: 1px 6px; font-size: 11px; }
+    table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    th, td { padding: 15px 17px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 13px; }
+    th { color: var(--amber); text-transform: uppercase; letter-spacing: .08em; font-size: 11px; background: rgba(244,184,96,.07); }
+    td { color: var(--muted); }
+    td:first-child { color: var(--ink); font-weight: bold; }
+    tr:last-child td { border-bottom: 0; }
+    .priority { display: flex; align-items: center; gap: 8px; white-space: nowrap; color: var(--ink); }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; background: var(--amber); box-shadow: 0 0 0 4px rgba(244,184,96,.12); }
+    .dot.red { background: var(--red); box-shadow: 0 0 0 4px rgba(255,128,108,.12); }
+    .dot.cyan { background: var(--cyan); box-shadow: 0 0 0 4px rgba(143,215,206,.12); }
+    .route { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 25px; }
+    .route-step { padding: 22px; border: 1px solid var(--line); background: var(--panel); position: relative; }
+    .route-step + .route-step { border-left: 0; }
+    .route-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .route-step:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+    .route-step::after { content: ""; position: absolute; right: -10px; top: 44%; width: 18px; height: 18px; border-top: 1px solid var(--amber); border-right: 1px solid var(--amber); transform: rotate(45deg); z-index: 2; background: var(--panel); }
+    .route-step:last-child::after { display: none; }
+    .route-step small { color: var(--amber); letter-spacing: .12em; font-weight: bold; }
+    .route-step h3 { font-size: 24px; margin: 12px 0 8px; }
+    .route-step p { color: var(--muted); font-size: 13px; margin: 0; }
+    .metric { display: flex; align-items: baseline; justify-content: space-between; gap: 15px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+    .metric:last-child { border-bottom: 0; }
+    .metric b { font-size: 22px; color: var(--cyan); font-family: Georgia, serif; }
+    .metric span { font-size: 13px; color: var(--muted); }
+    .footer { padding: 45px 0 70px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); }
+    .sources { columns: 2; column-gap: 35px; }
+    .sources li { margin: 8px 0; break-inside: avoid; }
+    .print { border: 1px solid var(--line); color: var(--ink); background: var(--panel); border-radius: 99px; padding: 7px 13px; cursor: pointer; font: inherit; font-size: 12px; }
+    .print:hover { border-color: var(--amber); color: var(--amber); }
+    @media (max-width: 820px) {
+      body { overflow-x: hidden; }
+      .section-head, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .flow { min-width: 0; display: grid; gap: 8px; }
+      .flow-node { min-height: 0; }
+      .flow-node + .flow-node { margin-left: 0; }
+      .flow-node:not(:last-child)::after { content: "↓"; right: auto; top: auto; bottom: -18px; left: calc(50% - 7px); font-size: 18px; }
+      .section-head { gap: 14px; }
+      .stack-row { grid-template-columns: 1fr; gap: 5px; }
+      .stack-row i { text-align: left; }
+      .route { grid-template-columns: 1fr; gap: 8px; }
+      .route-step, .route-step:first-child, .route-step:last-child { border-radius: var(--radius); border: 1px solid var(--line); }
+      .route-step + .route-step { border-left: 1px solid var(--line); }
+      .route-step::after { display: none; }
+      nav { display: none; }
+      .sources { columns: 1; }
+    }
+    @media print {
+      body { background: white; color: #151817; }
+      body::before, .topbar, .print { display: none; }
+      .hero, .section { padding: 30px 0; }
+      .card, .diagram, table, .stack-row, .route-step { color: #151817; background: #fff; box-shadow: none; border-color: #ccd2ce; }
+      .card p, td, .section-intro, .hero-lead, .stack-row span, .route-step p, .footer { color: #4b5651; }
+      h1 em, .eyebrow, .section-number, th, .card .index { color: #8b5d13; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand"><span class="brand-mark"></span><span>Security brief / 2026</span></div>
+      <nav>
+        <a href="#map">全景</a><a href="#taxonomy">分类</a><a href="#controls">控制平面</a><a href="#judgment">判断</a><a href="#envelope">Envelope</a><a href="#value">安全价值</a><a href="#entry">切入方向</a>
+        <button class="print" onclick="window.print()">打印 / PDF</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="eyebrow">Executive brief · LLM & Agent Security</div>
+      <h1>让个人助手<br><em>敢于行动，也不越界。</em></h1>
+      <p class="hero-lead">面向 Claw 类 Agent 平台的安全全景与产品切入建议。核心判断：安全不是给模型再加一个拒答 prompt，而是保护数据、凭证、工具、运行时状态和真实世界副作用。</p>
+      <div class="hero-meta"><span class="tag">面向：高级经理 / 产品与安全负责人</span><span class="tag">对象：个人助手 / Skills / MCP / Memory</span><span class="tag">基于：LLM 与 Agent Security 总览</span></div>
+    </section>
+
+    <section class="section" id="map">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">01 / THE MAP</div><h2>先把“安全”<br>放回正确的地图</h2></div><p class="section-intro">管理层不需要记住所有攻击名词，需要知道每个问题落在哪个边界、影响什么资产、最终由谁来拦。</p></div>
+        <div class="grid-4">
+          <article class="card accent-cyan"><span class="index">DATA SUBJECT</span><h3>Privacy</h3><p>个人或敏感信息是否被过度收集、推断、记忆、跨租户使用或披露。</p></article>
+          <article class="card accent-red"><span class="index">C / I / A</span><h3>Security</h3><p>对抗者或未授权路径是否破坏机密性、完整性、可用性，或扩大 Agent 权限。</p></article>
+          <article class="card accent-amber"><span class="index">HARM</span><h3>Safety</h3><p>即使没有攻击者，系统是否会因错误决策和自动化造成不可接受的伤害。</p></article>
+          <article class="card accent-lime"><span class="index">UNDER STRESS</span><h3>Robustness</h3><p>面对扰动、异常和对抗输入时，能力与安全性质是否仍在可接受范围。</p></article>
+        </div>
+        <div class="callout"><strong>Reliability 是另一条轴：</strong>它问“系统能否按规格稳定工作并恢复”，不是安全本身。一个系统可能可靠地执行过大的权限，也可能安全但每次都拒绝合法任务。</div>
+        <div class="diagram">
+          <div class="diagram-title">Two layers · 从模型到真实副作用</div>
+          <div class="stack">
+            <div class="stack-row"><b>Model Security</b><span>数据供应链 · 训练与对齐 · 模型工件 · 推理 API · 模型行为</span><i>保护模型及其输入输出</i></div>
+            <div class="stack-row"><b>Agent Security</b><span>Context · Harness · Memory · Tools/MCP · Identity · Sandbox · Observability</span><i>保护模型外的执行系统</i></div>
+            <div class="stack-row"><b>真实目标</b><span>文件、凭证、云资源、业务系统、对外消息、长期状态</span><i><span class="risk">external effect</span></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="claw">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">02 / TWO LIFECYCLES</div><h2>Model Security 与<br>Agent Security 的生命周期</h2></div><p class="section-intro">两者都保护 AI 系统，但保护对象和失效位置不同：Model Security 关注模型从数据到推理的生命周期；Agent Security 关注模型被放进执行系统后，从上下文到真实副作用的生命周期。</p></div>
+        <div class="grid-2">
+          <article class="card accent-cyan"><span class="index">MODEL SECURITY · 模型生命周期</span><h3>从数据到模型行为</h3><div class="metric"><span>01 数据获取与治理</span><b>来源 / 隐私</b></div><div class="metric"><span>02 训练、微调与对齐</span><b>投毒 / 后门</b></div><div class="metric"><span>03 模型工件与依赖</span><b>权重 / 供应链</b></div><div class="metric"><span>04 推理服务</span><b>API / 多租户</b></div><div class="metric"><span>05 行为评测</span><b>越狱 / 拒答</b></div></article>
+          <article class="card accent-amber"><span class="index">AGENT SECURITY · Agent 生命周期</span><h3>从意图到外部效果</h3><div class="metric"><span>01 任务与意图绑定</span><b>scope</b></div><div class="metric"><span>02 Context / Memory / RAG</span><b>不可信数据</b></div><div class="metric"><span>03 规划与 Harness</span><b>循环 / 重试</b></div><div class="metric"><span>04 Tool / API / MCP</span><b>能力调用</b></div><div class="metric"><span>05 身份、Sandbox、审计</span><b>副作用</b></div></article>
+        </div>
+        <div class="callout"><strong>为什么 Agent Security 是新增问题：</strong>模型的一次错误输出，在 Agent 中可能变成工具链劫持、越权调用、数据外传、Memory 污染或真实世界副作用。模型安全是基础，但不能替代 Agent 运行时安全。</div>
+        <div class="diagram">
+          <div class="diagram-title">Agent loop · Agent 生命周期如何落到真实世界</div>
+          <div class="flow">
+            <div class="flow-node"><b>01 · Input</b><span>用户消息<br>网页 / 文件 / 邮件</span></div>
+            <div class="flow-node"><b>02 · Context</b><span>Prompt / RAG<br>Memory / Skill</span></div>
+            <div class="flow-node"><b>03 · Plan</b><span>Harness<br>多步规划 / 重试</span></div>
+            <div class="flow-node"><b>04 · Act</b><span>Shell / Browser<br>MCP / API</span></div>
+            <div class="flow-node"><b>05 · Effect</b><span>文件 / 凭证<br>外部系统 / 消息</span></div>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top: 16px">
+          <article class="card accent-red"><span class="index">HOW THEY GET IN</span><h3>Prompt injection</h3><p>不可信内容被模型误认为指令，改变计划或工具选择。它是攻击技术，不等于输出安全。</p></article>
+          <article class="card accent-amber"><span class="index">WHAT IT DOES</span><h3>Agent 行为</h3><p>越权读写、危险工具、提权、外传、部署、删除、资源滥用。最终问题是授权与副作用。</p></article>
+          <article class="card accent-cyan"><span class="index">WHAT IT READS</span><h3>Memory / Skill / MCP</h3><p>长期记忆、Skill 包、工具描述和返回值都是可被污染或篡改的执行输入。</p></article>
+        </div>
+        <table style="margin-top: 18px">
+          <thead><tr><th>对象</th><th>它是什么</th><th>我们要问的问题</th><th>安全归类</th></tr></thead>
+          <tbody>
+            <tr><td>恶意输出</td><td>模型说了不该说的内容</td><td>是否有害？是否泄露秘密？谁会消费它？</td><td>Output Safety / Privacy / Security</td></tr>
+            <tr><td>MCP / Skill 扫描</td><td>对能力包、工具和依赖做检查</td><td>来源可信么？权限最小么？版本被替换了吗？</td><td>Security Assurance / Supply Chain</td></tr>
+            <tr><td>工具调用</td><td>Agent 把计划变成动作</td><td>谁授权？作用域多大？是否可逆？是否需审批？</td><td>Authorization / Runtime Security</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="taxonomy">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">03 / RISK TAXONOMY</div><h2>同一个风险，<br>要用多个维度描述</h2></div><p class="section-intro">“Prompt injection”“MCP 扫描”“恶意行为”不在同一个分类层级。把攻击面、技术、行为、影响和控制混在一起，会导致产品边界和指标失真。</p></div>
+        <div class="callout"><strong>管理层记忆法：</strong>攻击面是“从哪里进来”，攻击技术是“怎么骗/怎么打”，Agent 行为是“做了什么”，影响是“什么受损”，控制是“在哪里查、拦和恢复”。</div>
+        <div class="diagram">
+          <div class="diagram-title">Five coordinates · 一条攻击链的完整描述</div>
+          <div class="flow">
+            <div class="flow-node"><b>Surface</b><span>输入、RAG、Memory、Skill、MCP、浏览器、网络</span></div>
+            <div class="flow-node"><b>Technique</b><span>Prompt injection、poisoning、SSRF、命令注入、越权</span></div>
+            <div class="flow-node"><b>Behavior</b><span>读 secret、改文件、执行代码、发消息、写 Memory</span></div>
+            <div class="flow-node"><b>Impact</b><span>C/I/A、Privacy、Safety、费用、业务状态</span></div>
+            <div class="flow-node"><b>Control</b><span>扫描、授权、审批、Sandbox、审计、回滚</span></div>
+          </div>
+        </div>
+        <table style="margin-top: 18px">
+          <thead><tr><th>维度</th><th>核心问题</th><th>典型对象</th><th>Claw 平台产品含义</th></tr></thead>
+          <tbody>
+            <tr><td>入口 / Surface</td><td>攻击者可以影响什么？</td><td>用户消息、网页、邮件、文件、RAG、Memory、Skill、MCP Tool Result</td><td>建立不可信内容清单和 provenance</td></tr>
+            <tr><td>技术 / Technique</td><td>控制流或数据流如何被改变？</td><td>直接/间接 Prompt Injection、Tool Poisoning、Rug Pull、SSRF、Supply-chain Tampering</td><td>建立攻击测试集和静态/动态扫描</td></tr>
+            <tr><td>行为 / Effect</td><td>Agent 实际做了什么？</td><td>读取密钥、调用 shell、修改/删除文件、外传、部署、写入长期记忆</td><td>记录完整工具参数和真实副作用，不只看回答</td></tr>
+            <tr><td>影响 / Impact</td><td>哪个资产或性质受损？</td><td>机密性、完整性、可用性、隐私、安全性、可靠性、费用和业务状态</td><td>按影响分级审批、告警和恢复</td></tr>
+            <tr><td>控制 / Control</td><td>在哪个位置检测、授权、阻断、恢复？</td><td>Classifier、Policy Engine、Capability Gateway、Approval、Sandbox、IR</td><td>将判断与确定性执行控制分离</td></tr>
+          </tbody>
+        </table>
+        <div class="grid-3" style="margin-top: 18px">
+          <article class="card accent-red"><span class="index">INPUT / CONTEXT</span><h3>说了什么？</h3><p>恶意或有害输出、越狱、Prompt Injection。输出安全关注内容，注入关注控制流被改变。</p></article>
+          <article class="card accent-amber"><span class="index">ACTION / AUTH</span><h3>做了什么？</h3><p>Unsafe Action、Excessive Agency、权限滥用。最终要对照任务、资源、用户和时间窗口判断授权。</p></article>
+          <article class="card accent-cyan"><span class="index">ASSET / SUPPLY CHAIN</span><h3>依赖可信吗？</h3><p>Skill、MCP Server、依赖和工具描述是供应链与连接器攻击面；扫描是保障控制，不是攻击类型。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="controls">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">04 / CONTROL PLANES</div><h2>防御体系不是一堵墙，<br>而是分层控制平面</h2></div><p class="section-intro">每个控制平面解决不同问题：模型判断可以做风险理解，但真正保护系统的，是授权、运行时、网络、身份和恢复等可验证边界。</p></div>
+        <div class="diagram">
+          <div class="diagram-title">Defense-in-depth · 从意图到恢复的六层平面</div>
+          <div class="stack">
+            <div class="stack-row"><b>01 · Intent plane</b><span>任务目标、范围、资源、期限、用户确认；把“用户说了什么”变成可验证 scope</span><i>绑定意图</i></div>
+            <div class="stack-row"><b>02 · Context plane</b><span>指令、观察、Memory、RAG、Skill 和 Tool Result 的来源、可信度、隔离与拼装</span><i>隔离数据</i></div>
+            <div class="stack-row"><b>03 · Policy plane</b><span>确定性规则、风险分级、能力网关、最小权限、审批和下游 complete mediation</span><i>决定能否做</i></div>
+            <div class="stack-row"><b>04 · Execution plane</b><span>Tool/API/MCP、文件、进程、浏览器、凭证和网络出口的逐调用限制</span><i>限制怎么做</i></div>
+            <div class="stack-row"><b>05 · Runtime plane</b><span>Sandbox、容器/VM、非 root、资源/时间限制、短期凭证和 egress allowlist</span><i>限制最坏结果</i></div>
+            <div class="stack-row"><b>06 · Evidence plane</b><span>Trace、告警、凭证吊销、环境重建、状态回滚、事后复盘和策略回归</span><i>发现并恢复</i></div>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top: 18px">
+          <article class="card"><h3>判断层 ≠ 执行层</h3><p>LLM judge、Guardrail Model 和风险分类器适合解释意图、识别异常、给出风险信号；它们不应单独决定是否读取密钥、删除文件、部署代码或发送外部请求。</p></article>
+          <article class="card"><h3>扫描层 ≠ 阻断层</h3><p>MCP/Skill 扫描可以发现来源、权限、依赖和行为风险；发现后还必须接入 Policy Engine、审批、Sandbox 和网络控制，否则只是报告。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="judgment">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">05 / ACTION JUDGMENT</div><h2>判断 Agent 是否危险，<br>先分清三件事</h2></div><p class="section-intro">Agent 的自然语言解释不是事实证据。平台必须分别记录它想做什么、被允许做什么，以及实际发生了什么。</p></div>
+        <div class="grid-3">
+          <article class="card accent-cyan"><span class="index">INTENT</span><h3>它想做什么？</h3><p>语义问题：计划和工具参数是否服务于用户目标？例如“总结项目”却开始安装依赖、访问生产库或发邮件。</p></article>
+          <article class="card accent-amber"><span class="index">AUTHORIZATION</span><h3>它被允许做什么？</h3><p>策略问题：用户目标不是权限授予。“总结项目”不自动授权读取 `.env`、访问外网、修改文件或访问另一个项目。</p></article>
+          <article class="card accent-red"><span class="index">OBSERVED EFFECT</span><h3>它实际做了什么？</h3><p>执行/审计问题：观察完整工具调用、参数、文件/网络访问、凭证使用、Memory 写入、重试链和最终副作用。</p></article>
+        </div>
+        <div class="diagram" style="margin-top: 18px">
+          <div class="diagram-title">Decision gate · 只有三者对齐才可自动放行</div>
+          <div class="flow">
+            <div class="flow-node"><b>用户目标</b><span>总结、查找、修改、发送？</span></div>
+            <div class="flow-node"><b>绑定 Scope</b><span>用户 / 任务 / 资源 / 时间</span></div>
+            <div class="flow-node"><b>不可信规划器</b><span>LLM 可以提出计划</span></div>
+            <div class="flow-node"><b>能力网关</b><span>确定性策略 + 审批</span></div>
+            <div class="flow-node"><b>Observed Effect</b><span>实际结果与审计证据</span></div>
+          </div>
+        </div>
+        <div class="callout"><strong>核心原则：</strong>模型可以参与理解意图和风险评估，但不能单独承担权限控制、凭证保护、沙箱隔离和网络边界。</div>
+      </div>
+    </section>
+
+    <section class="section" id="unsafe">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">06 / UNSAFE ACTION</div><h2>“不安全行为”<br>不是一个二分类</h2></div><p class="section-intro">把 Agent 行为拆成可观测维度，才能决定是拦截、审批、降权、记录还是允许。</p></div>
+        <table>
+          <thead><tr><th>拆解维度</th><th>判断问题</th><th>示例</th><th>建议控制</th></tr></thead>
+          <tbody>
+            <tr><td>授权越界</td><td>是否超出用户、租户、任务或工具授权？</td><td>允许读却删除；项目 A 访问项目 B；普通用户调用管理员 API</td><td>下游每次鉴权、能力 token、scope 绑定</td></tr>
+            <tr><td>意图偏离</td><td>动作是否仍服务于用户目标，还是擅自增加目标？</td><td>“总结项目”变成安装依赖、修改代码、发送邮件</td><td>意图审查、计划解释、人工确认</td></tr>
+            <tr><td>能力过大</td><td>工具功能、权限和自主程度是否超过必要范围？</td><td>任意 shell、任意 URL、读工具持有写权限、高影响动作无需审批</td><td>最小工具、最小权限、风险分级</td></tr>
+            <tr><td>数据机密性</td><td>是否读取、推断、输出或外传未授权数据？</td><td>`.env`、SSH key、云凭证、跨租户数据进入上下文或 API 参数</td><td>数据流标记、secret redaction、显式 declassification</td></tr>
+            <tr><td>动作完整性</td><td>动作类型允许，但目标、参数或内容是否错误？</td><td>改错文件、给错账户付款、部署未经审批代码</td><td>完整参数预览、目标绑定、状态检查、回滚</td></tr>
+            <tr><td>外部副作用</td><td>是否不可逆、高影响、对外、删除、支付、部署或发布？</td><td>发邮件、转账、改权限、公开发布、生产部署</td><td>审批、双人确认、幂等、撤销和回滚</td></tr>
+            <tr><td>运行时突破</td><td>是否越出 workspace、宿主机、网络和凭证边界？</td><td>读取宿主机凭证、访问 cloud metadata、利用代理间接出网、逃逸 Sandbox</td><td>OS/网络/runtime 硬隔离</td></tr>
+            <tr><td>持久化传播</td><td>恶意内容是否进入 Memory、RAG、Skill、下一会话或其他 Agent？</td><td>Memory poisoning、工具配置污染、跨会话指令传播</td><td>来源、scope、过期、候选/确认态、回滚</td></tr>
+            <tr><td>可用性滥用</td><td>是否造成循环、费用、资源或服务耗尽？</td><td>retry storm、无限规划、工具调用风暴、大规模云操作</td><td>预算、速率、时间、并发和熔断</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="metrics">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">07 / JUDGMENT SYSTEM</div><h2>恶意行为判断：<br>看哪些指标，放在哪里？</h2></div><p class="section-intro">本页指标与《Task Decomp：如何判断 Agent 的 Unsafe Action》对齐：先检测授权越界、意图偏离、能力过大、数据/动作违规和运行时突破，再由 Prevention、Authorization、Detection、Recovery 四类能力闭环处理。</p></div>
+        <div class="grid-2">
+          <article class="card accent-red"><span class="index">WHAT TO MEASURE · TASK DECOMP 对齐</span><h3>指标与维度</h3><div class="metric"><span>授权越界</span><b>Unauthorized Action Rate</b></div><div class="metric"><span>权限提升</span><b>Privilege Escalation Distance</b></div><div class="metric"><span>拒绝绕过</span><b>Denied-call Bypass Rate</b></div><div class="metric"><span>跨租户访问</span><b>Cross-tenant Access Rate</b></div><div class="metric"><span>数据机密性</span><b>Secret Exposure / Exfiltration</b></div><div class="metric"><span>外部副作用 / Excessive Autonomy</span><b>Approval Coverage</b></div><div class="metric"><span>持久化传播</span><b>Memory / RAG Poisoning Rate</b></div><div class="metric"><span>可用性滥用</span><b>Loop / Cost / Resource Rate</b></div></article>
+          <article class="card accent-cyan"><span class="index">WHERE TO JUDGE · FOUR CAPABILITIES</span><h3>判断位置</h3><div class="metric"><span>Prevention / Enforcement</span><b>动作前确定性阻断</b></div><div class="metric"><span>Authorization</span><b>用户/任务/资源/时间</b></div><div class="metric"><span>Detection / Evaluation</span><b>输入、计划、工具、轨迹</b></div><div class="metric"><span>Recovery / Response</span><b>吊销、隔离、回滚、证据</b></div><div class="metric"><span>Input / Context</span><b>注入、敏感内容</b></div><div class="metric"><span>Before Tool / Runtime</span><b>参数、硬边界、资源</b></div><div class="metric"><span>After Effect</span><b>真实副作用与恢复</b></div></article>
+        </div>
+        <div class="diagram" style="margin-top: 18px">
+          <div class="diagram-title">Judgment architecture · 多层判断，不让单点失效</div>
+          <div class="flow">
+            <div class="flow-node"><b>Fast policy</b><span>确定性 deny / allow<br>参数和资源规则</span></div>
+            <div class="flow-node"><b>Risk model</b><span>意图偏离、注入、异常轨迹<br>输出风险标签</span></div>
+            <div class="flow-node"><b>Human gate</b><span>高影响动作<br>完整参数与证据</span></div>
+            <div class="flow-node"><b>Runtime guard</b><span>Sandbox、网络、凭证<br>防止最坏结果</span></div>
+            <div class="flow-node"><b>Telemetry</b><span>任务效用 + 安全指标<br>回归和恢复</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="envelope">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">08 / SECURITY ENVELOPE</div><h2>Security Envelope：<br>给 Agent 画出可执行的边界</h2></div><p class="section-intro">Security Envelope 不是一句 system prompt，而是一次任务期间 Agent 可见、可用、可传播、可持续的能力总和，以及所有硬约束。</p></div>
+        <div class="grid-3">
+          <article class="card accent-amber"><span class="index">CAPABILITY</span><h3>能做什么？</h3><p>工具、Skill、MCP、文件、浏览器、网络、Memory、外部消息和业务 API 的能力集合。</p></article>
+          <article class="card accent-cyan"><span class="index">BOUNDARY</span><h3>不能越过什么？</h3><p>用户/租户/任务 scope、资源范围、时间窗口、凭证、网络出口、宿主机和数据分类边界。</p></article>
+          <article class="card accent-red"><span class="index">EVIDENCE</span><h3>如何证明发生了什么？</h3><p>上下文来源、计划、工具版本、完整参数、权限决策、审批、文件变更、网络请求和最终副作用。</p></article>
+        </div>
+        <div class="diagram" style="margin-top: 18px">
+          <div class="diagram-title">Full lifecycle · Envelope 不是上线时一次性配置</div>
+          <div class="flow">
+            <div class="flow-node"><b>Design</b><span>威胁模型<br>定义能力与硬边界</span></div>
+            <div class="flow-node"><b>Discover</b><span>扫描 Skill/MCP<br>依赖、权限、来源</span></div>
+            <div class="flow-node"><b>Install</b><span>签名、版本 pin<br>隔离试运行、授予 scope</span></div>
+            <div class="flow-node"><b>Run</b><span>审批、Policy、Sandbox<br>网络和凭证限制</span></div>
+            <div class="flow-node"><b>Observe</b><span>Trace、异常轨迹<br>数据流和指标</span></div>
+            <div class="flow-node"><b>Recover</b><span>吊销、隔离、回滚<br>重建与复盘</span></div>
+          </div>
+        </div>
+        <table style="margin-top: 18px">
+          <thead><tr><th>生命周期</th><th>关键问题</th><th>产品组件</th><th>失败时怎么办</th></tr></thead>
+          <tbody>
+            <tr><td>建模 / Design</td><td>谁是攻击者？资产和信任边界是什么？</td><td>Threat Model、Capability Inventory、Risk Register</td><td>拒绝未定义的能力和默认开放的集成</td></tr>
+            <tr><td>接入 / Discover & Install</td><td>Skill/MCP 来自哪里？代码和依赖是否被替换？</td><td>来源验证、签名、SBOM、版本 pin、静态扫描、隔离试运行</td><td>Quarantine、撤销、阻止加载和告警</td></tr>
+            <tr><td>授权 / Grant</td><td>这个用户、任务和时间窗口真的需要什么？</td><td>Scope、Capability Token、身份传播、审批策略</td><td>默认 deny，要求显式授权或降权</td></tr>
+            <tr><td>执行 / Run</td><td>真实动作是否符合意图和授权？</td><td>Policy Engine、Tool Gateway、Sandbox、Egress、Secret Broker</td><td>阻断调用、隔离进程、吊销凭证</td></tr>
+            <tr><td>运行 / Observe</td><td>是否出现注入、异常链、泄密和横向移动？</td><td>Trace、Dataflow、行为基线、告警、指标和审计</td><td>暂停任务、通知用户、保留证据</td></tr>
+            <tr><td>收尾 / Recover</td><td>结果、Memory、缓存和环境是否需要回滚？</td><td>凭证轮换、环境重建、状态回滚、事故复盘、回归集</td><td>恢复到最后可信状态，更新策略与测试</td></tr>
+          </tbody>
+        </table>
+        <div class="callout"><strong>对 Claw 平台的机会：</strong>把 Security Envelope 设计成用户能理解的“本次任务安全合同”——明确助手可以访问什么、不能访问什么、哪些动作会先询问、如何撤销和恢复。这比单纯展示“已启用安全模型”更接近用户信任。</div>
+      </div>
+    </section>
+
+    <section class="section" id="value">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">09 / WHY SECURITY WINS</div><h2>认真做 Security，<br>带来的不只是“少出事故”</h2></div><p class="section-intro">对个人助手来说，安全能力直接决定用户是否愿意授权真实数据、真实工具和真实生活场景。它既是风险控制，也是增长、留存和生态能力。</p></div>
+        <div class="grid-4">
+          <article class="card accent-cyan"><span class="index">TRUST → ACTIVATION</span><h3>敢于授权</h3><p>用户愿意连接邮箱、日历、文件、浏览器和消息渠道，助手才从聊天工具变成个人生产力入口。</p></article>
+          <article class="card accent-amber"><span class="index">CONTROL → RETENTION</span><h3>敢于长期使用</h3><p>清晰的权限范围、审批和撤销能力，让用户知道 Agent 不会在后台持续扩大能力或改变状态。</p></article>
+          <article class="card accent-red"><span class="index">SAFETY → BRAND</span><h3>降低高代价事件</h3><p>减少密钥泄露、误发消息、误删文件、恶意 Skill 和供应链事件，保护品牌与合规空间。</p></article>
+          <article class="card accent-lime"><span class="index">PLATFORM → ECOSYSTEM</span><h3>让生态可扩展</h3><p>Skill / MCP 有权限声明、扫描、隔离和撤销，第三方生态才能在可控边界内扩张，而不是越开放越危险。</p></article>
+        </div>
+        <table style="margin-top: 18px">
+          <thead><tr><th>具体场景</th><th>没有安全能力时</th><th>认真做 Security 后</th><th>可见的业务价值</th></tr></thead>
+          <tbody>
+            <tr><td>自动处理邮件</td><td>恶意邮件内容诱导 Agent 转发附件或发送外部消息</td><td>邮件内容视为不可信；外发动作展示收件人、附件和理由并要求确认</td><td>从“只读助手”进入真实工作流，同时降低误发风险</td></tr>
+            <tr><td>管理本地文件</td><td>Agent 为完成任务读取 `.env`、SSH key 或删除错误文件</td><td>文件 scope、敏感路径隔离、读写分离、删除/覆盖可回滚</td><td>用户敢把项目目录交给助手，减少人工来回切换</td></tr>
+            <tr><td>安装 Skill / MCP</td><td>恶意插件或被替换的依赖获得凭证和工具权限</td><td>来源验证、版本 pin、权限声明、隔离试运行、行为变化告警和撤销</td><td>建立可信扩展市场与生态护城河</td></tr>
+            <tr><td>长期 Memory</td><td>一次 Prompt Injection 污染下一会话或其他 Agent 的上下文</td><td>来源、任务 scope、可信状态、过期、删除和回滚；候选记忆不直接生效</td><td>让助手真正具备长期个性化，而不是长期积累隐患</td></tr>
+            <tr><td>高影响自动化</td><td>付款、部署、改权限等动作由 Agent 自主执行</td><td>风险分级、完整参数预览、用户/双人审批、幂等和恢复</td><td>进入企业和专业用户场景，扩大可服务任务范围</td></tr>
+          </tbody>
+        </table>
+        <div class="callout"><strong>一句话价值：</strong>安全不是给功能减速，而是把“不可放心授权的自动化”变成“可审计、可撤销、可逐步放权的自动化”。</div>
+      </div>
+    </section>
+
+    <section class="section" id="entry">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">10 / OUR ENTRY POINTS</div><h2>对我们而言，<br>哪里值得先做？</h2></div><p class="section-intro">以下按“个人助手的真实风险 × 产品可控性 × 可形成差异化”排序。不是假设团队已有某种实现，而是建议验证顺序。</p></div>
+        <table>
+          <thead><tr><th>优先级</th><th>方向</th><th>为什么适合 Claw 平台</th><th>MVP 产物</th><th>后续壁垒</th></tr></thead>
+          <tbody>
+            <tr><td><div class="priority"><span class="dot red"></span>P0</div></td><td>能力与权限网关</td><td>个人助手一旦能读文件、发消息、执行命令，权限就是产品信任的核心。</td><td>工具 allowlist、scope、风险分级、审批、完整参数预览</td><td>可组合 capability、跨工具数据流和策略学习</td></tr>
+            <tr><td><div class="priority"><span class="dot red"></span>P0</div></td><td>Skill / MCP 供应链安全</td><td>扩展生态直接接触用户凭证和本地环境；“可安装”就是“可能执行代码”。</td><td>来源/签名、版本 pin、静态扫描、权限声明、隔离试运行、撤销</td><td>生态信誉分、行为基线、自动 quarantine 和变更告警</td></tr>
+            <tr><td><div class="priority"><span class="dot amber"></span>P1</div></td><td>安全记忆与数据边界</td><td>个人助手是长期存在的；一次污染可能跨任务、跨会话持续传播。</td><td>memory provenance、scope、过期、候选/确认态、删除回滚</td><td>跨会话数据流追踪、记忆投毒评测和可验证 non-interference</td></tr>
+            <tr><td><div class="priority"><span class="dot amber"></span>P1</div></td><td>安全审批与可解释执行</td><td>用户需要知道 Agent 准备做什么，并能在最后一刻阻止高影响动作。</td><td>动作预览、风险理由、用户确认、超时 fail-closed、审批审计</td><td>低打扰的自适应审批和高风险动作的可证明策略</td></tr>
+            <tr><td><div class="priority"><span class="dot cyan"></span>P2</div></td><td>运行时隔离与网络出口</td><td>Prompt 被注入后仍要限制最坏结果；这是传统系统控制最能兜底的地方。</td><td>文件/进程/网络/凭证隔离，egress allowlist，资源上限</td><td>跨平台 sandbox、浏览器/代码执行安全和自动重建</td></tr>
+            <tr><td><div class="priority"><span class="dot cyan"></span>P2</div></td><td>Agent Security Evaluation</td><td>把“安全”从口号变成可回归的产品质量门槛。</td><td>注入、越权、泄密、工具链和恢复测试集；安全与任务成功联合指标</td><td>真实权限、长程攻击、adaptive red-team、线上 telemetry 闭环</td></tr>
+          </tbody>
+        </table>
+        <div class="route">
+          <div class="route-step"><small>0–3 MONTHS</small><h3>先守住边界</h3><p>默认最小权限 + 高风险动作审批 + Skill/MCP 供应链基线 + 可审计 trace。先让用户敢把助手接入真实生活。</p></div>
+          <div class="route-step"><small>3–9 MONTHS</small><h3>做成产品能力</h3><p>安全控制台、风险解释、记忆治理、隔离执行和回归评测。让安全成为体验的一部分，而不是后台开关。</p></div>
+          <div class="route-step"><small>9–18 MONTHS</small><h3>建立差异化</h3><p>跨工具数据流、长期记忆安全、生态信誉和自适应审批。形成面向个人 Agent 的安全基础设施。</p></div>
+        </div>
+        <div class="callout"><strong>建议对经理的结论：</strong>不要从“训练一个更强的安全分类器”开始。先把 Agent 的能力边界、权限决策、扩展供应链和真实副作用做成可见、可控、可恢复的产品面；模型型检测能力再嵌入这些确定性控制点。</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <p><strong>阅读边界：</strong>本页是基于内部《LLM 与 Agent Security 总览》的管理层简介，产品切入点是探索建议，不代表对团队现状或任何厂商安全能力的事实判断。平台文档和社区分类不等于独立第三方验证。</p>
+      <ul class="sources">
+        <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noreferrer">NIST AI Risk Management Framework</a></li>
+        <li><a href="https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/" target="_blank" rel="noreferrer">OWASP Agentic AI Threats and Mitigations</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html" target="_blank" rel="noreferrer">OWASP AI Agent Security Cheat Sheet</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html" target="_blank" rel="noreferrer">OWASP MCP Security Cheat Sheet</a></li>
+        <li><a href="https://owasp.org/www-project-mcp-top-10/" target="_blank" rel="noreferrer">OWASP MCP Top 10</a></li>
+        <li><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noreferrer">OWASP LLM01: Prompt Injection</a></li>
+      </ul>
+      <p>Prepared for internal discussion · 2026-08</p>
+    </div>
+  </footer>
+</body>
+</html>

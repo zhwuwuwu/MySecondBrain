@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SingGuard 与 SingGuard-NSFA：类 Claw 个人 Agent 安全护栏决策汇报">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2213%22 fill=%22%230d1111%22 stroke=%22%238fd7ce%22 stroke-width=%223%22/><circle cx=%2216%22 cy=%2216%22 r=%224%22 fill=%22%23f4b860%22/></svg>">
+  <title>SingGuard × NSFA · Adoption Decision</title>
+  <style>
+    :root{--ink:#f4f1e8;--muted:#a9aca5;--bg:#0d1111;--panel:#161c1b;--line:#33403c;--teal:#8fd7ce;--amber:#f4b860;--red:#ff806c;--lime:#c4dd76;--radius:22px}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif}body{overflow:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(#000,transparent 92%)}
+    .deck{height:100vh;position:relative}.slide{display:none;height:100vh;padding:48px clamp(28px,6vw,92px) 76px;position:relative;overflow:auto}.slide.active{display:block;animation:rise .42s ease both}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .eyebrow{color:var(--amber);font:700 12px/1.2 Georgia,serif;letter-spacing:.18em;text-transform:uppercase}.kicker{color:var(--muted);font-size:14px}.slide-no{position:absolute;right:clamp(28px,6vw,92px);top:52px;color:var(--muted);font:700 13px Georgia,serif}.hero{max-width:1080px;margin:10vh auto 0}.hero h1{font:700 clamp(48px,8vw,112px)/.98 Georgia,serif;letter-spacing:-.05em;margin:20px 0;color:var(--ink)}h2{font:700 clamp(32px,5vw,66px)/1.04 Georgia,serif;letter-spacing:-.04em;margin:18px 0 38px;max-width:900px}h3{margin:0 0 12px;font-size:18px}p{color:var(--muted);font-size:17px;line-height:1.75;max-width:840px}.lede{font-size:clamp(19px,2.3vw,27px);color:var(--ink);max-width:850px}.accent{color:var(--teal)}.amber{color:var(--amber)}.red{color:var(--red)}.lime{color:var(--lime)}
+    .grid{display:grid;gap:18px}.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 16px 44px rgba(0,0,0,.18)}.card p{font-size:15px;margin:8px 0 0}.card strong{font-size:28px;font-family:Georgia,serif}.tag{display:inline-flex;padding:6px 10px;border:1px solid var(--line);border-radius:99px;color:var(--teal);font-size:12px;margin:0 6px 8px 0}.decision{border-left:4px solid var(--amber);padding:20px 24px;background:rgba(244,184,96,.08);border-radius:0 16px 16px 0;margin:26px 0;max-width:920px}.decision p{color:var(--ink);margin:0;font-size:20px}.micro{font-size:12px;color:var(--muted)}
+    .flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin:20px 0}.step{flex:1;min-width:130px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--panel);position:relative}.step:not(:last-child):after{content:"→";position:absolute;right:-16px;top:35%;color:var(--amber);font-size:22px;z-index:2}.step b{display:block;color:var(--teal);font-size:13px;margin-bottom:8px}.step span{font-size:14px;color:var(--ink)}table{width:100%;border-collapse:collapse;font-size:14px;background:rgba(255,255,255,.025);border-radius:16px;overflow:hidden}th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--amber);font-size:12px;text-transform:uppercase;letter-spacing:.08em}td{color:var(--muted)}td strong{color:var(--ink)}ul{padding-left:20px;color:var(--muted);line-height:1.9}li::marker{color:var(--teal)}.metric{font:700 38px Georgia,serif;color:var(--teal)}.metric-label{font-size:13px;color:var(--muted)}.source{position:absolute;left:clamp(28px,6vw,92px);bottom:30px;color:#727b76;font-size:11px}.controls{position:fixed;z-index:20;bottom:18px;right:clamp(28px,6vw,92px);display:flex;align-items:center;gap:10px}.controls button{border:1px solid var(--line);background:rgba(13,17,17,.88);color:var(--ink);border-radius:99px;width:38px;height:38px;cursor:pointer;font-size:18px}.controls button:hover{border-color:var(--teal);color:var(--teal)}.progress{width:120px;height:3px;background:var(--line);border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--amber);width:10%;transition:width .3s}.footnote{color:#7d8680;font-size:12px;margin-top:22px}.risk{border-color:rgba(255,128,108,.45)}.safe{border-color:rgba(196,221,118,.45)}.center{text-align:center}.center p{margin-left:auto;margin-right:auto}.big-quote{font:700 clamp(28px,4vw,54px)/1.15 Georgia,serif;max-width:900px;margin:30px 0}.architecture{margin-top:18px;padding:22px;border:1px solid var(--line);border-radius:18px;background:#111716;font-family:Consolas,monospace;color:var(--teal);line-height:2;font-size:clamp(12px,1.5vw,17px)}
+    @media(max-width:760px){body{overflow:auto}.slide{height:auto;min-height:100vh;padding:34px 22px 90px}.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}.slide-no{right:22px;top:38px}.hero{margin-top:12vh}.step:not(:last-child):after{display:none}.source{left:22px}.controls{right:22px}.progress{width:70px}h2{margin-bottom:24px}}
+    @media print{body{overflow:visible;background:#fff;color:#111}.slide{display:block!important;height:100vh;page-break-after:always;color:#111}.card,.architecture{background:#f5f5f5}.source,.micro,.footnote,p,td,ul{color:#444}.controls{display:none}}
+  </style>
+</head>
+<body>
+  <main class="deck" aria-live="polite">
+    <section class="slide active" data-title="决策摘要">
+      <div class="hero"><div class="eyebrow">ADOPTION DECISION · 2026.08</div><h1>两个护栏模型<br><span class="accent">要不要进类 Claw？</span></h1><p class="lede">给 Senior Manager 的决策简报：SingGuard 解决“内容是否安全”，SingGuard-NSFA 解决“Agent 是否准备做危险的事”。</p><div class="decision"><p><strong>建议：</strong>不建议一开始同时全量上线。先以 <span class="amber">NSFA 0.8B/2B 做运行时试点</span>；只有当产品有图片/多模态内容安全需求时，再加入 SingGuard。</p></div><span class="tag">检测层，不是权限层</span><span class="tag">建议 4–6 周 pilot</span><span class="tag">先评估，再拦截</span></div>
+      <div class="source">基于官方 GitHub、arXiv、Hugging Face 模型卡；benchmark 为论文报告值</div>
+    </section>
+
+    <section class="slide" data-title="为什么现在评估">
+      <span class="eyebrow">01 · BUSINESS CONTEXT</span><span class="slide-no">02 / 10</span><h2>类 Claw 的风险，不止是“回答有害”</h2>
+      <div class="grid three"><div class="card risk"><span class="tag">Confidentiality</span><h3>秘密泄露</h3><p>Agent 读取 .env、SSH key、云凭证，或把工具结果外发。</p></div><div class="card risk"><span class="tag">Integrity</span><h3>动作越权</h3><p>用户只要求总结，Agent 却修改文件、安装依赖、部署或发送消息。</p></div><div class="card risk"><span class="tag">Availability</span><h3>资源滥用</h3><p>无限循环、重试风暴、任意网络访问或高成本工具调用。</p></div></div>
+      <div class="architecture">untrusted content → context → plan → tool call → external effect → memory / trace</div><p>模型护栏的价值：在“内容进入 Agent”与“动作落地”之间增加一个风险判断点；但真实阻断仍依赖 Policy Gateway、权限和 Sandbox。</p>
+    </section>
+
+    <section class="slide" data-title="一页对比">
+      <span class="eyebrow">02 · TWO PRODUCTS</span><span class="slide-no">03 / 10</span><h2>同属安全护栏，但解决不同问题</h2>
+      <table><thead><tr><th>维度</th><th>SingGuard</th><th>SingGuard-NSFA</th></tr></thead><tbody><tr><td>核心问题</td><td><strong>内容/图文是否违反当前安全政策</strong></td><td><strong>Agent 的输入、输出和动作是否具有操作风险</strong></td></tr><tr><td>主要模态</td><td>文本、图片、图文</td><td>文本；计划、工具调用可序列化为文本</td></tr><tr><td>模型形态</td><td>多模态生成式 guardrail</td><td>生成式审计 + 分类头在线拦截</td></tr><tr><td>最适合的位置</td><td>网页/图片/对话输入输出两侧</td><td>规划后、工具执行前、结果外发前</td></tr><tr><td>不能替代</td><td colspan="2">源码扫描、依赖扫描、确定性授权、网络隔离、沙箱和人工审批</td></tr></tbody></table>
+      <div class="decision"><p><strong>选择逻辑：</strong>纯文本个人 Agent → 先 NSFA；有网页截图、图片理解或图文交互 → SingGuard 作为补充。</p></div>
+    </section>
+
+    <section class="slide" data-title="SingGuard pipeline">
+      <span class="eyebrow">03 · SINGGUARD</span><span class="slide-no">04 / 10</span><h2>SingGuard：策略条件化的多模态 Judge</h2>
+      <div class="grid two"><div><p class="big-quote">内容 + 当前 policy<br><span class="accent">→ safe / unsafe + 风险类别</span></p><p>同一内容可以在不同产品政策下得到不同判断；新规则通常作为运行时自然语言输入，不必为每条规则重训。</p></div><div class="card"><h3>输入 / 输出</h3><ul><li>输入：文本、图片、图文、当前安全政策</li><li>输出：整体安全判断、匹配类别、策略相关分析</li><li>公开规模：Qwen3-VL 2B / 4B / 8B</li><li>许可证：Apache 2.0</li></ul></div></div>
+      <div class="flow"><div class="step"><b>INPUT</b><span>用户输入 / 网页 / 图片</span></div><div class="step"><b>POLICY</b><span>业务安全规则</span></div><div class="step"><b>JUDGE</b><span>SingGuard</span></div><div class="step"><b>OUTPUT</b><span>放行 / 复核 / 拦截信号</span></div></div><p class="footnote">它是 LLM-as-a-Judge 风格的生成式判断，但“拦截”必须由应用策略层执行。</p>
+    </section>
+
+    <section class="slide" data-title="NSFA pipeline">
+      <span class="eyebrow">04 · SINGGUARD-NSFA</span><span class="slide-no">05 / 10</span><h2>NSFA：面向 Agent 行为的双路径护栏</h2>
+      <div class="grid two"><div class="card"><span class="tag">Offline</span><h3>Generative Reasoning</h3><p>生成风险分析和结构化判断，适合历史 trace、复杂案例、事件调查和人工复核。它更接近传统 LLM-as-a-Judge。</p></div><div class="card safe"><span class="tag">Online</span><h3>Real-Time Classification</h3><p>冻结骨干 + 多个轻量分类头，直接输出风险概率，不需要先生成一段解释再解析；适合工具调用前的低延迟检查。</p></div></div>
+      <div class="flow"><div class="step"><b>QUERY-SIDE</b><span>Prompt injection<br>数据窃取 / 工具滥用</span></div><div class="step"><b>PLAN</b><span>Agent 计划<br>完整参数</span></div><div class="step"><b>RESPONSE-SIDE</b><span>危险动作生成<br>敏感信息泄露</span></div><div class="step"><b>DECISION</b><span>风险概率<br>解释 / 复核</span></div></div><p class="footnote">NSFA 风险体系：7 个一级域、28 个二级风险、185 个三级变体。</p>
+    </section>
+
+    <section class="slide" data-title="训练与 benchmark">
+      <span class="eyebrow">05 · EVIDENCE</span><span class="slide-no">06 / 10</span><h2>公开证据：能力强，但不要把 benchmark 当安全保证</h2>
+      <div class="grid two"><div class="card"><h3>SingGuard</h3><p><strong>基座：</strong>Qwen3-VL 2B/4B/8B<br><strong>训练：</strong>SFT + 论文报告的 Fast-Slow Decoupled DAPO<br><strong>评测：</strong>SingGuard-Bench，约 56,340 样本</p><p class="micro">8B F1：Image .903 · Text Query .874 · Multilingual Query .899 · Multimodal .877 · Text Response .893 · Multilingual Response .893；动态策略准确率 .7415。</p></div><div class="card"><h3>SingGuard-NSFA</h3><p><strong>基座：</strong>Qwen3.5-Base 0.8B/2B/4B/9B<br><strong>训练：</strong>风险分析 SFT + 冻结骨干上的 MLP 分类头<br><strong>评测：</strong>93K+ / 133 语言 + 3,435 cross-source</p><p class="micro">purpose-built：均 ≥94% F1；cross-source：9B 为 91.29% F1；相对竞品约 +6–12 F1 点。</p></div></div><p class="footnote">数据集/底层测试集的公开范围、底层硬件和跨域分布仍需在 pilot 中复现；论文指标不等于你们应用的 precision/recall。</p>
+    </section>
+
+    <section class="slide" data-title="类 Claw 集成">
+      <span class="eyebrow">06 · INTEGRATION</span><span class="slide-no">07 / 10</span><h2>推荐架构：模型判断，策略执行</h2>
+      <div class="architecture">用户输入 / 网页 / 图片<br>　　　　↓<br>SingGuard：内容与多模态风险<br>　　　　↓<br>Agent Planner<br>　　　　↓<br>NSFA：计划、工具名、完整参数、结果<br>　　　　↓<br>确定性 Policy Gateway：用户 / 任务 / 路径 / 域名 / 权限<br>　　　　↓<br>人工审批（高影响动作）<br>　　　　↓<br>Sandbox：文件、进程、网络、凭证隔离<br>　　　　↓<br>执行 + 审计 trace</div>
+      <div class="grid two" style="margin-top:18px"><div class="card"><h3>工具调用前</h3><p>把 user_intent、allowed_paths、tool、完整 arguments 序列化给 NSFA；实时分类给风险信号，Policy Gateway 决定放行/拒绝/审批。</p></div><div class="card"><h3>结果与外发前</h3><p>NSFA 检查工具结果和 Agent 输出；SingGuard 检查图片、网页和多模态内容；禁止模型结果直接获得授权。</p></div></div>
+    </section>
+
+    <section class="slide" data-title="部署难度">
+      <span class="eyebrow">07 · OPERATING MODEL</span><span class="slide-no">08 / 10</span><h2>部署难度：模型不难，工程闭环才难</h2>
+      <div class="grid four"><div class="card"><div class="metric">低</div><div class="metric-label">离线日志审计</div><p>NSFA 生成式路径；无需阻断生产流量。</p></div><div class="card"><div class="metric">中</div><div class="metric-label">NSFA 在线分类</div><p>需要模型服务、阈值、超时和 fallback。</p></div><div class="card"><div class="metric">中高</div><div class="metric-label">SingGuard 多模态</div><p>图片输入、显存和推理框架要求更高。</p></div><div class="card"><div class="metric">高</div><div class="metric-label">生产拦截闭环</div><p>要有权限、沙箱、审批、审计和回滚。</p></div></div>
+      <table style="margin-top:22px"><thead><tr><th>路径</th><th>公开延迟信息</th><th>实际要测什么</th></tr></thead><tbody><tr><td>NSFA 分类头</td><td>约 45–57 ms / sample，A100 条件</td><td>你们硬件、batch、上下文长度、并发、fallback</td></tr><tr><td>NSFA 生成式</td><td>未给统一线上 SLA</td><td>输出 token、并发、解释质量和超时策略</td></tr><tr><td>SingGuard</td><td>公开资料不应直接当本地 SLA</td><td>图片分辨率、显存、文本长度、多模态吞吐</td></tr></tbody></table>
+    </section>
+
+    <section class="slide" data-title="作用与边界">
+      <span class="eyebrow">08 · VALUE & LIMITS</span><span class="slide-no">09 / 10</span><h2>它们能降低什么风险？不能解决什么？</h2>
+      <div class="grid two"><div class="card safe"><h3 class="lime">可以起到的作用</h3><ul><li>发现 Prompt Injection 与越狱信号</li><li>识别读取凭证、危险 Shell、外传等工具风险</li><li>在 Agent 输出到达用户前做泄露检查</li><li>对历史 trace 做批量审计与风险聚类</li><li>给高风险动作提供解释、阈值和人工复核依据</li></ul></div><div class="card risk"><h3 class="red">不能单独解决</h3><ul><li>SQL 注入、SSRF、依赖漏洞和源码缺陷</li><li>API 越权、真实文件权限和身份授权</li><li>容器逃逸、云 metadata、网络隔离</li><li>模型漏判/误判后的确定性安全保证</li><li>跨多步攻击链的完整因果与恢复控制</li></ul></div></div><div class="decision"><p><strong>核心边界：</strong>模型输出是风险信号，不是“允许执行”的事实。</p></div>
+    </section>
+
+    <section class="slide" data-title="建议与决策">
+      <span class="eyebrow">09 · RECOMMENDATION</span><span class="slide-no">10 / 10</span><h2>建议批准一个小范围 pilot，而不是直接双模型全量上线</h2>
+      <div class="grid two"><div><h3>Phase 1 · 4–6 周</h3><ul><li>NSFA 0.8B/2B 离线审计历史 trace</li><li>建立 50–100 条真实攻击/误报样本</li><li>测 precision、recall、漏报、延迟、显存</li><li>只对高危工具调用做 shadow mode</li></ul></div><div><h3>Phase 2 · 通过门槛后</h3><ul><li>NSFA 接入工具调用前风险判断</li><li>Policy Gateway 执行确定性拒绝</li><li>若有图片/图文入口，再加入 SingGuard</li><li>持续红队：注入、外传、越权、资源滥用</li></ul></div></div><div class="decision"><p><strong>管理层决策建议：</strong>批准 NSFA pilot；SingGuard 作为“有多模态需求才启用”的可选项。若应用目前只有纯文本输入输出，同时采购两者的边际收益有限。</p></div><p class="micro">资料：<a href="https://github.com/inclusionAI/Sing-Guard">SingGuard GitHub</a> · <a href="https://arxiv.org/abs/2606.22873">SingGuard paper</a> · <a href="https://github.com/inclusionAI/SingGuard-NSFA">NSFA GitHub</a> · <a href="https://arxiv.org/abs/2607.13081">NSFA paper</a> · <a href="https://huggingface.co/datasets/inclusionAI/NSFA_Benchmarks">NSFA_Benchmarks</a></p>
+      <div class="source">End · detection is not enforcement</div>
+    </section>
+  </main>
+  <div class="controls"><button id="prev" aria-label="上一页">←</button><div class="progress"><i></i></div><button id="next" aria-label="下一页">→</button></div>
+  <script>
+    (()=>{const slides=[...document.querySelectorAll('.slide')],bar=document.querySelector('.progress i');let index=0;const render=()=>{slides.forEach((s,i)=>s.classList.toggle('active',i===index));bar.style.width=`${(index+1)/slides.length*100}%`;document.title=`${slides[index].dataset.title} · SingGuard Decision`;location.hash=`slide-${index+1}`};const go=step=>{index=(index+step+slides.length)%slides.length;render()};document.querySelector('#prev').onclick=()=>go(-1);document.querySelector('#next').onclick=()=>go(1);document.addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(-1)}if(e.key==='Home'){index=0;render()}if(e.key==='End'){index=slides.length-1;render()}});const hash=Number(location.hash.replace('#slide-',''));if(hash>=1&&hash<=slides.length)index=hash-1;render()})();
+  </script>
+</body>
+</html>

@@ -20,18 +20,37 @@ Agent security 不是 Model security 的简单子集。模型的一次错误输�
 
 ---
 
-## 1. 基础边界：四个相邻但不同的概念
+## 1. 基础边界：五个相邻但不同的概念
 
-### 1.1 Security / Safety / Privacy / Reliability
+### 1.1 Security / Safety / Privacy / Reliability / Robustness
 
 | 概念 | 核心问题 | 典型例子 |
 |---|---|---|
-| Security | 对抗性主体能否破坏 C/I/A 或越权 | prompt injection 触发发邮件、读取密钥 |
-| Safety | 即使没有恶意攻击，系统是否会造成伤害 | 幻觉导致错误医疗建议、错误代码修改 |
-| Privacy | 敏感信息是否被不当收集、推断、记忆或披露 | 训练数据记忆、RAG 跨租户泄露 |
-| Reliability | 在正常/异常输入下是否稳定、正确、可恢复 | 无限循环、重复扣款、工具参数错误 |
+| Security（安全） | 对抗性主体或未授权路径能否破坏 C/I/A、扩大能力或越过授权边界？ | prompt injection 诱导 Agent 读取密钥、调用发邮件工具；Skill 被篡改后窃取凭证 |
+| Safety（安全性/无伤害性） | 即使没有恶意攻击，系统行为是否会使人、财产、组织或环境处于不可接受的伤害风险？ | 幻觉导致错误医疗建议；Agent 在用户意图正确但判断错误时误删文件 |
+| Privacy（隐私） | 个人或敏感主体是否能够控制其信息的收集、使用、推断、记忆和披露？ | 训练数据记忆、RAG 跨租户泄露、把用户私密对话写入长期 memory |
+| Reliability（可靠性） | 在给定条件和时间内，系统能否持续按要求工作，并在失败后可恢复？ | 无限循环、重复扣款、工具参数错误、任务失败后无法回滚 |
+| Robustness（鲁棒性） | 输入、环境、模型、工具或运行条件发生扰动时，系统性能和安全性质是否仍保持在可接受范围？ | 拼写扰动、分布外输入、对抗样本、工具返回格式变化、网络抖动后仍不越权 |
 
-安全研究会借用 safety、privacy、robustness 的结果，但不应把它们当成同义词。
+这五个概念的范围可以这样划分：
+
+1. **Security 关注对抗者和授权边界**。是否有攻击者不是唯一判据，但“未授权的主体/路径”和 C/I/A 破坏是核心。
+2. **Safety 关注伤害结果，不要求存在攻击者**。错误决策、误操作和危险自动化都可能是 Safety 问题。恶意 prompt 导致危险动作时，它同时属于 Security（攻击路径）和 Safety（伤害后果）。
+3. **Privacy 关注信息主体和数据处理边界**。隐私泄露可以由攻击造成，也可以由过度收集、错误配置或模型记忆造成，因此 Privacy 不是 Security 的同义词。
+4. **Reliability 关注按规格工作和故障恢复**。系统可能非常可靠但不安全（稳定地执行过大的权限），也可能安全但不可靠（每次都拒绝合法任务）。
+5. **Robustness 是跨领域性质，不是第五种独立威胁类型**。它描述系统面对扰动、异常或对抗输入时是否保持能力。鲁棒性可以服务于 Reliability、Safety 或 Security；普通噪声鲁棒性不自动等于 Security。
+
+因此，记录一个问题时最好同时写**问题性质**和**受影响目标**：
+
+```text
+indirect prompt injection（攻击技术）
+→ MCP/tool（攻击面）
+→ secret disclosure（影响：Privacy + Security）
+→ excessive privilege（根因：Authorization）
+→ deterministic policy + sandbox（控制）
+```
+
+没有一套被所有标准采用的唯一五分法；上表是本文的工作分类。NIST AI RMF、NIST Privacy Framework、ISO/IEC AI 术语和 OWASP GenAI 分类的关注点不同，使用时应保留来源和上下文。
 
 ### 1.2 威胁建模的最小词汇
 
@@ -51,6 +70,20 @@ Agent security 不是 Model security 的简单子集。模型的一次错误输�
 1. **攻击面不是攻击技术**：MCP tool result 是攻击面；indirect prompt injection 是技术。
 2. **提示词中的规则不是安全边界**：模型可理解“不要读密钥”，但不能替代操作系统权限、API authorization 或 deterministic policy。
 3. **拒答率不是安全性**：真正的指标应关注未经授权的秘密披露、工具调用、状态改变、权限提升和恢复能力。
+
+### 1.4 常见 Agent 问题应该放在哪里？
+
+| 现象/术语 | 首要归类 | 说明 |
+|---|---|---|
+| Prompt injection / indirect prompt injection | **攻击技术**；通常属于 Prompt/Context 与 Agent Security | 不可信内容被模型当成高优先级指令，导致计划、工具调用或数据流偏离。它可能造成 Security、Privacy 或 Safety 影响，本身不是“输出安全”。 |
+| Agent 恶意行为/危险行为 | **Agent 行为安全 + Authorization/Runtime** | 看 Agent 实际或计划执行了什么：越权读写、危险工具、提权、外传、部署、删除、资源滥用。判断器可以发现风险，但权限网关、审批、沙箱和下游授权才负责最终阻断。 |
+| Agent 恶意/有害输出 | **Output safety / 内容安全**；若造成泄密则同时是 Privacy/Security | 看模型输出了什么，以及谁能看到或使用它。输出有害不一定意味着发生攻击；若包含秘密、内部提示或跨租户数据，则是隐私/机密性问题。 |
+| MCP/Skill 扫描 | **Security assurance + Supply-chain security**，不是单独的攻击类型 | 扫描是在上线前或运行中检查 MCP server、Skill、依赖、描述/schema、权限和行为，属于检测/评估控制。tool poisoning、rug pull、恶意依赖和命令注入才是具体技术。 |
+| MCP server / Skill | **Tool/API/Connector 与供应链攻击面** | MCP server 是协议化工具/数据连接器；Skill 是可加载的 Agent 能力包、插件或工作流。二者都可能携带指令、代码、凭证需求和工具权限。 |
+
+最简归类口诀：
+
+> **Prompt injection 是“怎么骗”；Agent 行为是“做了什么”；Agent 输出是“说了什么”；MCP/Skill 扫描是“怎么查”；授权、沙箱和策略执行是“怎么拦”。**
 
 ---
 
@@ -80,6 +113,28 @@ Agent security 不是 Model security 的简单子集。模型的一次错误输�
 攻击可以从任意层进入，并沿 Agent loop 传播：
 
 `untrusted content → context → plan → tool call → external effect → memory/trace`
+
+### 2.3 一张更实用的分类矩阵
+
+Agent 安全问题同时有多个坐标，不能把所有名词都塞进“攻击类型”一列：
+
+| 坐标 | 要回答的问题 | 例子 |
+|---|---|---|
+| Surface（攻击面） | 攻击者从哪里进入或影响系统？ | 用户输入、RAG 文档、Memory、MCP server、Skill、tool result、浏览器、网络 |
+| Technique（攻击技术） | 通过什么方法改变控制流或数据流？ | Prompt injection、tool poisoning、rug pull、命令注入、SSRF、越权、数据投毒 |
+| Behavior/Effect（行为/副作用） | Agent 实际做了什么？ | 读 secret、改文件、发请求、执行代码、写 memory、部署、删除、外传 |
+| Target/Impact（目标/影响） | 哪个资产和性质受损？ | C/I/A、Privacy、Safety、费用、评测完整性、业务状态 |
+| Control（控制） | 在哪里检测、授权、阻断、恢复？ | 扫描、分类器、Policy Engine、能力网关、审批、Sandbox、审计、回滚 |
+
+例如，一个恶意 Skill 携带隐藏指令，诱导 Agent 读取 `.env` 并通过 MCP 工具外传，可写成：
+
+```text
+Skill / MCP tool（Surface）
+→ indirect prompt injection + tool poisoning（Technique）
+→ read secret + external send（Behavior/Effect）
+→ confidentiality / Privacy breach（Target/Impact）
+→ Skill scan + least privilege + approval + sandbox + egress policy（Control）
+```
 
 ---
 
@@ -195,6 +250,8 @@ Harness 决定 Agent 如何循环：何时继续、何时重试、如何拆任�
 - 工具返回秘密，Agent 再通过另一个工具外传。
 
 **控制**：typed schema、`additionalProperties: false`、参数白名单、下游 complete mediation、每工具独立凭证、短期 token、按用户传播身份、读写分离、敏感操作审批、完整参数审计。
+
+**归类说明**：MCP server 和 Skill 都首先属于这一层的 Tool/API/Connector 或供应链攻击面；“扫描”属于 Security assurance（检测/评估控制），不是一种攻击。扫描应覆盖来源、版本、依赖、权限、描述/schema、工具实现、网络出口和运行时行为；发现风险后仍需由授权、沙箱、策略引擎和审批执行阻断。
 
 ### 4.6 MCP 层
 

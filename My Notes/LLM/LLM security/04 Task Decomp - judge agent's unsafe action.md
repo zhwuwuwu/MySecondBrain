@@ -787,5 +787,5 @@ Deterministic executable state harm
 
 相关笔记：
 
-- [LLM 与 Agent Security 总览](./LLM%20%E4%B8%8E%20Agent%20Security%20%E6%80%BB%E8%A7%88.md)
+- [00 LLM 与 Agent Security 总览](00%20LLM%20与%20Agent%20Security%20总览.md)
 - [OpenAI–Hugging Face Agent 入侵案例](./Open%20AI%20Cases.md)
