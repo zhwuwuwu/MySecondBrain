@@ -144,14 +144,6 @@
       nav { display: none; }
       .sources { columns: 1; }
     }
-    @media print {
-      body { background: white; color: #151817; }
-      body::before, .topbar, .print { display: none; }
-      .hero, .section { padding: 30px 0; }
-      .card, .diagram, table, .stack-row, .route-step { color: #151817; background: #fff; box-shadow: none; border-color: #ccd2ce; }
-      .card p, td, .section-intro, .hero-lead, .stack-row span, .route-step p, .footer { color: #4b5651; }
-      h1 em, .eyebrow, .section-number, th, .card .index { color: #8b5d13; }
-    }
   </style>
 </head>
 <body>
@@ -159,7 +151,7 @@
     <div class="shell topbar-inner">
       <div class="brand"><span class="brand-mark"></span><span>Security brief / 2026</span></div>
       <nav>
-        <a href="#map">全景</a><a href="#taxonomy">分类</a><a href="#controls">控制平面</a><a href="#judgment">判断</a><a href="#envelope">Envelope</a><a href="#value">安全价值</a><a href="#entry">切入方向</a>
+        <a href="#map">全景</a><a href="#taxonomy">分类</a><a href="#controls">控制平面</a><a href="#judgment">判断</a><a href="#envelope">Envelope</a><a href="#value">安全价值</a><a href="#entry">切入方向</a><a href="#model-first">模型控制</a><a href="#platform-first">平台兜底</a><a href="#conclusion">总结</a>
         <button class="print" onclick="window.print()">打印 / PDF</button>
       </nav>
     </div>
@@ -422,6 +414,58 @@
         <div class="callout"><strong>建议对经理的结论：</strong>不要从“训练一个更强的安全分类器”开始。先把 Agent 的能力边界、权限决策、扩展供应链和真实副作用做成可见、可控、可恢复的产品面；模型型检测能力再嵌入这些确定性控制点。</div>
       </div>
     </section>
+
+    <section class="section" id="model-first">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">11 / MODEL-FIRST PLATFORM</div><h2>思路 1：使用模型同步判断<br>多种风险类型</h2></div><p class="section-intro">引入专门的安全模型（如 SingGuard 和 SingGuard-NSFA）来识别 Prompt Injection、越狱、意图偏离和工具滥用。</p></div>
+        <div class="grid-2">
+          <article class="card accent-cyan"><span class="index">SINGGUARD</span><h3>多模态安全护栏</h3><p>适合判断文本、图片、图文组合是否违反当前 policy，以及网页截图和助手输出是否包含风险。可检查工具调用的文字化描述，但不能替代实际授权。</p></article>
+          <article class="card accent-amber"><span class="index">SINGGUARD-NSFA</span><h3>面向 Agent 操作风险</h3><p>专为 Agent 计划、工具名称、完整参数和工具结果设计。冻结骨干上的轻量 MLP 分类头可以直接输出风险概率，适合在线工具调用前检查。</p></article>
+        </div>
+        <div class="diagram" style="margin-top: 18px">
+          <div class="diagram-title">NSFA 集成架构</div>
+          <div class="flow">
+            <div class="flow-node"><b>用户输入</b><span>NSFA 输入检查</span></div>
+            <div class="flow-node"><b>Agent Planner</b><span>计划与参数</span></div>
+            <div class="flow-node"><b>NSFA 检查</b><span>评估参数风险</span></div>
+            <div class="flow-node"><b>Policy Gateway</b><span>确定性授权</span></div>
+            <div class="flow-node"><b>执行结果</b><span>NSFA 检查外发内容</span></div>
+          </div>
+        </div>
+        <div class="callout"><strong>部署考虑：</strong>多模态模型需要图像处理和更高显存；在线分类需要测算 P95 延迟。A100 的 45–57 ms 只能作为参考，不能直接作为本地设备 SLA。</div>
+      </div>
+    </section>
+
+    <section class="section" id="platform-first">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">12 / PLATFORM-FIRST</div><h2>思路 2：针对威胁类型<br>优化 Platform</h2></div><p class="section-intro">对于需要绝对安全兜底的高影响场景，仅靠分类器不够，必须建设确定性控制和运行时沙箱。</p></div>
+        <table>
+          <thead><tr><th>控制层级</th><th>关键控制组件</th><th>解决的核心风险</th></tr></thead>
+          <tbody>
+            <tr><td>数据与上下文</td><td>Secret redaction, declassification, RAG/Memory 来源隔离</td><td>跨租户数据泄露、敏感凭证进入外部 API、记忆投毒</td></tr>
+            <tr><td>授权与网关</td><td>Capability Token, Scope 绑定, 人工审批网关</td><td>越权读写、高影响副作用（支付、发送、部署）</td></tr>
+            <tr><td>运行时执行</td><td>Sandbox, Egress Allowlist, OS/进程边界, 超时拦截</td><td>任意代码执行、SSRF、云凭证泄露、资源耗尽</td></tr>
+            <tr><td>恢复与审计</td><td>Trace 日志, 自动回滚机制, 凭证吊销 API</td><td>事后追踪定责、持久化恶意更改恢复</td></tr>
+          </tbody>
+        </table>
+        <div class="grid-2" style="margin-top: 18px">
+          <article class="card accent-red"><span class="index">LIMITATIONS OF MODELS</span><h3>为什么模型不能包打天下？</h3><p>安全分类器会有误报/漏报；对于系统级漏洞（如路径穿越、SSRF）、未知的 0-day 漏洞和供应链替换，模型无法提供物理阻断。</p></article>
+          <article class="card accent-lime"><span class="index">DEFENSE IN DEPTH</span><h3>平台兜底的意义</h3><p>当模型被绕过（Jailbreak）时，平台级的权限管理、沙箱和网络隔离可以确保最坏情况下的副作用被限制在安全范围内。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="conclusion">
+      <div class="shell">
+        <div class="section-head"><div><div class="section-number">CONCLUSION</div><h2>执行建议与<br>汇报总结</h2></div><p class="section-intro">不要在 Platform-first 和 Model-first 之间二选一，而是采用双线并行的建设路径。</p></div>
+        <div class="route">
+          <div class="route-step"><small>基础防线</small><h3>Platform-first 兜底</h3><p>优先建设工具 Allowlist、工作区隔离、人工审批和审计 Trace。确保在模型失效时，系统不会产生灾难性后果。</p></div>
+          <div class="route-step"><small>智能检测</small><h3>Model-first 提效</h3><p>在基础防线外引入 SingGuard-NSFA 等安全模型，提升对复杂指令偏离、Prompt Injection 和多模态风险的识别率。</p></div>
+          <div class="route-step"><small>持续演进</small><h3>生态化治理</h3><p>建立 MCP/Skill 供应链扫描机制，完善安全监控面板和自动化恢复流程，形成真正的平台级安全护城河。</p></div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="footer">

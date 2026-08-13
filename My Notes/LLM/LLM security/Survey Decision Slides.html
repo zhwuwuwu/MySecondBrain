@@ -12,58 +12,955 @@
     .deck{height:100vh}.slide{display:none;height:100vh;overflow:auto;position:relative;padding:50px clamp(28px,7vw,110px) 62px}.slide.active{display:block;animation:arrive .38s ease both}@keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
     .topline{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:13px;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}.topline b{color:var(--orange);font-family:Georgia,serif;letter-spacing:.04em}.number{font:700 13px Georgia,serif;color:var(--muted)}.stage{max-width:1160px;margin:0 auto}.eyebrow{color:var(--orange);font:700 12px/1.2 Georgia,serif;letter-spacing:.17em;text-transform:uppercase;margin-top:38px}h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.04;margin:0}h1{font-size:clamp(48px,8.4vw,116px);letter-spacing:-.07em;max-width:1000px;margin:20px 0 26px}h2{font-size:clamp(35px,5.4vw,70px);letter-spacing:-.055em;max-width:1000px;margin:15px 0 30px}h3{font-size:23px;margin-bottom:9px}.orange{color:var(--orange)}.teal{color:var(--teal)}.red{color:var(--red)}.muted{color:var(--muted)}p{font-size:16px;line-height:1.68;color:var(--muted);max-width:900px}.lead{font-size:clamp(20px,2.3vw,28px);line-height:1.45;color:var(--ink);max-width:910px}.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;position:relative}.hero:after{content:"C  I  A";position:absolute;right:-5vw;top:19vh;color:rgba(20,127,121,.08);font:900 clamp(100px,20vw,270px)/1 Georgia,serif;letter-spacing:-.12em;z-index:-1}.ribbon{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:4px;font-size:12px;font-weight:700;width:max-content}.ribbon i{display:block;width:8px;height:8px;border-radius:50%;background:var(--orange)}.verdict{border-left:6px solid var(--orange);background:#fff8ed;padding:19px 22px;margin:28px 0;max-width:890px;box-shadow:var(--shadow)}.verdict p{color:var(--ink);font-size:19px;margin:0}.grid{display:grid;gap:16px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:rgba(255,253,247,.75);border:1px solid var(--line);padding:21px;border-radius:5px;box-shadow:var(--shadow)}.card p{font-size:14px;margin:6px 0 0}.card ul{font-size:14px}.card.orange{border-top:5px solid var(--orange)}.card.teal{border-top:5px solid var(--teal)}.card.red{border-top:5px solid var(--red)}.card.yellow{border-top:5px solid #d3a142}.pill{display:inline-block;border:1px solid currentColor;border-radius:99px;padding:4px 9px;font-size:11px;margin-bottom:12px}.big{font:700 43px Georgia,serif;color:var(--teal);letter-spacing:-.05em}.caption{font-size:12px;color:var(--muted);line-height:1.55}.quote{font:700 clamp(30px,4.8vw,63px)/1.08 Georgia,serif;letter-spacing:-.05em;max-width:960px;margin:15px 0 25px}.map{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:26px 0 20px;border:1px solid var(--line);background:var(--white)}.map .node{min-height:150px;padding:17px;border-right:1px solid var(--line);position:relative}.map .node:last-child{border-right:0}.map .node:not(:last-child):after{content:"→";position:absolute;right:-12px;top:50%;color:var(--orange);background:var(--paper);font-size:20px;z-index:2}.map b{display:block;color:var(--teal);font:700 12px Georgia,serif;letter-spacing:.08em;text-transform:uppercase;margin-bottom:15px}.map span{font-size:14px;line-height:1.55}.matrix{display:grid;grid-template-columns:190px 1fr 1fr;border:1px solid var(--line);background:var(--white)}.matrix>div{padding:14px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;line-height:1.5}.matrix>div:nth-child(3n){border-right:0}.matrix .head{background:var(--ink);color:var(--paper);font-weight:700}.matrix .label{background:var(--paper2);color:var(--ink);font-weight:700}.flow{display:flex;align-items:stretch;gap:9px;flex-wrap:wrap;margin:20px 0}.flow .step{flex:1;min-width:135px;background:var(--ink);color:var(--paper);padding:17px;border-radius:4px;position:relative}.flow .step:not(:last-child):after{content:"→";position:absolute;right:-15px;top:33%;color:var(--orange);font-size:20px;z-index:3}.flow b{display:block;color:var(--yellow);font:700 11px Georgia,serif;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}.flow span{font-size:14px;line-height:1.5}.axis{display:flex;height:18px;background:linear-gradient(90deg,var(--teal) 0 46%,var(--yellow) 46% 66%,var(--orange) 66%);margin:14px 0 7px}.axis-label{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.metric{font:700 39px Georgia,serif;color:var(--teal);letter-spacing:-.06em}.metric-title{font-size:13px;color:var(--muted);margin:5px 0 8px}.table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--line);font-size:14px}.table th,.table td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line);line-height:1.5}.table th{background:var(--ink);color:var(--paper);font-size:11px;letter-spacing:.08em}.table td{color:var(--muted)}.table td strong{color:var(--ink)}.code{background:var(--ink);color:var(--teal2);padding:18px 20px;border-radius:5px;font:14px/1.85 Consolas,monospace;white-space:pre-wrap}.note{border:1px dashed var(--line);padding:12px 15px;color:var(--muted);font-size:13px;margin-top:15px}.source{position:absolute;left:clamp(28px,7vw,110px);bottom:23px;color:#78827d;font-size:11px}.controls{position:fixed;right:clamp(28px,7vw,110px);bottom:14px;z-index:20;display:flex;gap:8px;align-items:center}.controls button{width:38px;height:38px;border:1px solid var(--line);background:rgba(244,240,232,.94);color:var(--ink);border-radius:4px;font-size:17px;cursor:pointer}.controls button:hover{border-color:var(--teal);color:var(--teal)}.progress{width:145px;height:4px;background:var(--line)}.progress i{display:block;height:100%;background:var(--orange);width:7%;transition:width .25s}
     @media(max-width:800px){body{overflow:auto}.slide{height:auto;min-height:100vh;padding:30px 21px 80px}.topline{font-size:9px}.two,.three,.four{grid-template-columns:1fr}.map{grid-template-columns:1fr}.map .node{min-height:auto;border-right:0;border-bottom:1px solid var(--line)}.map .node:not(:last-child):after{content:"↓";right:50%;top:auto;bottom:-13px}.matrix{grid-template-columns:1fr}.matrix>div{border-right:0}.matrix .head{display:none}.flow .step:not(:last-child):after{display:none}.source{left:21px}.controls{right:21px}.progress{width:70px}h2{margin-bottom:22px}}
-    @media print{body{overflow:visible;background:#fff}.slide{display:block!important;height:100vh;page-break-after:always}.controls{display:none}}
+    .table-container{overflow-x:auto!important}.table-container>div{min-width:860px}@media print{body{overflow:visible;background:#fff}.slide{display:block!important;height:100vh;page-break-after:always}.controls{display:none}}
   </style>
 </head>
 <body>
   <main class="deck">
-    <section class="slide active" data-title="决策问题"><div class="stage hero"><div class="topline"><b>LLM / AGENT SECURITY</b><span>Management decision canvas · 2026.08</span></div><div class="eyebrow">00 · DECISION QUESTIONS</div><h1>我们是否要把<br><span class="teal">Security 做成 feature？</span></h1><p class="lead">当本地类 Claw 可以读取文件、调用工具、访问网络并连续执行任务时，安全不再只是上线前的一次测试，而可能成为产品能力。</p><div class="verdict"><p><strong>今天只讨论两个问题：</strong><br>① 产品是否需要正式的 Security feature？<br>② 如果需要，第一阶段应先完善 Agent platform，还是先加入 safety 判断模型？</p></div><div class="ribbon"><i></i>先定义决策，再比较路径</div></div><div class="source">给高级经理 / 产品经理 · 本地类 Claw 个人 Agent</div></section>
+    <section class="slide active" data-title="决策问题">
+      <div class="stage hero">
+        <div class="topline"><b>LLM / AGENT SECURITY</b><span>Management decision canvas · 2026.08</span></div>
+        <div class="eyebrow">00 · DECISION QUESTIONS</div>
+        <h1>我们是否要把<br><span class="teal">Security 做成 feature？</span></h1>
+        <p class="lead">当本地类 Claw 可以读取文件、调用工具、访问网络并连续执行任务时，安全不再只是上线前的一次测试，而可能成为产品能力。</p>
+        <div class="verdict">
+          <p><strong>今天只讨论两个问题：</strong><br>① 产品是否需要正式的 Security feature？<br>② 如果需要，第一阶段应先完善 Agent platform，还是先加入 safety
+            判断模型？</p>
+        </div>
+        <div class="ribbon"><i></i>先定义决策，再比较路径</div>
+      </div>
+      <div class="source">给高级经理 / 产品经理 · 本地类 Claw 个人 Agent</div>
+    </section>
+    
+    <section class="slide" data-title="比较两条路径">
+      <div class="stage">
+        <div class="topline"><b>THE DECISION</b><span>先完善 platform，还是先加判断模型？</span></div>
+        <div class="eyebrow">00 · TWO INVESTMENT PATHS</div>
+        <h2>真正的优先级问题：Platform-first vs Model-first</h2>
+        <div class="grid two">
+          <div class="card orange"><span class="pill orange">PATH A · PLATFORM-FIRST</span>
+            <h3>先把边界做实</h3>
+            <p>投入权限、工具网关、workspace sandbox、网络、凭证、审批、trace 和回滚。</p>
+            <ul>
+              <li>即使模型判断错，也尽量做不到越权</li>
+              <li>能力可解释、确定、可审计</li>
+              <li>需要较多平台工程改造</li>
+            </ul>
+          </div>
+          <div class="card teal"><span class="pill teal">PATH B · MODEL-FIRST</span>
+            <h3>先增强风险判断</h3>
+            <p>投入 SingGuard / SingGuard-NSFA 推理、策略、阈值和模型服务。</p>
+            <ul>
+              <li>更快覆盖复杂内容、意图偏离和动作风险</li>
+              <li>可能复用已有 Agent 事件流</li>
+              <li>需要验证误报、漏报、延迟和资源占用</li>
+            </ul>
+          </div>
+        </div>
+        <div class="verdict">
+          <p><strong>本页不预设答案。</strong>后续内容将比较两条路径的风险覆盖、产品收益、性能代价、实施难度和可验证性，最后再提出建议。</p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="安全是什么">
+      <div class="stage">
+        <div class="topline"><b>THE BASICS</b><span>给非安全背景的决策者</span></div>
+        <div class="eyebrow">01 · INTRODUCTION</div>
+        <h2>为什么需要 Security feature？先分清五个基本概念</h2>
+        <p class="lead">Agent 一旦产生外部副作用，产品需要保护的不只是回答质量，还包括模型、数据、凭证、工具、运行时和外部系统的机密性、完整性与可用性。</p>
+        <div class="matrix">
+          <div class="head">概念</div>
+          <div class="head">要问的问题</div>
+          <div class="head">类 Claw 例子</div>
+          <div class="label">Security</div>
+          <div>有没有对抗或未授权路径破坏机密性、完整性、可用性？</div>
+          <div>网页诱导 Agent 读取密钥并发到外部</div>
+          <div class="label">Safety</div>
+          <div>没有攻击者时，结果是否仍会造成不可接受伤害？</div>
+          <div>Agent 误删文件、错误修改代码</div>
+          <div class="label">Privacy</div>
+          <div>用户是否控制数据的收集、记忆、推断和披露？</div>
+          <div>私密对话写入长期 memory</div>
+          <div class="label">Reliability</div>
+          <div>系统是否稳定工作，失败后能否恢复？</div>
+          <div>工具失败后无限重试</div>
+          <div class="label">Robustness</div>
+          <div>输入、工具、网络变化时，安全性质是否保持？</div>
+          <div>工具返回格式变了仍然越权</div>
+        </div>
+        <div class="note">拒答率不等于安全性；稳定运行也不等于权限正确；内容审核也不等于运行时隔离。</div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="安全问题怎么描述">
+      <div class="stage">
+        <div class="topline"><b>THREAT MODEL</b><span>让问题能被工程和产品共同讨论</span></div>
+        <div class="eyebrow">02 · PROBLEM DIMENSIONS</div>
+        <h2>把“有风险”翻译成一条可验证链路</h2>
+        <p class="quote"><span class="teal">攻击面</span> → 技术 → 资产 → 影响 → 控制 → 证据</p>
+        <div class="grid two">
+          <div class="card">
+            <h3>案例：网页诱导外传</h3>
+            <ul>
+              <li>攻击面：网页 / 浏览器工具结果</li>
+              <li>技术：indirect prompt injection</li>
+              <li>资产：本地文件、工具权限、网络出口</li>
+              <li>影响：秘密读取与外发</li>
+              <li>控制：内容判断 + Policy Gateway + sandbox</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>上线后要看的指标</h3>
+            <ul>
+              <li>Unauthorized Action Rate</li>
+              <li>Secret Disclosure Rate</li>
+              <li>Denied-call Bypass Rate</li>
+              <li>Privilege Escalation Distance</li>
+              <li>Recovery / Rollback Success Rate</li>
+            </ul>
+          </div>
+        </div>
+        <div class="verdict">
+          <p><strong>产品表达：</strong>我们不是要让 Agent 永远不犯错，而是要让高影响错误不会无审批地落地，并且可发现、可撤销、可复盘。</p>
+        </div>
+      </div>
+    </section>
+        
+    <section class="slide" data-title="模型与运行时安全">
+      <div class="stage">
+        <div class="topline"><b>MODEL VS AGENT</b><span>从模型生命周期到 Agent 运行时</span></div>
+        <div class="eyebrow">03 · MODEL SECURITY &amp; AGENT SECURITY</div>
+        <h2>从<span class="teal">模型拒答</span>到<span class="orange">副作用控制</span></h2>
+        
+        <div class="grid two" style="margin-top:40px;">
+          <div class="card teal" style="padding: 35px 40px;">
+            <span class="pill teal">MODEL SECURITY</span>
+            <h3>模型生命周期安全</h3>
+            <p>主要关注数据、训练和推理 API，例如：</p>
+            <ul style="color:var(--muted); line-height:1.7; font-size:15px; margin-top:20px; padding-left:20px;">
+              <li>数据获取、清洗、标注、授权和隐私；</li>
+              <li>预训练、微调、对齐和评测配置；</li>
+              <li>权重、checkpoint、量化文件和依赖供应链；</li>
+              <li>推理 API、认证、限流、日志和多租户隔离；</li>
+              <li>模型行为：越狱、Prompt Injection 和拒答绕过。</li>
+            </ul>
+            <div class="note" style="margin-top:25px;">典型控制：数据 provenance、依赖 hash、访问控制。</div>
+          </div>
+          
+          <div class="card orange" style="padding: 35px 40px;">
+            <span class="pill orange">AGENT SECURITY</span>
+            <h3>Agent 运行时安全</h3>
+            <p>Agent 在 Model Security 之外增加了：</p>
+            <ul style="color:var(--muted); line-height:1.7; font-size:15px; margin-top:20px; padding-left:20px;">
+              <li>Harness / Orchestrator 和任务目标；</li>
+              <li>Prompt/context 组装；</li>
+              <li>Memory/RAG/状态持久化；</li>
+              <li>Tool/API/MCP/connectors；</li>
+              <li>身份、权限、审批和用户确认；</li>
+              <li>Sandbox、宿主机、网络和凭证；</li>
+              <li>监控、回滚和事件响应。</li>
+            </ul>
+            <div class="note" style="margin-top:25px;">本地类 Claw 的主要安全重点是 Agent Security，而不是只做模型拒答率优化。</div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 25px 30px; background: white; border: 1px solid var(--line); border-radius: 8px;">
+          <div class="flow" style="margin-bottom: 20px;">
+            <div class="step"><b>内容</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">web/doc/skill/tool results</span></div>
+            <div class="step"><b>编排</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">goal/planning/retry/sub-agent</span></div>
+            <div class="step"><b>记忆</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">RAG/state/long-term memory</span></div>
+            <div class="step"><b>工具与运行时</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">MCP/Shell/API/network/sandbox</span></div>
+          </div>
+          <div class="flow">
+            <div class="step"><b>Model</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">data/weights/inference</span></div>
+            <div class="step"><b>Agent</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">harness/context/memory/tools</span></div>
+            <div class="step"><b>Boundary</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">identity/permissions/network/host</span></div>
+            <div class="step"><b>Response</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">monitor/isolate/revoke/rollback</span></div>
+          </div>
+          <div class="note" style="margin-top: 25px;">两套划分同时成立：上方“内容 → 编排 → 记忆 → 工具与运行时”按 Agent 运行时攻击面划分；“Model → Agent → Boundary → Response”按系统控制层划分。前者帮助找攻击入口，后者帮助分配控制责任。</div>
+        </div>
+      </div>
+    </section>
 
-    <section class="slide" data-title="比较两条路径"><div class="stage"><div class="topline"><b>THE DECISION</b><span>先完善 platform，还是先加判断模型？</span></div><div class="eyebrow">00 · TWO INVESTMENT PATHS</div><h2>真正的优先级问题：Platform-first vs Model-first</h2><div class="grid two"><div class="card orange"><span class="pill orange">PATH A · PLATFORM-FIRST</span><h3>先把边界做实</h3><p>投入权限、工具网关、workspace sandbox、网络、凭证、审批、trace 和回滚。</p><ul><li>即使模型判断错，也尽量做不到越权</li><li>能力可解释、确定、可审计</li><li>需要较多平台工程改造</li></ul></div><div class="card teal"><span class="pill teal">PATH B · MODEL-FIRST</span><h3>先增强风险判断</h3><p>投入 SingGuard / SingGuard-NSFA 推理、策略、阈值和模型服务。</p><ul><li>更快覆盖复杂内容、意图偏离和动作风险</li><li>可能复用已有 Agent 事件流</li><li>需要验证误报、漏报、延迟和资源占用</li></ul></div></div><div class="verdict"><p><strong>本页不预设答案。</strong>后续内容将比较两条路径的风险覆盖、产品收益、性能代价、实施难度和可验证性，最后再提出建议。</p></div></div></section>
+    <section class="slide" data-title="一条风险链">
+      <div class="stage">
+        <div class="topline"><b>WHY AGENT SECURITY</b><span>从一句话到真实副作用</span></div>
+        <div class="eyebrow">04 · ATTACK SPECTRUM</div>
+        <h2>聊天模型的错误是“回答错”；Agent 的错误可能是“已经做完”</h2>
+        <div class="map">
+          <div class="node"><b>UNTRUSTED</b><span>网页、文档、Skill、MCP 结果</span></div>
+          <div class="node"><b>CONTEXT</b><span>内容进入 prompt / memory</span></div>
+          <div class="node"><b>PLAN</b><span>目标被改变，规划继续</span></div>
+          <div class="node"><b>TOOL</b><span>Shell、文件、网络、API</span></div>
+          <div class="node"><b>EFFECT</b><span>读写、外传、部署、持久化</span></div>
+        </div>
+        <div class="grid two">
+          <div class="card red">
+            <h3>攻击链不是单点问题</h3>
+            <p>OpenAI–Hugging Face 研究材料展示了高能力 Agent、弱约束 Harness、代码执行工具、数据管线、凭证和网络边界如何组合成跨边界攻击链。</p>
+          </div>
+          <div class="card teal">
+            <h3>产品要控制的是组合能力</h3>
+            <p>不只检查“这句话危险吗”，还要检查谁在做、对什么资源、用什么参数、会产生什么副作用，以及发生后如何恢复。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+        
+    <section class="slide" data-title="全生命周期安全架构">
+      <div class="stage">
+        <div class="topline"><b>ARCHITECTURE</b><span>Security decisions before side effects</span></div>
+        <div class="eyebrow">05 · FULL-LIFECYCLE SECURITY</div>
+        <h2>把安全决策放到<br><span class="teal">副作用发生之前</span></h2>
+        <p class="lead" style="max-width: 1000px;">模型和规则负责发现风险；运行时策略负责决定是否真的能做。在从不可信内容到真实副作用的每一步，将<b>用户目标、身份权限、资源范围和可恢复性</b>绑定为可执行约束。</p>
 
-    <section class="slide" data-title="安全是什么"><div class="stage"><div class="topline"><b>THE BASICS</b><span>给非安全背景的决策者</span></div><div class="eyebrow">01 · INTRODUCTION</div><h2>为什么需要 Security feature？先分清五个基本概念</h2><p class="lead">Agent 一旦产生外部副作用，产品需要保护的不只是回答质量，还包括模型、数据、凭证、工具、运行时和外部系统的机密性、完整性与可用性。</p><div class="matrix"><div class="head">概念</div><div class="head">要问的问题</div><div class="head">类 Claw 例子</div><div class="label">Security</div><div>有没有对抗或未授权路径破坏机密性、完整性、可用性？</div><div>网页诱导 Agent 读取密钥并发到外部</div><div class="label">Safety</div><div>没有攻击者时，结果是否仍会造成不可接受伤害？</div><div>Agent 误删文件、错误修改代码</div><div class="label">Privacy</div><div>用户是否控制数据的收集、记忆、推断和披露？</div><div>私密对话写入长期 memory</div><div class="label">Reliability</div><div>系统是否稳定工作，失败后能否恢复？</div><div>工具失败后无限重试</div><div class="label">Robustness</div><div>输入、工具、网络变化时，安全性质是否保持？</div><div>工具返回格式变了仍然越权</div></div><div class="note">拒答率不等于安全性；稳定运行也不等于权限正确；内容审核也不等于运行时隔离。</div></div></section>
+        <div class="flow" style="margin-top:35px;margin-bottom:30px;">
+          <div class="step"><b>INPUT / CONTEXT</b><span>来源标识 · 注入检测</span></div>
+          <div class="step"><b>GOAL / PLAN</b><span>目标绑定 · 预算预检</span></div>
+          <div class="step"><b>MEMORY</b><span>隔离 · 溯源 · TTL</span></div>
+          <div class="step"><b>TOOL / ACTION</b><span>网关 · Sandbox · 参数</span></div>
+          <div class="step"><b>OUTPUT / EGRESS</b><span>脱敏 · 目的地 · 确认</span></div>
+        </div>
+        
+        <div class="table-container" style="margin: 0 0 30px 0; background: rgba(255,253,247,.75); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+          <div style="display: grid; grid-template-columns: 1.2fr 1.6fr 2.2fr 1.2fr; gap: 1px; background: var(--line);">
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">节点</div>
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">主要风险</div>
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">执行前控制</div>
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">必备证据</div>
 
-    <section class="slide" data-title="安全问题怎么描述"><div class="stage"><div class="topline"><b>THREAT MODEL</b><span>让问题能被工程和产品共同讨论</span></div><div class="eyebrow">02 · PROBLEM DIMENSIONS</div><h2>把“有风险”翻译成一条可验证链路</h2><p class="quote"><span class="teal">攻击面</span> → 技术 → 资产 → 影响 → 控制 → 证据</p><div class="grid two"><div class="card"><h3>案例：网页诱导外传</h3><ul><li>攻击面：网页 / 浏览器工具结果</li><li>技术：indirect prompt injection</li><li>资产：本地文件、工具权限、网络出口</li><li>影响：秘密读取与外发</li><li>控制：内容判断 + Policy Gateway + sandbox</li></ul></div><div class="card"><h3>上线后要看的指标</h3><ul><li>Unauthorized Action Rate</li><li>Secret Disclosure Rate</li><li>Denied-call Bypass Rate</li><li>Privilege Escalation Distance</li><li>Recovery / Rollback Success Rate</li></ul></div></div><div class="verdict"><p><strong>产品表达：</strong>我们不是要让 Agent 永远不犯错，而是要让高影响错误不会无审批地落地，并且可发现、可撤销、可复盘。</p></div></div></section>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">输入 / 上下文</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Prompt injection<br>恶意网页/Skill/工具结果</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">标记不可信来源；隔离数据与指令；风险评分</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">来源、内容摘要<br>信任级别、判定结果</div>
 
-    <section class="slide" data-title="攻击面地图"><div class="stage"><div class="topline"><b>ATTACK SURFACE</b><span>Model Security + Agent Security</span></div><div class="eyebrow">03 · MODEL / AGENT SECURITY</div><h2>风险分布在整个生命周期，不是一个 Prompt 的问题</h2><div class="grid four"><div class="card orange"><span class="big">01</span><h3>内容</h3><p>Prompt injection、恶意网页/文档</p></div><div class="card yellow"><span class="big">02</span><h3>编排</h3><p>目标错配、无限循环、重试风暴</p></div><div class="card teal"><span class="big">03</span><h3>记忆</h3><p>Memory poisoning、跨会话传播</p></div><div class="card red"><span class="big">04</span><h3>工具与运行时</h3><p>Shell、MCP、SSRF、凭证、sandbox</p></div></div><div class="flow"><div class="step"><b>MODEL</b><span>数据、权重、推理 API、模型行为</span></div><div class="step"><b>AGENT</b><span>Harness、context、memory、tools</span></div><div class="step"><b>BOUNDARY</b><span>身份、审批、网络、宿主机</span></div><div class="step"><b>RESPONSE</b><span>监控、吊销、隔离、回滚</span></div></div><p>本地类 Claw 的主要风险在 Agent Security：模型输出要经过权限、工具和运行时，才会变成真实副作用。</p></div></section>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">目标 / 计划</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">目标漂移、隐式扩权<br>无限循环</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">将用户目标绑定到允许的资源和动作；限制步骤、重试与子 Agent</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">目标、scope、计划版本<br>预算与审批理由</div>
 
-    <section class="slide" data-title="一条风险链"><div class="stage"><div class="topline"><b>WHY AGENT SECURITY</b><span>从一句话到真实副作用</span></div><div class="eyebrow">04 · ATTACK SPECTRUM</div><h2>聊天模型的错误是“回答错”；Agent 的错误可能是“已经做完”</h2><div class="map"><div class="node"><b>UNTRUSTED</b><span>网页、文档、Skill、MCP 结果</span></div><div class="node"><b>CONTEXT</b><span>内容进入 prompt / memory</span></div><div class="node"><b>PLAN</b><span>目标被改变，规划继续</span></div><div class="node"><b>TOOL</b><span>Shell、文件、网络、API</span></div><div class="node"><b>EFFECT</b><span>读写、外传、部署、持久化</span></div></div><div class="grid two"><div class="card red"><h3>攻击链不是单点问题</h3><p>OpenAI–Hugging Face 研究材料展示了高能力 Agent、弱约束 Harness、代码执行工具、数据管线、凭证和网络边界如何组合成跨边界攻击链。</p></div><div class="card teal"><h3>产品要控制的是组合能力</h3><p>不只检查“这句话危险吗”，还要检查谁在做、对什么资源、用什么参数、会产生什么副作用，以及发生后如何恢复。</p></div></div></div></section>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">记忆</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Memory poisoning<br>跨任务传播、秘密持久化</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">按用户/项目/任务隔离；记录 provenance；对写入做策略检查和 TTL</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">读写来源、命名空间<br>保留期、污染处置</div>
 
-    <section class="slide" data-title="防御原则"><div class="stage"><div class="topline"><b>DEFENSE PRINCIPLE</b><span>判断不是阻断</span></div><div class="eyebrow">05 · DEFENSE LAYERS</div><h2>模型可以说“看起来危险”，系统必须决定“能不能执行”</h2><div class="grid four"><div class="card teal"><span class="pill teal">DETECT</span><h3>判断</h3><p>模型、规则、红队和人工分析输入、计划、工具和 trace。</p></div><div class="card orange"><span class="pill orange">AUTHORIZE</span><h3>授权</h3><p>结合用户、任务、资源、时间和副作用判断是否被允许。</p></div><div class="card red"><span class="pill red">ENFORCE</span><h3>阻断</h3><p>Policy Gateway、OS、网络、容器和工具参数做确定性限制。</p></div><div class="card yellow"><span class="pill" style="color:#a27622">RECOVER</span><h3>恢复</h3><p>吊销凭证、隔离 runtime、回滚状态、保留证据。</p></div></div><div class="code">User goal
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--red); font-weight: bold;">工具 / 动作</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">越权读写、高危 Shell<br>SSRF、凭证滥用</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Capability Gateway 按身份、资源、参数和时效授权；在 sandbox 中执行</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">工具、参数<br>授权决策、实际 effect</div>
 
-    <section class="slide" data-title="Unsafe Action"><div class="stage"><div class="topline"><b>UNSAFE ACTION JUDGE</b><span>把“危险”拆成可判断的对象</span></div><div class="eyebrow">06 · BASIC DEFINITION</div><h2>安全判断必须同时回答：想做什么、被允许什么、实际发生什么</h2><div class="grid three"><div class="card teal"><span class="big">01</span><h3>Intent</h3><p>Agent 的计划和工具参数是否服务于用户任务？</p><p class="caption">“总结项目”不应该自动扩展成读密钥、访问生产库或发邮件。</p></div><div class="card orange"><span class="big">02</span><h3>Authorization</h3><p>当前用户、任务、资源和时间窗是否真的授权？</p><p class="caption">用户目标不是权限授予，读取不等于删除，项目 A 不等于项目 B。</p></div><div class="card red"><span class="big">03</span><h3>Observed Effect</h3><p>实际文件、网络、凭证、memory 和外部副作用是什么？</p><p class="caption">不能只看 Agent 的自然语言解释，要看完整参数和真实 trace。</p></div></div><div class="grid two" style="margin-top:18px"><div class="card"><h3>Unsafe Action 维度</h3><p>授权越界、意图偏离、过大能力、秘密泄露、动作完整性、外部副作用、运行时突破、持久化传播、资源滥用。</p></div><div class="card"><h3>为什么不是一个 classifier？</h3><p>单条动作可能低风险，连续动作可能形成 secret → context → tool → external API 的完整外传链；必须结合状态和历史 trace。</p></div></div></div></section>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">输出 / 外发</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">敏感数据泄露、误发<br>不可逆外部副作用</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">数据流与目的地校验；脱敏 / declassification；外发/发布前确认</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">输出摘要、接收方<br>脱敏与确认记录</div>
+          </div>
+        </div>
 
-    <section class="slide" data-title="Security Envelope"><div class="stage"><div class="topline"><b>SECURITY ENVELOPE</b><span>把能力边界写成产品契约</span></div><div class="eyebrow">08 · SECURITY ENVELOPE</div><h2>Security Envelope：Agent 在什么范围内可以行动？</h2><p class="lead">它不是一句系统提示词，而是绑定身份、任务、资源、时间和副作用的可执行边界。</p><div class="grid four"><div class="card"><span class="big">谁</span><div class="metric-title">Identity</div><p>用户、租户、Agent 以谁的身份执行</p></div><div class="card"><span class="big">做什么</span><div class="metric-title">Capability</div><p>读、写、删、发、执行哪些动作</p></div><div class="card"><span class="big">对哪里</span><div class="metric-title">Resource</div><p>路径、域名、数据库、MCP、Skill</p></div><div class="card"><span class="big">多久</span><div class="metric-title">Time / Recovery</div><p>授权时限、审批、撤销、回滚</p></div></div><div class="code">用户：整理当前项目
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+          <div>
+            <h3 style="font-size:15px; color:var(--ink); margin-bottom:8px; border-bottom:1px solid var(--orange); padding-bottom:6px; display:inline-block;">Runtime Enforcement &amp; Recovery</h3>
+            <p style="font-size:14px; color:var(--muted); line-height:1.6;">所有高影响动作进入统一网关。贯穿完整 trace，支持异常检测、隔离 workspace、吊销凭证、撤销可逆动作与事后复盘；不可逆动作默认提高审批级别，最终结果只能是 <b>Allow / Block / Approval</b>。</p>
+          </div>
+          <div>
+            <h3 style="font-size:15px; color:var(--ink); margin-bottom:8px; border-bottom:1px solid var(--teal); padding-bottom:6px; display:inline-block;">Observe before Enforce</h3>
+            <p style="font-size:14px; color:var(--muted); line-height:1.6;">先以 observe 模式记录会被阻断的动作，校准误报和体验；再对高置信策略启用 enforce。策略按风险分级上线，而非一次性全部拦截。</p>
+          </div>
+        </div>
 
-    <section class="slide" data-title="收益"><div class="stage"><div class="topline"><b>WHY INVEST</b><span>安全是产品可信度，不只是合规成本</span></div><div class="eyebrow">09 · BENEFITS</div><h2>投入安全，换来的是“敢用、能交付、出事可恢复”</h2><div class="grid two"><div class="card teal"><span class="pill teal">C-END USER</span><h3>对本地用户</h3><ul><li>本地文件、memory 和凭证有明确边界</li><li>删除、外发、部署可预览、确认或回滚</li><li>恶意网页、Skill、MCP 不会直接获得无限能力</li><li>拒绝时能解释原因，降低用户恐惧成本</li></ul></div><div class="card orange"><span class="pill orange">OEM / PLATFORM</span><h3>对 OEM 与产品方</h3><ul><li>降低数据泄露、越权和供应链事故概率</li><li>有策略、日志和版本化证据，减少售后定位成本</li><li>支持 observe → enforce 渐进式上线</li><li>可以按 SKU 提供不同安全等级，形成差异化</li></ul></div></div><div class="verdict"><p><strong>不要承诺错误收益：</strong>安全层不会自动提升普通回答正确性；它的收益是降低高影响错误的概率与损失，提高发现、止损和恢复能力。</p></div></div></section>
+      </div>
+    </section>
 
-    <section class="slide" data-title="路线图"><div class="stage"><div class="topline"><b>ROADMAP</b><span>先建底座，再让模型参与</span></div><div class="eyebrow">10 · STARTING POINT</div><h2>P0/P1/P2：先把不可逆动作管住，再优化检测覆盖</h2><div class="grid three"><div class="card red"><span class="pill red">P0 · MUST HAVE</span><h3>平台边界</h3><ul><li>完整 tool trace</li><li>用户意图与资源范围绑定</li><li>路径、域名、命令、MCP allowlist</li><li>secret 隔离、workspace sandbox</li><li>审批、timeout、kill switch、回滚</li></ul></div><div class="card teal"><span class="pill teal">P1 · PILOT</span><h3>模型判断</h3><ul><li>NSFA 审计输入、计划、工具和结果</li><li>高风险动作 shadow mode</li><li>有多模态入口再加 SingGuard</li><li>按阈值分流放行、拒绝、审批</li></ul></div><div class="card orange"><span class="pill orange">P2 · SCALE</span><h3>持续治理</h3><ul><li>Memory / RAG 写入审核</li><li>Skill / MCP 来源和行为审计</li><li>红队回归集和 OEM 策略</li><li>告警、吊销、隔离、重建和报告</li></ul></div></div><div class="flow"><div class="step"><b>OBSERVE</b><span>记录，不改变体验</span></div><div class="step"><b>CALIBRATE</b><span>测误报、漏报、延迟、资源</span></div><div class="step"><b>ENFORCE</b><span>只阻断高置信高影响动作</span></div><div class="step"><b>IMPROVE</b><span>红队与策略持续迭代</span></div></div></div></section>
+    <section class="slide" data-title="Unsafe Action">
+      <div class="stage">
+        <div class="topline"><b>UNSAFE ACTION JUDGE</b><span>把“危险”拆成可判断的对象</span></div>
+        <div class="eyebrow">06 · BASIC DEFINITION</div>
+        <h2>安全判断必须同时回答：想做什么、被允许什么、实际发生什么</h2>
+        <div class="grid three">
+          <div class="card teal"><span class="big">01</span>
+            <h3>Intent</h3>
+            <p>Agent 的计划和工具参数是否服务于用户任务？</p>
+            <p class="caption">“总结项目”不应该自动扩展成读密钥、访问生产库或发邮件。</p>
+          </div>
+          <div class="card orange"><span class="big">02</span>
+            <h3>Authorization</h3>
+            <p>当前用户、任务、资源和时间窗是否真的授权？</p>
+            <p class="caption">用户目标不是权限授予，读取不等于删除，项目 A 不等于项目 B。</p>
+          </div>
+          <div class="card red"><span class="big">03</span>
+            <h3>Observed Effect</h3>
+            <p>实际文件、网络、凭证、memory 和外部副作用是什么？</p>
+            <p class="caption">不能只看 Agent 的自然语言解释，要看完整参数和真实 trace。</p>
+          </div>
+        </div>
+        <div class="grid two" style="margin-top:18px">
+          <div class="card">
+            <h3>Unsafe Action 维度</h3>
+            <p>授权越界、意图偏离、过大能力、秘密泄露、动作完整性、外部副作用、运行时突破、持久化传播、资源滥用。</p>
+          </div>
+          <div class="card">
+            <h3>为什么不是一个 classifier？</h3>
+            <p>单条动作可能低风险，连续动作可能形成 secret → context → tool → external API 的完整外传链；必须结合状态和历史 trace。</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <section class="slide" data-title="模型选择"><div class="stage"><div class="topline"><b>MODEL OPTIONS</b><span>模型是判断层，不是权限层</span></div><div class="eyebrow">11-1 · MODELS</div><h2>根据产品形态选：内容护栏，还是动作护栏？</h2><div class="matrix"><div class="head">维度</div><div class="head">SingGuard</div><div class="head">SingGuard-NSFA</div><div class="label">主要问题</div><div>文本、图片、图文是否违反当前 policy</div><div>Agent 请求、计划、工具动作是否具有操作风险</div><div class="label">基座 / 规模</div><div>Qwen3-VL · 2B / 4B / 8B</div><div>Qwen3.5-Base · 0.8B / 2B / 4B / 9B</div><div class="label">输入 → 输出</div><div>文本/图片/图文 + policy → safe/unsafe + 类别</div><div>输入、计划、参数、结果 → 风险类别/概率/分析</div><div class="label">训练方式</div><div>SFT + 论文报告的 DAPO；运行时 policy 适配</div><div>SFT + 冻结骨干上的 MLP 分类头</div><div class="label">公开指标</div><div>8B 多任务 F1 约 .874–.903；动态策略准确率 .7415</div><div>purpose-built ≥94% F1；9B cross-source 91.29% F1</div></div><div class="note">SingGuard 适合有图片/图文内容的产品；纯文本、工具型本地 Agent 优先评估 NSFA。</div></div></section>
+    <section class="slide" data-title="Security Dimensions">
+      <div class="stage">
+        <div class="topline"><b>DIMENSIONS</b><span>不是简单的 Prompt + Classifier</span></div>
+        <div class="eyebrow">07 · AGENT SECURITY DIMENSIONS</div>
+        <h2>Agent 安全维度拆解</h2>
+        <div class="grid three" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>1. Authorization Boundary</h3>
+            <p><b>授权越界</b>：允许读却删除、访问项目 B、普通用户调用管理员 API、查询变写入。</p>
+          </div>
+          <div class="card">
+            <h3>2. Intent Alignment</h3>
+            <p><b>意图偏离</b>：动作偏离任务或擅自增加目标。适合模型或人工复核，不能单决权限。</p>
+          </div>
+          <div class="card">
+            <h3>3. Excessive Agency</h3>
+            <p><b>能力过大</b>：任意 Shell/SQL；工具权限跨越；高影响动作无需审批回滚。</p>
+          </div>
+          <div class="card">
+            <h3>4. Confidentiality</h3>
+            <p><b>机密性违规</b>：外传机密数据。无显式 declassification（解密流）应拒绝数据流。</p>
+          </div>
+          <div class="card">
+            <h3>5. Integrity</h3>
+            <p><b>完整性违规</b>：目标、参数错误，改错文件、付错款，或者把不可信命令作为参数。</p>
+          </div>
+          <div class="card">
+            <h3>6. External Side Effect</h3>
+            <p><b>外部副作用</b>：动作的单步或累积影响。删除、支付、发邮件、公开发布等通常需审批。</p>
+          </div>
+          <div class="card">
+            <h3>7. Runtime Boundary</h3>
+            <p><b>运行时突破</b>：访问 workspace 外文件、宿主机凭证。须由 OS 和 runtime 强制执行。</p>
+          </div>
+          <div class="card">
+            <h3>8. Persistence</h3>
+            <p><b>持久化传播</b>：恶意内容进入长期 memory、RAG、其他 Agent、配置或下一会话。</p>
+          </div>
+          <div class="card">
+            <h3>9. Availability</h3>
+            <p><b>资源滥用</b>：无限循环、retry storm、工具调用风暴、token耗尽、大规模云资源操作。</p>
+          </div>
+        </div>
 
-    <section class="slide" data-title="集成 pipeline"><div class="stage"><div class="topline"><b>INTEGRATION</b><span>模型判断 → 系统授权 → 安全执行</span></div><div class="eyebrow">11-2 · INTEGRATION PLAN</div><h2>推荐 pipeline：两层模型，中间必须有确定性策略</h2><div class="code">用户输入 / 外部网页 / 图片
-        ↓
-SingGuard：多模态内容与 policy 判断（有多模态需求时）
-        ↓
+        <div class="verdict" style="margin: 0;">
+          <p><b>Unsafe Action 的统一判断输入</b>：动作类型 + 目标资源 + 完整参数 + 当前状态 + 用户授权 + 历史动作 + 预计副作用</p>
+          <p class="muted" style="font-size:14px; margin-top:8px;">* 安全判定决不能只把一段自然语言回答交给一个分类器。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Security Envelope">
+      <div class="stage">
+        <div class="topline"><b>SECURITY ENVELOPE</b><span>把能力边界写成产品契约</span></div>
+        <div class="eyebrow">08 · SECURITY ENVELOPE</div>
+        <h2>Security Envelope：Agent 在什么范围内可以行动？</h2>
+        <p class="lead">它不是一句系统提示词，而是绑定身份、任务、资源、时间和副作用的可执行边界。</p>
+        <div class="grid four">
+          <div class="card"><span class="big">谁</span>
+            <div class="metric-title">Identity</div>
+            <p>谁在请求？Agent 以谁的身份执行？</p>
+          </div>
+          <div class="card"><span class="big">目标</span>
+            <div class="metric-title">Intent</div>
+            <p>当前任务的目标和禁止事项是什么？</p>
+          </div>
+          <div class="card"><span class="big">能力</span>
+            <div class="metric-title">Capability</div>
+            <p>允许读、写、删、发、执行哪些动作？</p>
+          </div>
+          <div class="card"><span class="big">资源</span>
+            <div class="metric-title">Resource</div>
+            <p>允许访问哪些路径、域名、数据库、MCP 和 Skill？</p>
+          </div>
+          <div class="card"><span class="big">时间</span>
+            <div class="metric-title">Time</div>
+            <p>授权有效多久，是否需要重新确认？</p>
+          </div>
+          <div class="card"><span class="big">影响</span>
+            <div class="metric-title">Impact</div>
+            <p>哪些动作可自动执行，哪些必须审批？</p>
+          </div>
+          <div class="card"><span class="big">恢复</span>
+            <div class="metric-title">Recovery</div>
+            <p>如何吊销、隔离、回滚和保留证据？</p>
+          </div>
+        </div>
+        <div class="code" style="font-size: 13px; text-align: left; background: #1e1e1e; padding: 12px; border-radius: 6px;">
+          <div style="color: #6a9955; margin-bottom: 8px;"># 例子：用户说“整理项目”</div>
+          <pre style="margin: 0; color: #d4d4d4;"><code><span style="color: #9cdcfe;">identity</span>: <span style="color: #ce9178;">current_user</span>
+<span style="color: #9cdcfe;">intent</span>: <span style="color: #ce9178;">summarize_and_format_project</span>
+<span style="color: #9cdcfe;">allowed_paths</span>:
+  - <span style="color: #ce9178;">current_workspace</span>
+<span style="color: #9cdcfe;">allowed_operations</span>:
+  - <span style="color: #ce9178;">read</span>
+  - <span style="color: #ce9178;">write_markdown</span>
+<span style="color: #9cdcfe;">blocked_operations</span>:
+  - <span style="color: #ce9178;">read_secrets</span>
+  - <span style="color: #ce9178;">delete</span>
+  - <span style="color: #ce9178;">external_upload</span>
+  - <span style="color: #ce9178;">install_package</span>
+<span style="color: #9cdcfe;">network</span>: <span style="color: #ce9178;">deny_by_default</span>
+<span style="color: #9cdcfe;">approval_required</span>:
+  - <span style="color: #ce9178;">delete</span>
+  - <span style="color: #ce9178;">external_send</span>
+  - <span style="color: #ce9178;">deploy</span>
+<span style="color: #9cdcfe;">expires_in</span>: <span style="color: #b5cea8;">30m</span></code></pre>
+        </div>
+        <p class="muted" style="font-size:14px; margin-top:8px;">* 模型可以帮助理解 intent、发现风险和解释决策，但 Security Envelope 必须落在确定性策略、工具网关、操作系统权限、网络和 sandbox 上。</p>
+      </div>
+    </section>
+
+    <section class="slide" data-title="收益">
+      <div class="stage">
+        <div class="topline"><b>WHY INVEST</b><span>安全是产品可信度，不只是合规成本</span></div>
+        <div class="eyebrow">09 · BENEFITS</div>
+        <h2>投入安全，换来的是“敢用、能交付、出事可恢复”</h2>
+        <div class="grid two">
+          <div class="card teal"><span class="pill teal">C-END USER</span>
+            <h3>对本地部署类 Claw 应用的 C 端用户</h3>
+            <ul>
+              <li><strong>降低恐惧成本：</strong>用户知道 Agent 不会因为一段网页内容就随意读取和外发本地文件；</li>
+              <li><strong>保护个人资产：</strong>本地文档、照片、浏览器会话、SSH key、云凭证和长期 memory 有明确边界；</li>
+              <li><strong>高影响动作可控：</strong>删除、发送、部署和改权限能够预览、确认或回滚；</li>
+              <li><strong>更少隐形数据外流：</strong>网络出口和工具参数受控；</li>
+              <li><strong>问题可解释：</strong>发生拒绝时能够说明是哪个策略、哪个资源和哪个动作触发。</li>
+            </ul>
+          </div>
+          <div class="card orange"><span class="pill orange">OEM / PLATFORM</span>
+            <h3>对部署本地应用的 OEM</h3>
+            <ul>
+              <li><strong>降低事故成本：</strong>减少数据泄露、越权、恶意 Skill/MCP 和供应链事件；</li>
+              <li><strong>提升交付可信度：</strong>安全策略、审计日志、版本化配置可以成为产品合同的一部分；</li>
+              <li><strong>减少售后定位成本：</strong>有完整 trace，可以区分模型问题、工具问题和平台权限问题；</li>
+              <li><strong>支持产品分层：</strong>普通 SKU 使用轻量规则，高级 SKU 提供本地安全模型和更强审计；</li>
+              <li><strong>形成差异化：</strong>将“可控 Agent”作为 OEM 交付能力，而不是只比较模型回答效果。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="verdict">
+          <p><strong>需要避免的错误预期：</strong></p>
+          <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li>安全层不会自动提升模型事实正确性；</li>
+            <li>模型护栏不会替代源码和依赖漏洞扫描；</li>
+            <li>安全能力会有误报、漏报和资源成本；</li>
+            <li>一次 benchmark 不能证明所有用户场景都安全。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="实施任务划分">
+      <div class="stage">
+        <div class="topline"><b>TASK CLASSIFICATION</b><span>从不同视角解构安全任务</span></div>
+        <div class="eyebrow">10 · IMPLEMENTATION</div>
+        <h2 style="margin-bottom: 20px;">实施任务的三种分类视角</h2>
+        
+        <div class="eyebrow" style="margin-top: 15px; margin-bottom: 15px;">分类 1：按生命周期和供给面</div>
+        <div class="grid four">
+          <div class="card">
+            <h3 style="font-size: 16px;">Model / Data supply chain</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>模型、权重、数据集、依赖</li>
+              <li>Skill、MCP 来源和版本</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 16px;">Agent runtime</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>Harness、Prompt/context</li>
+              <li>Memory/RAG、工具、身份</li>
+              <li>审批、Sandbox</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 16px;">External effect</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>文件、数据库、网络、消息</li>
+              <li>部署和业务 API</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 16px;">Observability / Response</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>日志、告警、吊销、隔离</li>
+              <li>回滚和复盘</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="eyebrow" style="margin-top: 30px; margin-bottom: 15px;">分类 2：按“判断/扫描”与“执行/阻断”动作类别</div>
+        <div class="matrix">
+          <div class="head">类别</div>
+          <div class="head">主要能力</div>
+          <div class="head">示例</div>
+          <div class="label">判断/扫描</div>
+          <div>模型、规则、红队、日志分析、人工复核</div>
+          <div>SingGuard、SingGuard-NSFA、静态扫描</div>
+          <div class="label">授权</div>
+          <div>用户、任务、资源、时间和副作用绑定</div>
+          <div>Policy Gateway、Capability Gateway</div>
+          <div class="label">执行/阻断</div>
+          <div>OS、网络、容器、工具和凭证限制</div>
+          <div>Sandbox、allowlist、IAM、审批</div>
+          <div class="label">恢复</div>
+          <div>吊销、隔离、回滚、重建、证据保留</div>
+          <div>Incident Response</div>
+        </div>
+
+        <div class="eyebrow" style="margin-top: 30px; margin-bottom: 15px;">分类 3：按同一切入点的不同威胁类型（以“工具调用”为例）</div>
+        <div class="grid three">
+          <div class="card">
+            <h3 style="font-size: 15px;">Prompt Injection</h3>
+            <p>工具参数是否来自不可信内容</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Authorization</h3>
+            <p>用户是否有权调用</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Data Leakage</h3>
+            <p>参数是否带出 secret</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Integrity</h3>
+            <p>目标和参数是否被篡改</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Runtime</h3>
+            <p>路径和网络是否越界</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Availability</h3>
+            <p>调用是否超过时间、次数和资源预算</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="模型判断概述">
+      <div class="stage">
+        <div class="topline"><b>MODEL-BASED JUDGMENT</b><span>使用模型同步判断多种风险类型</span></div>
+        <div class="eyebrow">11-0 · OVERVIEW</div>
+        <h2>思路 1：使用模型同步判断多种风险类型</h2>
+        <div class="grid two">
+          <div class="card">
+            <h3>模型一：SingGuard</h3>
+            <p>策略可适配的多模态 LLM 安全护栏。分为两级模型架构的一部分，主要负责多模态输入和内容的安全性。</p>
+          </div>
+          <div class="card">
+            <h3>模型二：SingGuard-NSFA</h3>
+            <p>面向 Agent 操作风险的文本护栏框架。纯文本、工具型本地 Agent 优先评估。专注于操作和执行时的意图、动作等风险判断。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="候选模型对比">
+      <div class="stage">
+        <div class="topline"><b>COMPARISON</b><span>模型能力对比</span></div>
+        <div class="eyebrow">11-1 · COMPLEMENTARY RELATIONSHIP</div>
+        <h2 style="font-size: clamp(28px, 4vw, 48px); margin-bottom: 15px;">SingGuard &amp; SingGuard-NSFA 综合对比</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-height: 55vh; overflow-y: auto; padding-right: 10px;">
+          
+          <div style="background: var(--white); border-radius: 8px; padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;">
+            <h3 style="color: var(--teal); border-bottom: 2px solid var(--teal); padding-bottom: 8px; margin: 0; font-size: 18px;">SingGuard</h3>
+            
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">1. 模型定位</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">策略可适配的多模态 LLM 安全护栏。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">2. 功能覆盖</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">判断文本、图片、图文是否违反 policy；覆盖 Prompt Injection、越狱、敏感内容与自定义业务政策违规。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">3. 适配输入输出</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">输入：文本、图片、图文、自然语言 <code>policy</code>。输出：<code>safe/unsafe</code>、匹配风险类别、策略相关分析。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">4. 基础模型和规模</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Qwen3-VL，2B/4B/8B，Apache 2.0。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">5. 训练架构</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">统一文本/多模态安全数据 SFT；论文报告用 Fast-Slow Decoupled DAPO 优化动态推理。完整训练集来源、规模和配比未完全公开。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">6. 风险体系和安全 Benchmark</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">SingGuard-Bench 约 56,340 样本。8B 报告：Image Safety F1 0.903、Text Query F1 0.874、Multimodal Safety F1 0.877、Text Response F1 0.893；Dynamic Rule（2,000 样本）policy-following accuracy 0.7415。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">7. 部署 Benchmark / 注意事项</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">多模态模型需要图像处理和更高内存/显存；公开资料没有可直接承诺的本地端到端 SLA，应按设备 SKU 测模型加载、图片分辨率、上下文长度、并发和 P95 延迟。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">8. 类 Claw 集成位置</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">用户输入/网页/图片进入 Agent 前，以及 Agent 输出/待展示内容返回用户前。可检查工具调用的文字化描述。</div>
+            </div>
+          </div>
+          
+          <div style="background: var(--white); border-radius: 8px; padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;">
+            <h3 style="color: var(--blue); border-bottom: 2px solid var(--blue); padding-bottom: 8px; margin: 0; font-size: 18px;">SingGuard-NSFA</h3>
+            
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">1. 模型定位</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">面向 Agent 操作风险的文本护栏框架。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">2. 功能覆盖</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">判断 Prompt Injection/Jailbreak、恶意代码与网络攻击、敏感信息窃取/外传、危险操作/工具滥用、资源滥用与危险动作生成。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">3. 适配输入输出</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">输入：用户请求、外部内容、计划、工具名/完整参数、工具结果、最终输出的文本化表示；建议区分 <code>untrusted_input</code> 与 <code>untrusted_output</code>。输出：风险类别、生成式风险分析或实时分类风险概率。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">4. 基础模型和规模</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Qwen3.5-Base，0.8B/2B/4B/9B，Apache 2.0。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">5. 训练架构</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">风险分析数据 SFT；冻结 SFT 后骨干，为不同风险域训练轻量 MLP 分类头；新增风险可仅训练新分类头。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">6. 风险体系和安全 Benchmark</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">7 个一级域、28 个二级风险、185 个三级变体；93,000+ purpose-built multilingual samples（133 种语言）、3,435 cross-source samples。四种规模 purpose-built 均 ≥94% F1；9B cross-source F1 91.29%；竞品对比高 6–12 个 F1 百分点。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">7. 部署 Benchmark / 注意事项</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Real-Time Classification 在 A100 条件约 45–57 ms/sample；仅作参考，<strong>不是本地设备 SLA</strong>。本地需测模型加载内存、CPU/GPU、并发、上下文长度、P50/P95 延迟和超时行为。</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">8. 类 Claw 集成位置</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">用户输入检查、Agent 计划与工具参数检查、结果与外发内容检查；之后必须进入确定性 Policy Gateway 决定执行或拒绝。</div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 20px; background: var(--offwhite); padding: 15px; border-radius: 6px; border-left: 4px solid var(--red); font-size: 14px; line-height: 1.4; color: var(--ink);">
+          <strong>共同边界：</strong>两个模型都不替代确定性授权和执行控制；均不负责真实文件权限、API 授权、网络隔离、sandbox、源码/依赖漏洞扫描或恢复系统。
+        </div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="11-2 · 集成方式">
+      <div class="stage">
+        <div class="topline"><b>INTEGRATION</b><span>模式、集成与部署考虑</span></div>
+        <div class="eyebrow">11-2 · NSFA MODES &amp; INTEGRATION</div>
+        <h2>NSFA 运行模式与运行时集成链</h2>
+        
+        <p>NSFA 应作为 <strong>Agent runtime 的风险判断器</strong> 接入，而不是替代工具网关或直接执行动作。建议由 Orchestrator 在每个可观测事件处组装结构化上下文调用 NSFA；再把风险结果与用户身份、Security Envelope 和确定性规则一起交给 Policy Gateway 决策。</p>
+
+        <div class="grid two" style="margin-bottom: 24px;">
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">生命周期数据流</h3>
+            <div class="code" style="font-size: 12px; line-height: 1.5; padding: 12px; white-space: pre;">用户 / 外部内容
+    ↓  [输入检查]
 Agent Planner
-        ↓
-NSFA：计划、工具名、完整参数、结果和外发内容
-        ↓
-Policy Gateway：用户 / 任务 / 路径 / 域名 / 权限 / 副作用
-        ↓
-人工审批：删除、外发、部署、改权限、读取凭证
-        ↓
-Sandbox：文件、进程、网络、凭证隔离
-        ↓
-执行 + Audit Trace + Recovery</div><div class="grid two" style="margin-top:18px"><div class="card teal"><h3>NSFA 两种方式</h3><p><strong>Generative Reasoning：</strong>离线审计、复杂案例，接近 LLM-as-a-Judge。<br><strong>Real-Time Classification：</strong>分类头直接输出概率，适合工具调用前的低延迟检查。</p></div><div class="card orange"><h3>模型不做的事</h3><p>不负责最终授权，不替代文件权限、API authorization、网络隔离、sandbox、源码扫描、依赖扫描和恢复系统。</p></div></div></div></section>
+    ↓  [计划检查]
+工具调用提案（tool + 完整参数）
+    ↓  [动作前检查]
+Policy Gateway（身份+scope+风险+确定性规则）
+    ├─ allow  → Sandbox / 工具执行
+    ├─ approval → 用户确认后执行
+    └─ block  → 返回可解释拒绝
+                        ↓
+             工具结果 / 外发内容 / memory 写入
+                        ↓  [结果、外发与持久化检查]
+                    Audit Trace / 恢复</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">调用契约（结构化上下文）</h3>
+            <p style="font-size: 13px; margin-bottom: 10px;">每次调用至少保留以下结构，而不是只传一段 prompt：</p>
+            <div class="code" style="font-size: 12px; line-height: 1.5; padding: 12px; white-space: pre;">&lt;untrusted_input&gt;用户请求、网页、文档等&lt;/untrusted_input&gt;
+&lt;untrusted_output&gt;Agent 计划、工具调用、结果等&lt;/untrusted_output&gt;
 
-    <section class="slide" data-title="性能预算"><div class="stage"><div class="topline"><b>PERFORMANCE BUDGET</b><span>用本地 SKU 测，不用论文 SLA</span></div><div class="eyebrow">11-2 · PERFORMANCE BENCHMARK</div><h2>会增加成本，但可以把成本放在高风险路径上</h2><div class="grid four"><div class="card"><div class="metric">延迟</div><div class="metric-title">P50 / P95</div><p>每次同步模型判断都会增加等待；NSFA 公开约 45–57 ms/sample 是 A100 条件。</p></div><div class="card"><div class="metric">质量</div><div class="metric-title">Precision / Recall</div><p>护栏不应改写正常回答；误报会增加拒绝/审批，漏报依然存在。</p></div><div class="card"><div class="metric">资源</div><div class="metric-title">RAM / VRAM / CPU</div><p>模型加载、KV cache、图片编码和并发会占用本地资源。</p></div><div class="card"><div class="metric">可用性</div><div class="metric-title">Timeout / Fallback</div><p>模型超时或 OOM 会影响体验，必须有观测模式和按动作风险设计的 fallback。</p></div></div><div class="axis"><i></i></div><div class="axis-label"><span>低成本 / 轻规则</span><span>高风险动作 / 更强检查</span></div><table class="table" style="margin-top:20px"><thead><tr><th>指标</th><th>Pilot 测什么</th><th>产品门槛</th></tr></thead><tbody><tr><td><strong>Latency</strong></td><td>无护栏 / NSFA / 双模型；按设备、并发、上下文长度测 P50/P95</td><td>普通对话不明显变慢；高影响动作可接受更高延迟</td></tr><tr><td><strong>Answer quality</strong></td><td>回答正确性、Agent 成功率、合法任务拒绝率、用户确认率</td><td>控制误报，不能以“全拒绝”换安全指标</td></tr><tr><td><strong>Resource</strong></td><td>峰值内存/显存、CPU/GPU、加载时间、功耗</td><td>不挤占主 Agent 的稳定运行预算</td></tr><tr><td><strong>Safety quality</strong></td><td>Precision、Recall、F1、漏报、bypass rate</td><td>高影响风险优先降低漏报</td></tr></tbody></table></div></section>
+task / intent / user_identity / session_id
+tool_name / full_parameters / target_resource
+security_envelope / prior_actions / observed_effect / expected_side_effect</div>
+            <p style="font-size: 13px; margin-top: 10px;">NSFA 输出风险类别/概率/生成式分析（<strong>仅作信号与审计证据</strong>）。最终授权由 Policy Gateway 做出。</p>
+          </div>
+        </div>
 
-    <section class="slide" data-title="Pilot 设计"><div class="stage"><div class="topline"><b>PILOT DESIGN</b><span>4–6 周后给管理层可复现答案</span></div><div class="eyebrow">11-2 · PILOT PLAN</div><h2>第一阶段不是上线阻断，而是回答四个问题</h2><div class="grid two"><div class="card"><span class="big">01</span><h3>真实风险是什么？</h3><p>收集用户请求、计划、工具、结果、memory 写入和外部副作用；按风险域标注。</p></div><div class="card"><span class="big">02</span><h3>模型判断准不准？</h3><p>用合法任务 + 攻击样本测 precision、recall、F1、漏报和误报。</p></div><div class="card"><span class="big">03</span><h3>本地代价多大？</h3><p>NSFA 0.8B/2B/4B、SingGuard 按需求，在不同内存 SKU 测延迟、峰值资源和功耗。</p></div><div class="card"><span class="big">04</span><h3>哪些动作值得阻断？</h3><p>定义高影响动作：读凭证、外传、删除、部署、改权限默认拒绝或人工审批。</p></div></div><div class="flow"><div class="step"><b>WEEK 1</b><span>基线与 trace</span></div><div class="step"><b>WEEK 2–3</b><span>离线审计与样本</span></div><div class="step"><b>WEEK 4–5</b><span>Shadow mode</span></div><div class="step"><b>WEEK 6</b><span>有限 enforce 决策</span></div></div><div class="verdict"><p><strong>上线门槛：</strong>不是“模型安全分数高”，而是“高影响动作的未授权比例下降，合法任务体验和本地资源仍在预算内”。</p></div></div></section>
+        <h3 style="font-size: 18px; margin-bottom: 12px;">建议接入的五个阶段</h3>
+        <div style="overflow-x: auto; margin-bottom: 24px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--line); color: var(--ink);">
+                <th style="padding: 8px 4px; width: 18%;">阶段</th>
+                <th style="padding: 8px 4px; width: 28%;">应送入 NSFA 的事件</th>
+                <th style="padding: 8px 4px; width: 24%;">重点判断</th>
+                <th style="padding: 8px 4px; width: 30%;">结果如何使用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">1. 输入与上下文进入</td>
+                <td style="padding: 8px 4px; color: var(--muted);">用户请求、网页/文档/Skill/MCP 工具结果、检索结果</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Prompt Injection、Jailbreak、恶意代码/网络攻击指令、秘密诱导</td>
+                <td style="padding: 8px 4px; color: var(--muted);">标记风险与 provenance；高风险不能直变 Agent 指令，可降权/隔离/重述。</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">2. 计划生成后</td>
+                <td style="padding: 8px 4px; color: var(--muted);">用户目标、当前 Security Envelope、Agent plan、拟调用工具集合</td>
+                <td style="padding: 8px 4px; color: var(--muted);">意图偏离、隐式扩权、过大自治、跨任务目标传播</td>
+                <td style="padding: 8px 4px; color: var(--muted);">计划不通过时要求缩小 scope、移除高风险步骤或转人工确认。</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">3. 每次工具调用前</td>
+                <td style="padding: 8px 4px; color: var(--muted);">工具名、完整参数、目标路径/账户、当前身份、历史动作、预计副作用</td>
+                <td style="padding: 8px 4px; color: var(--muted);">工具滥用、敏感数据外传、危险操作、SSRF、资源滥用</td>
+                <td style="padding: 8px 4px; color: var(--muted);">将风险送入 Policy Gateway，结合 allowlist/权限产出 <strong>allow / approval / block</strong>。</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">4. 工具结果写入后</td>
+                <td style="padding: 8px 4px; color: var(--muted);">工具 stdout/stderr、文件实际 effect、memory 写入候选、重试链</td>
+                <td style="padding: 8px 4px; color: var(--muted);">工具结果注入、秘密回流 context、memory poisoning、异常重试</td>
+                <td style="padding: 8px 4px; color: var(--muted);">结果按可信度标记；阻止高风险写入长期 memory；触发终止/收紧 scope。</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">5. 最终输出与外发前</td>
+                <td style="padding: 8px 4px; color: var(--muted);">面向用户的回答、邮件/消息/API payload、附件与接收方</td>
+                <td style="padding: 8px 4px; color: var(--muted);">敏感信息泄露、危险动作说明被再次执行、错误目的地、不可逆外发</td>
+                <td style="padding: 8px 4px; color: var(--muted);">输出脱敏或改写；外部发送等高影响动作仍由 Policy Gateway/用户决定。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-    <section class="slide" data-title="平台策略"><div class="stage"><div class="topline"><b>PLATFORM WORK</b><span>模型之外，必须把边界做实</span></div><div class="eyebrow">12 · PLATFORM STRATEGY</div><h2>四类平台建设，让模型判断真正有地方落地</h2><div class="grid two"><div class="card red"><h3>Shell / Workspace</h3><p>命令和参数 allowlist；workspace 外文件默认拒绝；限制删除、安装、权限修改、子进程和网络上传；隔离宿主机凭证。</p></div><div class="card teal"><h3>MCP / Skill 供应链</h3><p>记录来源、版本、hash、权限和依赖；安装前扫描；工具结果视为不可信 observation；高权限 Skill 可审批、签名和撤销。</p></div><div class="card orange"><h3>Memory / RAG</h3><p>区分用户明确保存和 Agent 自动写入；写入前检查恶意指令和 secret；按用户/任务隔离；保留来源、版本和回滚。</p></div><div class="card yellow"><h3>Identity / Recovery</h3><p>短期最小权限凭证；secret 不进入不必要上下文；异常时 kill Agent、吊销 token、隔离 workspace、重建 runtime。</p></div></div><div class="note">思路 1（模型护栏）负责“看起来危险”；思路 2（平台控制）负责“是否授权、能不能做到、发生后如何止损”。两者不能互相替代。</div></div></section>
+        <div class="grid two">
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">两种模式如何分工</h3>
+            <ul style="font-size: 13px; color: var(--muted); padding-left: 20px; line-height: 1.5; margin: 0;">
+              <li style="margin-bottom: 8px;"><strong>Real-Time Classification</strong>：放在第 1、3、4、5 阶段的在线路径，适合高频、时延敏感的输入、工具调用、结果与外发检查；应设置按动作等级的超时预算。</li>
+              <li><strong>Generative Reasoning</strong>：用于第 2 阶段的复杂计划复核，以及离线 trace 审计、事件调查、人工复核和策略调优；不应成为所有低风险工具调用的同步前置依赖。</li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">失效、降级与可恢复性</h3>
+            <ul style="font-size: 13px; color: var(--muted); padding-left: 20px; line-height: 1.5; margin: 0;">
+              <li style="margin-bottom: 8px;"><strong>不得默认放行</strong>：NSFA 超时、崩溃时，不得默认扩大权限或放行高影响动作；继续执行由已有策略决定。</li>
+              <li style="margin-bottom: 8px;"><strong>区分降级策略</strong>：低影响、只读且被 allowlist 覆盖动作可记录风险并继续；读取 secret、外部上传、删除等保持 block/approval。</li>
+              <li><strong>Trace 闭环</strong>：所有请求、决策与降级原因写入 trace，支持复盘回滚。</li>
+            </ul>
+          </div>
+        </div>
 
-    <section class="slide" data-title="最终建议"><div class="stage hero"><div class="topline"><b>FINAL RECOMMENDATION</b><span>把研究转成可验证的产品决策</span></div><div class="eyebrow">00 · FINAL DECISION</div><h2>建议做，但先做“可控 Agent”而不是“更多模型”</h2><div class="grid three"><div class="card red"><span class="pill red">必须</span><h3>平台安全底座</h3><p>权限、sandbox、网络、凭证、trace、审批、恢复。</p></div><div class="card teal"><span class="pill teal">优先试点</span><h3>NSFA 0.8B / 2B</h3><p>先离线审计，再 shadow mode，再高影响动作有限阻断。</p></div><div class="card orange"><span class="pill orange">按需启用</span><h3>SingGuard</h3><p>产品有图片、截图、网页图文时，补充多模态内容安全。</p></div></div><div class="verdict"><p><strong>请批准：</strong>4–6 周 pilot，并以真实本地 SKU benchmark 作为是否产品化的依据。若应用纯文本且资源受限，不要为了“两个模型都上”而增加同步路径成本。</p></div><p class="lead">最终目标：用户敢用，OEM 敢交付，产品出事能解释、能止损、能恢复。</p></div><div class="source">资料底稿：Survey Slides.md · LLM 与 Agent Security 总览 · Task Decomp · SingGuard / NSFA / AgentAegis 调研</div></section>
+        <div class="verdict" style="margin-top: 24px;">
+          <p><strong>部署考虑：</strong>0.8B/2B 可作为本地 pilot 候选规模。需在实际设备 SKU 上测模型加载内存、CPU/GPU、并发、上下文长度、P50/P95 延迟和超时行为。A100 的 45–57 ms/sample 只能作为参考，<strong>不是本地设备 SLA</strong>。</p>
+        </div>
+      </div>
+    </section>
+    <section class="slide" data-title="试点计划">
+      <div class="stage">
+        <div class="topline"><b>PILOT PLAN</b><span>4 个阶段及验收指标</span></div>
+        <div class="eyebrow">11-3 · PILOT PLAN &amp; METRICS</div>
+        <h2>试点计划与验收指标</h2>
+        <div class="grid four" style="margin-bottom: 20px;">
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">阶段 0：建立基线（1 周）</h3>
+            <p style="font-size: 13px; line-height: 1.4;">记录现有 Agent 的用户请求、计划、工具调用、结果、memory 写入和外部副作用等 trace；统计普通任务的 P50/P95 延迟、回答成功率、工具成功率、资源等；标注高影响动作和敏感资源。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">阶段 1：离线审计与数据集（1-2 周）</h3>
+            <p style="font-size: 13px; line-height: 1.4;">用 NSFA Generative Reasoning 审计历史 trace；构造合法任务、Prompt Injection、越权读写、secret 外传、MCP/Skill 污染、资源滥用样本；对每条样本记录人工标签和预期处理。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">阶段 2：Shadow Mode（1-2 周）</h3>
+            <p style="font-size: 13px; line-height: 1.4;">NSFA 在线分类接在工具调用前，但不改变执行结果；SingGuard 接在多模态出入口；记录模型判断、规则判断与人工标签差异；测模型大小与设备 SKU 的内存、速度和准确率曲线。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">阶段 3：有限 Enforce（1 周）</h3>
+            <p style="font-size: 13px; line-height: 1.4;">只阻断高置信度、高影响、不可逆的动作（如读凭证、外传、删除、部署等默认拒绝或审批）；明确模型超时、模型崩溃和 Policy Gateway 不可用时的 fallback。</p>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>试点验收指标</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>安全</td>
+              <td>Secret Disclosure Rate、Unauthorized Action Rate、Denied-call Bypass Rate</td>
+            </tr>
+            <tr>
+              <td>判断质量</td>
+              <td>Precision、Recall、F1、误报率、漏报率、按风险域拆分的混淆矩阵</td>
+            </tr>
+            <tr>
+              <td>体验</td>
+              <td>Agent 成功率、合法任务拒绝率、用户确认率、回答正确性变化</td>
+            </tr>
+            <tr>
+              <td>性能</td>
+              <td>额外 P50/P95 延迟、模型加载时间、峰值内存/显存、CPU/GPU、功耗</td>
+            </tr>
+            <tr>
+              <td>稳定性</td>
+              <td>timeout、fallback、重试风暴、模型崩溃、断网和低资源场景</td>
+            </tr>
+            <tr>
+              <td>恢复</td>
+              <td>吊销凭证、隔离运行时、回滚文件/状态、保留证据的成功率</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="slide" data-title="平台策略">
+      <div class="stage">
+        <div class="topline"><b>PLATFORM WORK</b><span>模型之外，必须把边界做实</span></div>
+        <div class="eyebrow">12 · PLATFORM STRATEGY</div>
+        <h2>执行层平台控制待实施事项（按控制类型 × 阶段分类）</h2>
+        <div class="grid two" style="margin-bottom: 20px;">
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">需先纠正的三个假设</h3>
+            <ul style="font-size: 12.5px; padding-left: 16px; margin: 0; line-height: 1.5; color: #444;">
+              <li><b>Trajectory ≠ 完整审计</b>：不能证明覆盖网络/审批/内存/文件，无防篡改留存。</li>
+              <li><b>Workspace/Sandbox ≠ 隔离闭环</b>：容器内仍可能外发数据或产生副作用。</li>
+              <li><b>Shell Guard ≠ 命令安全闭环</b>：缺乏危险命令、混淆、网络外发的统一 policy 引擎。</li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">分类维度说明</h3>
+            <ul style="font-size: 12.5px; padding-left: 16px; margin: 0; line-height: 1.5; color: #444;">
+              <li><b>类型</b>：Observe(记录), Guardrail(脱敏/门控), Refuse(阻断), Execution(底座)</li>
+              <li><b>阶段</b>：inbound, prompt, pre_tool, post_tool, memory_write, outbound, cross</li>
+              <li><b>优先级</b>：P0(无底座不开放自动执行), P1(收窄风险), P2(规模化治理与可验证)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid four" style="margin-bottom: 16px;">
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill red" style="font-size: 10px; padding: 2px 6px;">P0</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Execution</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">1. 策略决策引擎与骨架</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">统一 SecurityAction schema 与决策引擎；Policy 优先级与作用域规则；Fail-closed 默认策略；集成控制面。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill red" style="font-size: 10px; padding: 2px 6px;">P0</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Refuse</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">pre_tool</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">2. 危险动作执行护栏</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Plugin自我防护；拦截危险命令、破坏性写入、网络出口/SSRF；限制资源滥用；证明阻断无副作用。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill red" style="font-size: 10px; padding: 2px 6px;">P0</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Guardrail</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">pre/outbound</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">3. 审批与最终输出边界</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">接入审批并持久化关联；响应/artifact 统一脱敏(sanitizer)；凭证/敏感信息命中默认 enforce。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill orange" style="font-size: 10px; padding: 2px 6px;">P0/P2</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Execution</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">4. 审计事件与留存治理</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">可验证防篡改的证据；事件关联 policy decision；受限 ACL 与不可变存储，默认不留原文/密钥。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Observe/Guard</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">in/prompt/post</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">5. 不可信输入与结果</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">把外部内容与工具结果当独立不可信边界；风险检测；上下文附加；结果注入检测并在进 context 前处理。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Observe/Guard</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">memory_write</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">6. Memory 写入治理</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">防止低可信内容变未来高可信指令；来源/污染检查(先 observe 再 enforce)；缩短 PII 映射 TTL。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1/P2</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Obs/Guard/Ref</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">7. 观测与选择性 Enforce</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">真实数据校准后逐条收紧；高置信度规则从 observe 升为 enforce；单条规则可独立回滚。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Execution</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">8. 安全测试与验证矩阵</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">证明阻断生效、无副作用；对抗性测试夹具（混淆、投毒等）；覆盖各边界的负向集成测试。</p>
+          </div>
+        </div>
+        <div class="note" style="margin-top: 10px; padding: 12px;"><b>与思路 1（模型护栏）的分工</b>：模型只产出风险信号，本节的策略网关与审计闭环是唯一能把信号转成 <code>allow / observe / redact / require_approval / block</code> 并留下证据的执行层。两者不可互相替代。</div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="最终建议">
+      <div class="stage hero">
+        <div class="topline"><b>FINAL RECOMMENDATION</b><span>把研究转成可验证的产品决策</span></div>
+        <div class="eyebrow">00 · FINAL DECISION</div>
+        <h2>建议做，但先做“可控 Agent”而不是“更多模型”</h2>
+        <div class="grid three">
+          <div class="card red"><span class="pill red">必须</span>
+            <h3>平台安全底座</h3>
+            <p>权限、sandbox、网络、凭证、trace、审批、恢复。</p>
+          </div>
+          <div class="card teal"><span class="pill teal">优先试点</span>
+            <h3>NSFA 0.8B / 2B</h3>
+            <p>先离线审计，再 shadow mode，再高影响动作有限阻断。</p>
+          </div>
+          <div class="card orange"><span class="pill orange">按需启用</span>
+            <h3>SingGuard</h3>
+            <p>产品有图片、截图、网页图文时，补充多模态内容安全。</p>
+          </div>
+        </div>
+        <div class="verdict">
+          <p><strong>请批准：</strong>4–6 周 pilot，并以真实本地 SKU benchmark 作为是否产品化的依据。若应用纯文本且资源受限，不要为了“两个模型都上”而增加同步路径成本。</p>
+        </div>
+        <p class="lead">最终目标：用户敢用，OEM 敢交付，产品出事能解释、能止损、能恢复。</p>
+      </div>
+      <div class="source">资料底稿：Survey Slides.md · LLM 与 Agent Security 总览 · Task Decomp · SingGuard / NSFA / AgentAegis 调研
+      </div>
+    </section>
   </main>
   <nav class="chapter-nav" aria-label="章节导航">
     <a href="#section-01">01 基本概念</a>
@@ -111,14 +1008,14 @@ Sandbox：文件、进程、网络、凭证隔离
         <div class="note"><strong>C/I/A 是 Security 的结果维度。</strong>Safety、Privacy、Reliability、Robustness 是相邻但不同的产品质量/风险维度；它们会交叉，但拒答率不等于安全性，安全性不等于回答正确性，可靠运行不等于权限正确，内容审核不等于运行时隔离。</div>
       `);
 
-      const lifecycle = slides[4].querySelector('.stage');
-      lifecycle.insertAdjacentHTML('beforeend', `
-        <div class="grid two" style="margin-top:18px">
-          <div class="card orange"><span class="pill orange">MODEL SECURITY · 生命周期</span><h3>模型本身与供应链</h3><ul><li>数据获取、清洗、标注、授权和隐私</li><li>预训练、微调、对齐和评测配置</li><li>权重、checkpoint、量化文件和依赖供应链</li><li>推理 API、认证、限流、日志和多租户隔离</li><li>越狱、抽取、Prompt Injection、拒答绕过</li></ul></div>
-          <div class="card teal"><span class="pill teal">AGENT SECURITY · 运行时</span><h3>模型外新增的行动能力</h3><ul><li>Harness / Orchestrator 与任务目标</li><li>Prompt / context 组装与规划循环</li><li>Memory / RAG / 状态持久化</li><li>Tool / API / MCP / connectors</li><li>身份、权限、审批、sandbox、监控和响应</li></ul></div>
-        </div>
-        <div class="note"><strong>两套划分同时成立：</strong>上方“内容 → 编排 → 记忆 → 工具与运行时”按 Agent 运行时攻击面划分；“Model → Agent → Boundary → Response”按系统控制层划分。前者帮助找攻击入口，后者帮助分配控制责任。</div>
-      `);
+      // const lifecycle = slides[4].querySelector('.stage');
+      // lifecycle.insertAdjacentHTML('beforeend', `
+      //   <div class="grid two" style="margin-top:18px">
+      //     <div class="card orange"><span class="pill orange">MODEL SECURITY · 生命周期</span><h3>模型本身与供应链</h3><ul><li>数据获取、清洗、标注、授权和隐私</li><li>预训练、微调、对齐和评测配置</li><li>权重、checkpoint、量化文件和依赖供应链</li><li>推理 API、认证、限流、日志和多租户隔离</li><li>越狱、抽取、Prompt Injection、拒答绕过</li></ul></div>
+      //     <div class="card teal"><span class="pill teal">AGENT SECURITY · 运行时</span><h3>模型外新增的行动能力</h3><ul><li>Harness / Orchestrator 与任务目标</li><li>Prompt / context 组装与规划循环</li><li>Memory / RAG / 状态持久化</li><li>Tool / API / MCP / connectors</li><li>身份、权限、审批、sandbox、监控和响应</li></ul></div>
+      //   </div>
+      //   <div class="note"><strong>两套划分同时成立：</strong>上方“内容 → 编排 → 记忆 → 工具与运行时”按 Agent 运行时攻击面划分；“Model → Agent → Boundary → Response”按系统控制层划分。前者帮助找攻击入口，后者帮助分配控制责任。</div>
+      // `);
 
       const attackSpectrum = slides[5].querySelector('.stage');
       attackSpectrum.insertAdjacentHTML('beforeend', `

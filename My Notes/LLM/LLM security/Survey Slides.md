@@ -183,60 +183,46 @@ OpenAI–Hugging Face 事件的研究材料也说明：高能力 Agent、弱约�
 
 ---
 
-### 05 防御体系分层：判断/扫描 vs 执行/阻断
+### 05 Agent 全生命周期安全架构：把安全决策放到副作用发生之前
 
-安全能力至少分为四类：
-
-1. **Detection / Evaluation**：发现风险、判断意图偏离、分析 trace；
-2. **Authorization**：结合用户、任务、资源和时间判断是否授权；
-3. **Prevention / Enforcement**：在动作执行前用确定性策略阻断；
-4. **Recovery / Response**：吊销凭证、隔离运行时、回滚状态、保留证据。
-
-推荐架构：
+目标不是让模型独自判断“安全/不安全”，而是在 Agent 从不可信内容到真实副作用的每一步，将**用户目标、身份权限、资源范围和可恢复性**绑定为可执行约束。模型或规则负责发现风险；运行时策略负责决定是否真的能做。
 
 ```text
-User goal
-   ↓
-Intent / scope binding
-   ↓
-Agent planner（不可信规划器）
-   ↓
-Detection / Evaluation（规则、模型、人工）
-   ↓
-Capability gateway / Policy engine（确定性授权）
-   ↓
-Tool / API / Filesystem / Network adapter
-   ↓
-Sandbox / Runtime isolation
-   ↓
-External effect
-
-All stages → Audit / Trace / Detection / Recovery
+不可信输入 / 上下文
+        ↓  来源标识、注入检测、指令与数据分离
+目标与计划
+        ↓  Intent / Scope Binding、计划预算、敏感动作预检
+短期状态与长期记忆
+        ↓  写入隔离、provenance、污染检测、租户/任务边界
+工具与动作执行
+        ↓  Capability Gateway、参数校验、sandbox、网络与凭证约束
+输出与数据外发
+        ↓  数据流检查、脱敏 / declassification、发送前确认
+        ↓
+Audit Trace → 异常检测 → 隔离 / 吊销 / 回滚 / 复盘
 ```
 
-### 判断/扫描层能做什么？
+#### 每个生命周期节点的控制目标
 
-- 识别 Prompt Injection、危险内容和敏感信息；
-- 判断计划与用户意图是否偏离；
-- 对工具名称、完整参数、工具结果和最终输出评分；
-- 对历史 Agent trace 做离线审计和风险聚类；
-- 为人工审批提供风险解释和证据。
+| 节点       | 主要风险                             | 执行前控制                                           | 必须留下的证据               |
+| -------- | -------------------------------- | ----------------------------------------------- | --------------------- |
+| 输入 / 上下文 | Prompt injection、恶意网页/Skill/工具结果 | 标记不可信来源；隔离数据与指令；风险评分                            | 来源、内容摘要、信任级别、判定结果     |
+| 目标 / 计划  | 目标漂移、隐式扩权、无限循环                   | 将用户目标绑定到允许的资源和动作；限制步骤、重试与子 Agent                | 目标、scope、计划版本、预算与审批理由 |
+| 记忆       | Memory poisoning、跨任务传播、秘密持久化     | 按用户/项目/任务隔离；记录 provenance；对写入做策略检查和 TTL         | 读写来源、命名空间、保留期、污染处置    |
+| 工具 / 动作  | 越权读写、高危 Shell、SSRF、凭证滥用          | Capability Gateway 按身份、资源、参数和时效授权；在 sandbox 中执行 | 工具、参数、授权决策、实际 effect  |
+| 输出 / 外发  | 敏感数据泄露、误发、不可逆外部副作用               | 数据流与目的地校验；脱敏；外发/发布前确认                           | 输出摘要、接收方、脱敏与确认记录      |
 
-### 判断/扫描层不能单独做什么？
+#### 横向控制面：运行时必须能否决模型
 
-- 不能替代文件系统权限、API authorization、IAM；
-- 不能保证容器不会逃逸；
-- 不能保证网络不会访问内网或 cloud metadata；
-- 不能替代源码、依赖、配置和渗透测试；
-- 不能把“模型判断 safe”变成“允许执行任意工具”。
+1. **Identity & Capability Policy**：使用最小权限、短时能力令牌和资源级 scope；“用户提出目标”不等于“Agent 获得所有实现手段”。
+2. **Runtime Enforcement**：所有高影响动作进入统一网关，由确定性策略、风险判断和审批状态共同决策；最终结果只能是 **Allow / Block / Approval**，不得由模型文本直接触发副作用。
+3. **Audit & Recovery**：贯穿完整 trace，支持停止任务、隔离 workspace、吊销凭证、撤销可逆动作与事后复盘；不可逆动作默认提高审批级别。
 
-### 执行/阻断层必须做什么？
+#### 上线方式：先 Observe，再 Enforce
 
-- 工具 allowlist 和参数约束；
-- 路径、域名、端口、命令和资源预算限制；
-- 读取、删除、部署、外发等高影响动作审批；
-- workspace 与宿主机、凭证、网络的隔离；
-- timeout、retry budget、kill switch、吊销和回滚。
+先以 observe 模式记录会被阻断或要求审批的动作，校准误报、漏报和合法任务体验；再对高置信、可解释、影响高的策略启用 enforce。策略按风险分级上线，而非一次性把所有动作改为拦截。
+
+*注：上述“贴近运行时与工具执行的检查、拦截、审批”借鉴 AgentAegis 所代表的设计思路。AgentAegis 仅为架构参考，不代表官方集成、正式依赖或任何产品合作关系。*
 
 ---
 
@@ -468,11 +454,11 @@ expires_in: 30m
 
 #### P0：没有这些底座，不建议上线自动执行
 
-- 完整记录用户意图、Agent 计划、工具调用、参数、结果和副作用；
-- workspace 与宿主机敏感文件隔离；
-- Shell、文件、网络、MCP 工具的 allowlist 和参数约束；
-- secret 不进入不必要的模型上下文；
-- 高影响动作审批、timeout、kill switch 和恢复路径。
+- [x] 完整记录用户意图、Agent 计划、工具调用、参数、结果和副作用；
+- [x] workspace 与宿主机敏感文件隔离；
+- [ ] Shell、文件、网络、MCP 工具的 allowlist 和参数约束；
+- [ ] secret 不进入不必要的模型上下文；
+- [ ] 高影响动作审批、timeout、kill switch 和恢复路径。
 
 #### P1：让平台能发现和判断风险
 
@@ -493,7 +479,9 @@ expires_in: 30m
 
 ### 11 思路 1：使用模型同步判断多种风险类型
 
-#### 11-1 模型一：SingGuard
+#### 11-1 候选模型
+
+##### 模型一：SingGuard
 
 **定位**：策略可适配的多模态 LLM 安全护栏。
 
@@ -534,7 +522,7 @@ Agent 输出 / 待展示内容 → SingGuard → 用户
 
 **部署考虑**：多模态模型需要图像处理和更高内存/显存；当前公开资料不提供可直接承诺的本地端到端 SLA。应按设备 SKU 测量模型加载、图片分辨率、上下文长度、并发和 P95 延迟。
 
-#### 11-1 模型二：SingGuard-NSFA
+##### 模型二：SingGuard-NSFA
 
 **定位**：面向 Agent 操作风险的文本护栏框架。
 
@@ -577,28 +565,22 @@ Agent 输出 / 待展示内容 → SingGuard → 用户
 
 purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inclusionAI/NSFA_Benchmarks) 发布；cross-source 的 5 个底层数据集名称和完整开放范围需要以实际资料为准。
 
-**两种集成模式**：
+#### 两个模型的同页对照
 
-- Generative Reasoning：离线审计、复杂案例、事件调查、人工复核，接近 LLM-as-a-Judge；
-- Real-Time Classification：冻结骨干上的分类头直接输出风险概率，适合在线工具调用前检查，不需要先生成解释再解析。
+| 字段 | SingGuard | SingGuard-NSFA |
+|---|---|---|
+| **模型定位** | 策略可适配的多模态 LLM 安全护栏。 | 面向 Agent 操作风险的文本护栏框架。 |
+| **功能覆盖** | 判断文本、图片、图文是否违反 policy；覆盖 Prompt Injection、越狱、敏感内容与自定义业务政策违规。 | 判断 Prompt Injection/Jailbreak、恶意代码与网络攻击、敏感信息窃取/外传、危险操作/工具滥用、资源滥用与危险动作生成。 |
+| **适配输入输出** | 输入：文本、图片、图文、自然语言 `policy`。输出：`safe/unsafe`、匹配风险类别、策略相关分析。 | 输入：用户请求、外部内容、计划、工具名/完整参数、工具结果、最终输出的文本化表示；建议区分 `untrusted_input` 与 `untrusted_output`。输出：风险类别、生成式风险分析或实时分类风险概率。 |
+| **基础模型和规模** | Qwen3-VL，2B/4B/8B，Apache 2.0。 | Qwen3.5-Base，0.8B/2B/4B/9B，Apache 2.0。 |
+| **训练架构** | 统一文本/多模态安全数据 SFT；论文报告用 Fast-Slow Decoupled DAPO 优化动态推理。完整训练集来源、规模和配比未完全公开。 | 风险分析数据 SFT；冻结 SFT 后骨干，为不同风险域训练轻量 MLP 分类头；新增风险可仅训练新分类头。 |
+| **风险体系和安全 Benchmark** | SingGuard-Bench 约 56,340 样本。8B 报告：Image Safety F1 0.903、Text Query F1 0.874、Multimodal Safety F1 0.877、Text Response F1 0.893；Dynamic Rule（2,000 样本）policy-following accuracy 0.7415。 | 7 个一级域、28 个二级风险、185 个三级变体；93,000+ purpose-built multilingual samples（133 种语言）、3,435 cross-source samples。四种规模 purpose-built 均 ≥94% F1；9B cross-source F1 91.29%；竞品对比高 6–12 个 F1 百分点。 |
+| **部署 Benchmark / 注意事项** | 多模态模型需要图像处理和更高内存/显存；公开资料没有可直接承诺的本地端到端 SLA，应按设备 SKU 测模型加载、图片分辨率、上下文长度、并发和 P95 延迟。 | Real-Time Classification 在 A100 条件约 45–57 ms/sample；仅作参考，**不是本地设备 SLA**。本地需测模型加载内存、CPU/GPU、并发、上下文长度、P50/P95 延迟和超时行为。 |
+| **类 Claw 集成位置** | 用户输入/网页/图片进入 Agent 前，以及 Agent 输出/待展示内容返回用户前。可检查工具调用的文字化描述。 | 用户输入检查、Agent 计划与工具参数检查、结果与外发内容检查；之后必须进入确定性 Policy Gateway 决定执行或拒绝。 |
 
-**类 Claw 集成位置**：
+**共同边界**：两个模型都不替代确定性授权和执行控制；均不负责真实文件权限、API 授权、网络隔离、sandbox、源码/依赖漏洞扫描或恢复系统。
 
-```text
-用户输入 → NSFA 输入检查 → Agent Planner
-                         ↓
-              NSFA 检查计划与工具参数
-                         ↓
-              确定性 Policy Gateway
-                         ↓
-                    执行或拒绝
-                         ↓
-              NSFA 检查结果和外发内容
-```
-
-**部署考虑**：0.8B/2B 是本地 pilot 的优先候选；需测实际模型加载内存、CPU/GPU、并发、上下文长度、P50/P95 延迟和超时行为。A100 的 45–57 ms 只能作为参考，不是本地设备 SLA。
-
-#### 11-1 两个模型的互补关系
+#####  两个模型的互补关系
 
 | 问题 | SingGuard | SingGuard-NSFA |
 |---|---|---|
@@ -610,35 +592,93 @@ purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inc
 | 多模态输入 | 支持 | 主要文本 |
 | 在线低延迟分类 | 需看具体实现和本地部署 | 分类头路径适合 |
 
-### 11-2 试点计划
+#### 11-2 集成方式
 
-#### 阶段 0：建立基线（1 周）
+NSFA 应作为 **Agent runtime 的风险判断器** 接入，而不是替代工具网关或直接执行动作。对类 Claw 个人助手，建议由 Orchestrator 在每个可观测事件处组装结构化上下文，调用 NSFA；再把风险结果与用户身份、Security Envelope 和确定性规则一起交给 Policy Gateway 决策。
+
+```text
+用户 / 外部内容
+    ↓  [输入检查]
+Agent Planner
+    ↓  [计划检查]
+工具调用提案（tool + 完整参数）
+    ↓  [动作前检查]
+Policy Gateway（身份 + scope + 风险 + 确定性规则）
+    ├─ allow  → Sandbox / 工具执行
+    ├─ approval → 用户确认后执行
+    └─ block  → 返回可解释拒绝
+                        ↓
+             工具结果 / 外发内容 / memory 写入
+                        ↓  [结果、外发与持久化检查]
+                    Audit Trace / 恢复
+```
+
+#### 建议接入的五个阶段
+
+| 阶段 | 应送入 NSFA 的事件 | 重点判断 | 结果如何使用 |
+|---|---|---|---|
+| 1. 输入与上下文进入 | 用户请求、网页/文档/Skill/MCP 工具结果、检索结果 | Prompt Injection、Jailbreak、恶意代码/网络攻击指令、秘密诱导 | 给内容标记风险与 provenance；高风险内容不能直接变成 Agent 指令，可降权、隔离或要求重述任务。 |
+| 2. 计划生成后 | 用户目标、当前 Security Envelope、Agent plan、拟调用工具集合 | 意图偏离、隐式扩权、过大自治、跨任务目标传播 | 计划不通过时要求 Planner 缩小 scope、移除高风险步骤或转人工确认；不要直接让模型结论放行。 |
+| 3. 每次工具调用前 | 工具名、完整参数、目标路径/域名/账户、当前身份、历史动作、预计副作用 | 工具滥用、敏感数据外传、危险操作、SSRF/网络攻击、资源滥用 | 将 NSFA 风险概率和类别送入 Policy Gateway；由 Gateway 结合 allowlist、权限、参数 schema 和审批状态产出 **allow / approval / block**。 |
+| 4. 工具结果与状态写入后 | 工具 stdout/stderr、文件/网络实际 effect、memory/RAG 写入候选、重试链 | 工具结果注入、秘密回流 context、memory poisoning、异常重试/累积副作用 | 结果按可信度标记；阻止高风险内容写入长期 memory；触发终止任务、吊销能力或收紧后续 scope。 |
+| 5. 最终输出与外发前 | 面向用户的回答、邮件/消息/API payload、附件与接收方 | 敏感信息泄露、危险动作说明被再次执行、错误目的地、不可逆外发 | 输出脱敏或改写；外部发送、部署、删除、改权限等高影响动作仍由 Policy Gateway/用户审批决定。 |
+
+#### 调用契约：把文本判断绑定到真实动作
+
+每次调用至少保留以下结构，而不是只传一段 prompt：
+
+```text
+<untrusted_input>用户请求、网页、文档或工具结果</untrusted_input>
+<untrusted_output>Agent 计划、工具调用、工具结果或最终输出</untrusted_output>
+
+task / intent / user_identity / session_id
+tool_name / full_parameters / target_resource
+security_envelope / prior_actions / observed_effect / expected_side_effect
+```
+
+NSFA 输出应包括风险类别、风险概率或生成式分析；这些只作为 **风险信号和审计证据**。最终授权必须由确定性 Policy Gateway 根据身份、资源、参数、时效、影响级别和审批状态做出。
+
+#### 两种模式如何分工
+
+- **Real-Time Classification**：放在第 1、3、4、5 阶段的在线路径，适合高频、时延敏感的输入、工具调用、结果与外发检查；应设置按动作等级的超时预算。
+- **Generative Reasoning**：用于第 2 阶段的复杂计划复核，以及离线 trace 审计、事件调查、人工复核和策略调优；不应成为所有低风险工具调用的同步前置依赖。
+
+#### 失效、降级与可恢复性
+
+1. NSFA 超时、OOM、模型崩溃或本地模型服务不可用时，**不得默认扩大权限或放行高影响动作**；继续执行的条件应由已有确定性策略决定。
+2. 对低影响、只读且已被 allowlist 覆盖的动作，可按产品策略降级为记录风险并继续；对读取 secret、外部上传、删除、部署、改权限等动作，保持 block 或 approval。
+3. 所有请求、模型版本、输入摘要、风险结果、Gateway 决策、实际 effect 与降级原因写入 trace，支持复盘、策略校准和回滚。
+
+**部署考虑**：0.8B/2B 可作为本地 pilot 的候选规模；需在实际设备 SKU 上测模型加载内存、CPU/GPU、并发、上下文长度、P50/P95 延迟和超时行为。A100 的 45–57 ms/sample 只能作为参考，**不是本地设备 SLA**。上述阶段划分是类 Claw 的架构建议，不代表 NSFA 已官方集成到任何特定 Agent runtime。
+#### 11-3 试点计划
+
+##### 阶段 0：建立基线（1 周）
 
 - 记录现有 Agent 的用户请求、计划、工具调用、结果、memory 写入和外部副作用；
 - 统计普通任务的 P50/P95 延迟、回答成功率、工具成功率、内存峰值和 CPU/GPU 占用；
 - 标注高影响动作和敏感资源。
 
-#### 阶段 1：离线审计与数据集（1–2 周）
+##### 阶段 1：离线审计与数据集（1–2 周）
 
 - 用 NSFA Generative Reasoning 审计历史 trace；
 - 构造合法任务、Prompt Injection、越权读写、secret 外传、MCP/Skill 污染、资源滥用样本；
 - 对每条样本记录人工标签、风险类别、动作影响和预期处理。
 
-#### 阶段 2：Shadow Mode（1–2 周）
+##### 阶段 2：Shadow Mode（1–2 周）
 
 - NSFA 在线分类接在工具调用前，但不改变执行结果；
 - 有多模态入口时，SingGuard 接在外部内容输入和最终输出两侧；
 - 记录模型判断、规则判断、实际副作用和人工标签的差异；
 - 测模型大小与设备 SKU 的内存、速度和准确率曲线。
 
-#### 阶段 3：有限 Enforce（1 周）
+##### 阶段 3：有限 Enforce（1 周）
 
 - 只阻断高置信度、高影响、不可逆的动作；
 - 读取 secret、外部上传、删除、部署、改权限默认拒绝或人工审批；
 - 低风险普通读操作保持原有路径；
 - 明确模型超时、模型崩溃和 Policy Gateway 不可用时的 fallback。
 
-#### 试点验收指标
+##### 试点验收指标
 
 | 维度 | 指标 |
 |---|---|
@@ -651,58 +691,50 @@ purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inc
 
 ---
 
-### 12 思路 2：针对威胁类型优化 Platform
+### 12 思路 2：执行层平台控制待实施事项——按控制类型 × 生命周期阶段分类
 
-模型判断不能替代平台控制。对于本地类 Claw，建议至少建设以下平台能力：
+模型护栏只产出风险信号；真正决定一个动作能不能发生，必须落在 Agent framework 执行层的确定性控制上。本节整合两份 SuperClaw 安全设计材料：
 
-#### 1. Shell 越权：命令与参数能力网关
+- 《SuperClaw 当前安全能力与缺口评估》（`D:\superclaw\applications.ai.superclaw-zihan\docs\design\2026-08-12_superclaw_security_current_state_zh.md`，调研结论、非实现计划）——记录**当前已验证能力**与**缺口**；
+- 《SuperClaw Agent Security Architecture》（`D:\superclaw\applications.ai.superclaw-zihan\docs\design\2026-08-12_agent_security_architecture.md`，Proposed）——把缺口拆成 `SecurityAction`/`SecurityDecision` 模型、6 个生命周期阶段和 6 个 rollout phase。
 
-- 将 Shell 按 read-only、workspace-write、network、privileged 分级；
-- 默认命令 allowlist，而不是给任意 Shell；
-- 对 `rm`、权限修改、进程控制、包安装和网络上传设置单独策略；
-- 工具调用前展示完整命令和目标路径；
-- 高影响命令要求确认，并记录实际执行参数。
+AgentAegis、Acacian Aegis 不是 SuperClaw 现有组件，只作为生命周期规则和策略/审批模型的参考；接入必须通过 OpenCode plugin、OpenWork Server、capability projection 和 ServiceHub 合约实现。
 
-#### 2. Workspace Sandbox：文件、进程和网络隔离
+#### 需要先纠正的三个假设
 
-- Agent 默认只能访问当前 workspace；
-- 明确禁止 `.env`、SSH key、云 credential、浏览器 cookie 等敏感路径；
-- 限制进程、内存、磁盘、时间和子进程；
-- 网络默认 deny，按域名/端口 allowlist；
-- 避免把宿主机 Docker socket、metadata、全局凭证暴露给 Agent。
+1. **Trajectory 不等于完整审计**：调试日志可用于排障回放，但不能证明覆盖工具、MCP、网络、审批、文件、memory 和最终 channel delivery，也不具备防篡改与留存保证。
+2. **Workspace/Sandbox 只解决部分隔离**：WSL2/Docker 降低对 Windows host 的直接暴露，但容器内 bash、MCP、网络出口和 cloud 模型路由仍可能携带数据或产生副作用。
+3. **Shell guard 不等于命令安全闭环**：现有插件主要覆盖 agent 路由、重复调用和输出体量，尚无统一的危险命令、编码混淆、下载执行、删除/覆盖、命令→网络外发链 policy engine。
 
-#### 3. MCP / Skill 供应链治理
+#### 分类维度说明
 
-- 记录来源、版本、hash、作者、权限和依赖；
-- 安装前静态扫描 README、代码、安装脚本和工具 schema；
-- 运行时限制 MCP/Skill 能访问的文件、网络和身份；
-- 工具结果视为不可信 observation，不能直接改变系统目标；
-- 高权限 Skill 需要签名、审批和可撤销能力。
+- **类型**（控制在做什么）：
+  - `Observe`：只记录风险信号，不阻断，用于校准误报/漏报；
+  - `Guardrail`：确定性限制、脱敏、来源标记或需要审批的门控，允许继续但收窄能力；
+  - `Refuse`：默认拒绝/阻断，含 fail-closed；
+  - `Execution`：策略引擎、schema、审计存储等让上述判断生效的执行层基础设施本身。
+- **生命周期阶段**：沿用 `SecurityAction.phase` 六段——`inbound`（外部输入进入）、`prompt`（系统上下文组装）、`pre_tool`（工具调用前）、`post_tool`（工具结果回流）、`memory_write`（持久化写入）、`outbound`（最终回复/artifact/channel 交付）；跨阶段基础设施标记为 `cross_phase`。
+- **优先级**：P0 = 无这些底座不建议开放自动执行；P1 = 让平台能发现/收窄风险；P2 = 规模化治理与可验证性。
 
-#### 4. Memory / RAG 持久化隔离
+#### 任务分类表
 
-- 区分用户明确保存与 Agent 自动写入；
-- 长期 memory 写入前检查 Prompt Injection、秘密和越权指令；
-- 按用户、任务和租户隔离 memory/RAG；
-- 为 memory 保留来源、时间、版本和删除/回滚能力；
-- 不让低可信内容自动成为未来会话的高可信系统指令。
+| 任务 | 细分拆解 | 优先级 | 类型 | 生命周期阶段 |
+|---|---|---|---|---|
+| **1. 策略决策引擎与执行骨架**：让 `allow/observe/redact/require_approval/block` 有一个统一、可测试的落地点 | · 先实现最小、进程内/本地的 `SecurityAction`/`SecurityDecision` schema 与决策引擎，不在第一版建设独立复杂策略平台<br>· Policy 优先级与作用域规则（capability grade / project / agent / tool / path / network target）<br>· 契约矩阵：AgentAegis 能力 → OpenCode hook / OpenWork 边界 / host 控制映射，锁定兼容版本（Rollout Phase 0）<br>· Policy/审计骨架单测：precedence、非法策略、redaction、correlation（Rollout Phase 1）<br>· Fail-closed 默认策略：policy 缺失/失效/adapter crash 时高危默认拒绝，低风险 observe + 报错遥测<br>· ServiceHub/Security Manager 控制面集成：policy 分发、审计查询/导出、健康检查，不代理 chat data plane<br>· 落地前必须回答的未决问题：post-tool/system-transform hook 兼容性、权威 memory 写入路径、审计存储归属、tool 层以下出口控制、留存/隐私策略 | P0 | Execution | cross_phase |
+| **2. 危险动作执行护栏**：工具调用前把 Shell、文件、网络、资源滥用收敛到统一 critical 规则 | · Plugin/policy bundle 自我防护：capability projection + hash gate，禁止 Agent 写入/删除策略资源与 manifest<br>· 危险命令与文件操作拦截：Shell 分级、破坏性写入、编码混淆、下载后执行、受保护路径<br>· 网络出口 / SSRF / metadata 地址拦截：先在工具层覆盖 web/browser/MCP/bash 等入口，且必须由 sandbox/Docker/DNS egress 控制兜底；工具规则不能替代网络边界<br>· 重复调用 / 资源滥用限制（复用现有 repeat/budget guard，不重写计数器）<br>· 集成测试证明被阻断动作确实无副作用（Rollout Phase 2） | P0 | Refuse（含 Guardrail） | pre_tool |
+| **3. 审批、工具前后审计与最终输出边界**：确保审批不可被绕过，工具动作可追溯，交付前统一脱敏 | · `require_approval` 接入现有 OpenWork 审批，关联 `trajectoryId`/`toolCallId`/`approvalId` 与安全摘要；P0 要求重启后默认拒绝/标记 orphaned request，不得恢复为 allow；跨重启持久化 pending approval 仅在产品需要长时间审批时列 P1<br>· 每个高风险调用在副作用前写 `tool.call.pre`，在成功/失败/拒绝/取消/超时后写 `tool.call.post`；审批写 `approval.requested/decided`。事件默认不留原始 prompt、工具参数、工具输出、文件内容或密钥<br>· 最终响应/artifact sanitizer 接入 channel/desktop 双路径，统一 redact/block；凭证/敏感信息命中 outbound 默认 enforce | P0 | Guardrail（含 Refuse）+ Execution | pre_tool + post_tool + outbound |
+| **4. 审计事件、留存与恢复边界**：先建立可关联事件骨架，再逐步提高完整性 | · P0 审计骨架：event ID、correlation/session/project、policy digest、rule IDs、decision、审批引用、redaction 计数，默认不留原文/密钥；本地 JSONL 可作为第一版审计存储，但不得称为不可篡改<br>· P2 留存治理：受限 ACL、append-only 或签名/远端不可变存储、保留期与访问审计<br>· 恢复按操作类型设计：P0 是在副作用前阻止高危操作并记录证据；文件 checkpoint/rollback、凭证吊销、运行时隔离等只对可逆/可隔离操作分别设计，不能承诺所有 Shell、网络、删除动作可回滚 | P0（事件骨架）/ P2（留存治理与可逆恢复） | Execution | cross_phase |
+| **5. 不可信输入与工具结果治理**：把外部内容、用户输入和工具结果当作独立不可信边界 | · 用户输入风险检测：jailbreak/角色伪装/工具诱导/secret 与外发请求；默认只产出 risk signal，不单独依赖 prompt 文本强制拦截或授权工具<br>· Prompt 安全上下文附加：来源标记的简洁约束，不暴露规则细节<br>· 意图分类结果仅作风险信号：不能单独授权，成功/失败/fallback 都需可审计<br>· 工具结果注入检测：在已验证 post-tool hook 中记录 `tool.result.scanned`，将 web/MCP/文档结果标为不可信，在进入模型 context 前处理；后置检测不能撤回已经发生的副作用<br>· 先 Observe 校准；仅对“高置信注入 + P0 高危工具动作”组合选择性收紧为审批或阻断 | P1（先 Observe） | Observe → Guardrail | inbound + prompt + post_tool |
+| **6. Memory 写入治理**：防止低可信内容变成未来会话的高可信指令 | · 先枚举实际 memory write 路径，而非仅保护 `MEMORY.md`<br>· Memory 写入污染防护：记录来源（用户/工具/模型/系统）、目标 namespace/path、是否来自外部内容，并检查敏感内容/指令污染；先 observe 校准再 enforce<br>· 缩短/移除 PII placeholder→原值映射的 TTL 内保留窗口 | P1（先 Observe） | Observe → Guardrail | memory_write |
+| **7. 观测遥测上线与选择性 Enforce**：先用真实数据校准，再逐条规则收紧 | · 不可信上下文与 memory 观测遥测上线，用于校准误报率（Rollout Phase 4）<br>· 选择性 enforce：仅将测量后高置信度规则从 observe 升级为 enforce，每条规则可单独回滚；P0 关键规则（受保护资源删除、metadata/私网、明显凭证外发）不等待该阶段 | P1 → P2 | Observe → Guardrail/Refuse | cross_phase |
+| **8. 安全测试与验证矩阵**：证明阻断真的生效、副作用真的没发生 | · P0 随 critical rule 同步交付：被阻断的 shell/file/network/MCP 操作没有副作用；审批 deny/timeout 不执行；`tool.call.pre/post` 与审批事件正确关联<br>· P1 对抗性夹具：命令混淆、编码 payload、prompt injection 工具结果、metadata URL、密钥文本、memory 投毒、重复调用<br>· P2：全 capability-grade projection、性能/资源、审计留存与完整性验证 | P0（关键阻断测试）→ P1（对抗性）→ P2（规模化） | Execution（测试） | cross_phase |
 
-#### 5. Identity / Secret / Data Flow 控制
+#### 与思路 1 的分工
 
-- 采用短期、最小权限、按工具和任务隔离的凭证；
-- secret 尽量不进入模型上下文；
-- 读取、解密、外发采用独立能力和显式审批；
-- 对 `secret file → context → tool argument → external API` 做数据流阻断；
-- 对外部请求做域名、内容、大小和频率限制。
+模型（SingGuard / SingGuard-NSFA）产出风险信号；本节的 `SecurityAction`、Policy Gateway、审批与审计闭环才是唯一能把风险信号转成 `allow / observe / redact / require_approval / block` 并留下证据的地方。两者的接口就是第 11 章 NSFA/SingGuard 的输出，被本节的统一决策点消费，而不是让模型直接触发副作用。
 
-#### 6. Observability / Recovery
-
-- 关联用户、任务、模型版本、上下文来源、工具调用、参数、审批、文件变更和网络请求；
-- 发现异常后可以 kill Agent、吊销 token、隔离 workspace、重建 runtime；
-- 对 memory、文件和配置保留版本，支持回滚；
-- 让用户和 OEM 能看到“发生了什么、为什么阻断、如何恢复”。
-
-### 思路 1 与思路 2 的关系
+### 13 综合实现path
+#### 思路 1 与思路 2 的关系
 
 ```text
 模型护栏：发现“这看起来危险”
@@ -719,9 +751,49 @@ purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inc
 
 ---
 
-## 性能影响与产品取舍
+#### 建议的综合实施顺序：先 P0 平台边界，再引入 NSFA 观察
 
-### 可能增加的成本
+NSFA 不应作为 P0 的前置依赖，也不应在现有 trace 尚不能可靠回答“哪个工具实际执行、是否审批、实际 effect 是什么”时直接接入同步阻断主路径。正确顺序是：先让危险动作在模型漏判时也无法越权，再把 NSFA 的判断接入这个已存在的策略与审计闭环。
+
+| 阶段 | 平台/策略交付物 | NSFA / SingGuard 的位置 | 是否阻断 | 进入下一阶段的门槛 |
+|---|---|---|---|---|
+| **A. P0-A：动作与证据骨架** | 最小 `SecurityAction`/`SecurityDecision`、规则优先级、`trajectoryId/sessionId/toolCallId`、工具 `pre/post` 事件、审批关联；先覆盖 bash/file/network/MCP。 | **不接在线 NSFA。** 仅采集脱敏 action 摘要、决策和 effect，形成真实 trace 基线与攻击样本。 | 确定性 critical 规则可 block/approval。 | 能证明被拒绝动作无副作用；审计不记录原始 prompt/tool output/secret。 |
+| **B. P0-B：高影响边界** | 危险 Shell、受保护路径、SSRF/metadata、下载执行、外发和最终输出 DLP；sandbox/网络 egress 兜底；OpenWork 审批接入。 | **离线 NSFA Generative Reasoning。** 对 A/B 的脱敏 trace 做离线审计、样本标注、规则缺口发现，不影响用户执行。 | P0 仍只依赖确定性 policy + 审批。 | 已知高影响动作都有 pre/post/approval/outbound 证据；可计算漏拦截、误拦截和性能基线。 |
+| **C. P1-A：NSFA shadow observation** | 固定 policy/审批的真实决策仍为唯一授权源；增加 risk-signal adapter 和审计字段。 | **首次引入在线 NSFA Real-Time Classification，默认 shadow/observe。** 先接在用户输入、外部 tool result、以及高危工具调用提案前；输出 label/confidence/model version，不改 allow/block。纯文本工具型 Agent 优先 NSFA 0.8B/2B；多模态入口另评估 SingGuard。 | 否；模型超时/OOM 只记录 fallback，绝不扩大权限。 | 在目标 SKU 上获得 P50/P95、内存/功耗、Precision/Recall、漏报、误报、合法任务拒绝率；完成与人工标签及 P0 policy 决策的对比。 |
+| **D. P1-B：风险信号辅助收窄** | 将稳定的风险信号传给 Policy Gateway；外部结果加 provenance/untrusted 标记；memory write observe。 | 对“高置信 NSFA 信号 + 已有 P0 高危动作”组合提高风险等级、缩小 scope 或要求审批；不让 NSFA 单独 `allow`。Generative Reasoning 继续用于计划复核、事件调查和规则调优，不进入所有低风险同步调用。 | 仅组合规则可 require_approval/选择性 block。 | 每条规则可单独回滚；测得的误报可接受；各 capability grade 的 projection 和 fallback 已验证。 |
+| **E. P2：规模化治理** | 审计留存/完整性、查询 UI、策略灰度、OEM/SKU 配置、恢复能力按可逆操作类型推进。 | 根据 benchmark 决定是否扩大 NSFA 模型、加入 SingGuard 多模态输入/输出检查或启用更多在线阶段。 | 按规则/grade 配置。 | 留存、隐私、性能和产品支持成本可接受。 |
+
+**NSFA 的最早合适引入点是阶段 C，而不是阶段 A。** 阶段 B 的离线 Generative Reasoning 可以更早启动，因为它不在用户同步主路径；但它的输入必须是脱敏 audit/trajectory 摘要，不能把完整 prompt、文件内容、工具输出或 secret 批量喂给审计模型。
+
+#### NSFA 接入契约与降级规则
+
+```text
+SecurityAction（工具、输入或结果的脱敏结构化摘要）
+  → NSFA risk signal { categories, confidence, model_version, latency, fallback_reason? }
+  → Policy Gateway（身份、scope、确定性规则、审批状态、risk signal）
+  → allow | observe | redact | require_approval | block
+```
+
+- NSFA/SingGuard **只能产生 risk signal**；唯一授权源仍是 Policy Gateway + OpenWork approval + sandbox/network 边界。
+- 普通低风险对话不应每轮同步调用 NSFA；优先轻量规则、异步审计或按风险采样。
+- 模型超时、OOM、不可用时：低风险只读 allowlist 动作可按策略 `observe` 后继续；删除、外发、改权限、读取 secret、私网/metadata 访问仍由 P0 确定性规则保持 `block` 或 `require_approval`。
+- NSFA 输入和审计输出默认不包含原文或 secret：传入 action 类型、目标类别、脱敏参数摘要、前序 action 摘要和 policy context；必要时只传 hash/计数/类别。
+- 只有在 shadow 数据证明某类信号稳定，且与 P0 高危动作组合时，才从 `observe` 升级到审批或阻断；每条升级规则必须可单独回退。
+
+#### P0/P1 的责任边界
+
+| 层 | P0 负责什么 | P1/NSFA 负责什么 | 不应承诺什么 |
+|---|---|---|---|
+| 工具执行 | 在副作用前用确定性规则、审批、sandbox/egress 限制危险动作。 | 识别复杂意图、外部内容和异常 action 链，为 P0 策略提供附加风险信号。 | 不因模型“低风险”而跳过 P0 deny/approval。 |
+| 审计 | 记录 pre/post、决策、审批、effect 摘要与 correlation。 | 用离线 trace 分析发现攻击模式、校准规则和阈值。 | 不保存 chain of thought、原始敏感内容，也不把本地 JSONL 称为不可篡改。 |
+| 输入/结果 | 保证高风险动作即使被 prompt injection 诱导也无法越权。 | Observe 用户输入、网页/MCP/文档结果的 injection/jailbreak/外发风险，并标记不可信来源。 | 不能保证检测所有变体；post-tool 检查不能撤销已经发生的副作用。 |
+| 恢复 | 对高危动作先阻断，减少必须恢复的事故。 | 用历史 trace 帮助调查和策略改进。 | 不承诺所有 Shell、网络或删除动作可回滚；checkpoint/rollback 只对可逆操作单独设计。 |
+
+---
+
+#### 性能影响与产品取舍
+
+##### 可能增加的成本
 
 1. **延迟**：同步调用模型会增加 P50/P95；多次检查比一次检查更明显；
 2. **本地资源**：模型权重、KV cache、图片编码和并发会占用内存/显存/CPU；
@@ -729,7 +801,7 @@ purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inc
 4. **产品复杂度**：需要配置策略、阈值、超时、审批、日志和回滚；
 5. **可用性风险**：护栏模型加载失败或资源不足时，必须决定 fail-open 还是 fail-safe。
 
-### 可能带来的正向收益
+##### 可能带来的正向收益
 
 - 降低 secret 泄露、越权修改和错误外发的概率；
 - 减少高影响事故的潜在损失，而不是提升普通回答速度；
@@ -737,18 +809,18 @@ purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inc
 - 让 OEM 能够按设备 SKU 交付不同安全等级；
 - 将安全策略变成可配置、可测试、可审计的产品能力。
 
-### 设计建议：不要把所有检查都放进同步主路径
+#### 设计建议：不要把所有检查都放进同步主路径
 
 | 场景 | 推荐方式 |
 |---|---|
 | 普通低风险对话 | 轻量规则或异步审计，不阻塞主回答 |
-| 外部网页、图片、文档 | SingGuard 输入侧检查，按风险决定是否继续 |
-| 工具调用前 | NSFA 分类头 + 确定性 Policy Gateway |
+| 外部网页、图片、文档 | P1 shadow 期先做轻量 provenance/规则与异步/采样检查；多模态入口的 SingGuard 仅在 benchmark 后进入在线路径 |
+| 工具调用前 | P0 确定性 Policy Gateway 必经；P1 后 NSFA 分类仅作为 risk signal 辅助收窄，不单独放行 |
 | 删除、外发、部署、改权限 | 强制审批或默认拒绝 |
 | 历史日志和复杂攻击链 | NSFA Generative Reasoning 离线审计 |
 | 模型超时/不可用 | 按动作风险选择 fallback；高影响动作 fail-safe |
 
-### 必须自己测量的本地 benchmark
+#### 必须自己测量的本地 benchmark
 
 不能直接使用论文中的 A100 45–57 ms 作为本地产品承诺。至少建立以下矩阵：
 
@@ -766,39 +838,61 @@ purpose-built 数据集以 [NSFA_Benchmarks](https://huggingface.co/datasets/inc
 
 ---
 
-## 最终建议：面向管理层的决策页
+### 14 最终建议：面向管理层的决策页
 
-### 是否要做？
+#### 是否要做？
 
-**要做。** 只要本地类 Claw 能访问用户文件、记忆、网络、Shell、MCP 或外部 API，Agent Security 就不是可选的“锦上添花”，而是可控交付的基础能力。
+**要做，且应批准为平台能力，而不是一次性模型评测或单点内容审核。** 只要本地类 Claw 能访问用户文件、记忆、网络、Shell、MCP 或外部 API，Agent Security 就是可控交付的基础能力。
 
-### 从哪里开始？
+本次建议的决策不是“是否立刻把一个安全模型放到每个请求前”，而是：
 
-1. 先建设 P0 平台边界：权限、sandbox、网络、凭证、trace、审批和恢复；
-2. 用真实 Agent trace 建立基线和攻击样本；
-3. 先以 NSFA 0.8B/2B 做离线审计和 shadow mode；
-4. 有多模态内容时再加入 SingGuard；
-5. 只对高置信度、高影响、不可逆动作进行早期阻断。
+1. 批准 P0 平台边界，使高影响动作在模型漏判、超时或不可用时仍不能越权；
+2. 批准在 P0 证据闭环形成后引入 NSFA 的离线审计与 P1 shadow observation；
+3. 在真实设备、真实 trace 和明确回退门槛上决定哪些模型规则值得进入强制路径。
 
-### 两个模型是否都要做？
+#### 建议批准的实施路径
 
-- **纯文本、工具型个人 Agent**：优先 NSFA，SingGuard 延后；
-- **网页/截图/图片/图文产品**：NSFA + SingGuard 形成内容层与动作层互补；
-- **资源受限设备**：先做规则和平台边界，再评估 NSFA 0.8B 是否可接受；
-- **OEM 多 SKU**：用 benchmark 决定不同 SKU 的模型大小和安全等级，不强制所有设备加载最大模型。
+| 阶段 | 管理层批准的交付物 | NSFA / SingGuard 决策 | 放行条件 |
+|---|---|---|---|
+| **P0-A：动作与证据骨架** | 统一 `SecurityAction`/Policy、工具前后 audit、审批关联、关键动作 correlation；不记录原始敏感内容。 | 不接在线模型；建立脱敏 trace 基线与攻击样本。 | 被拒绝的 Shell/file/network/MCP 动作可证明没有副作用。 |
+| **P0-B：高影响边界** | 危险 Shell/文件、SSRF/metadata、网络 egress、审批、最终输出 DLP；P0 critical rule 用确定性 policy enforce。 | 对脱敏 trace 做离线 NSFA Generative Reasoning，用于发现规则缺口和标注数据，不影响用户执行。 | 高影响动作均有 pre/post/approval/outbound 证据；模型缺席不扩大权限。 |
+| **P1-A：Shadow observation** | 接入 risk-signal adapter、输入/工具结果 provenance、memory observe。 | 首次在线引入 NSFA Real-Time Classification，默认 shadow/observe；纯文本工具 Agent 从 0.8B/2B benchmark 起步。 | 目标 SKU 上完成 P50/P95、内存/功耗、Precision/Recall、漏报、误报与合法任务影响测量。 |
+| **P1-B：选择性收窄** | 将经验证的风险信号送入 Policy Gateway，并保持每条规则可回退。 | 仅“高置信模型信号 + P0 高危动作”可升级为 require approval 或选择性 block；模型永不单独 allow。 | 误报、体验和 fallback 可接受；capability grade 和回退已验证。 |
+| **P2：规模化治理** | 审计完整性/留存、查询 UI、OEM/SKU 策略、可逆操作的恢复能力。 | 根据 benchmark 决定扩大 NSFA、加入 SingGuard 多模态检查或更多在线阶段。 | 隐私、性能、支持成本和产品收益可接受。 |
 
-### 建议批准的 pilot 结果
+#### 明确的安全与产品原则
 
-4–6 周后应能回答：
+1. **平台先于模型。** Policy Gateway、OpenWork approval、sandbox/network egress 与确定性工具规则是唯一授权边界；模型只产生 risk signal。
+2. **P0 先防副作用，P1 再提升识别。** P0 对删除、外发、改权限、读取 secret、私网/metadata 等高影响动作保持 block/approval，即使 NSFA 超时、OOM 或未部署。
+3. **不把 debug trace 当审计。** P0 建立最小、脱敏、可关联的 pre/post/approval/outbound 审计骨架；不可篡改留存、长期查询 UI 和可逆恢复是 P2 工作，不应在第一版过度承诺。
+4. **不让模型成为唯一拦截器。** Prompt Injection、Jailbreak 和 tool-result injection 在 P1 先 observe；只有与 P0 高危动作组合并经测量后，才选择性升级为审批或阻断。
+5. **性能按风险分层。** 普通低风险对话不强制每轮同步模型检查；离线 NSFA 审计可先于在线 NSFA 启动；SingGuard 仅在有多模态攻击面且 benchmark 证明可接受时引入。
 
-- 哪些真实风险在我们的 Agent 中最常见；
-- NSFA/SingGuard 对这些风险的 precision、recall 和漏报是什么；
-- 增加护栏后的 P50/P95 延迟和本地资源开销是多少；
-- 合法任务误报和回答正确性受到多大影响；
-- 哪些动作可以自动放行，哪些必须审批或默认拒绝；
-- 是否值得将模型能力产品化为 OEM 安全等级和平台能力。
+#### 两个模型是否都要做？
 
-> **最终判断标准不是“模型 benchmark 最高”，而是：在可接受的本地性能成本下，是否显著减少高影响未授权动作，并且平台能够阻断、解释和恢复。**
+- **纯文本、工具型个人 Agent**：P0 不依赖模型；P1 优先评估 NSFA 0.8B/2B shadow observation，SingGuard 延后。
+- **网页/截图/图片/图文产品**：仍先完成 P0；在 P1 用 benchmark 决定 NSFA + SingGuard 是否形成内容层与动作层互补。
+- **资源受限设备**：保留 P0 确定性规则和审批；若 NSFA 不满足性能/功耗门槛，继续离线审计或不上在线模型，不降低 P0 保护。
+- **OEM 多 SKU**：基于 benchmark 为每个 SKU 决定模型大小、是否启用在线 observation、以及可用安全等级；不强制所有设备加载最大模型。
+
+#### 建议批准的 pilot 成功标准
+
+试点不以“模型分数最高”为唯一成功标准。P0 完成后应先能回答：
+
+- 被 block/deny 的高危操作是否确实没有副作用；
+- 是否能关联一次请求的工具前后、审批、最终输出与安全决策，同时不保存原始 secret/PII；
+- 哪些确定性规则已经覆盖最常见的高影响风险，哪些仍需模型辅助判断；
+- P0 模型缺席、超时或故障时，是否始终不会扩大高危权限。
+
+满足这些门槛后，再在 P1 shadow 中回答：
+
+- 哪些真实输入/工具结果风险是 NSFA 能够比规则更早、更准确发现的；
+- NSFA/SingGuard 对这些风险的 Precision、Recall、漏报、误报和合法任务影响是什么；
+- 增加 observation 后的 P50/P95、内存/显存、CPU/GPU、功耗和 fallback 是否符合目标 SKU；
+- 哪些“高置信风险信号 + P0 高危动作”组合值得升级为审批或阻断；
+- 是否值得将模型 observation 产品化为 OEM/SKU 安全等级。
+
+> **最终判断标准不是“模型 benchmark 最高”，而是：在可接受的本地性能成本下，平台能否先阻断高影响未授权动作、留下可解释证据；模型观察是否在此基础上显著降低漏报，而不造成不可接受的误报和体验损失。**
 
 ---
 
