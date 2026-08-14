@@ -17,29 +17,28 @@
 </head>
 <body>
   <main class="deck">
-    <section class="slide active" data-title="决策问题">
+    <section class="slide active" data-title="问题介绍">
       <div class="stage hero">
         <div class="topline"><b>LLM / AGENT SECURITY</b><span>Management decision canvas · 2026.08</span></div>
         <div class="eyebrow">00 · DECISION QUESTIONS</div>
         <h1>我们是否要把<br><span class="teal">Security 做成 feature？</span></h1>
         <p class="lead">当本地类 Claw 可以读取文件、调用工具、访问网络并连续执行任务时，安全不再只是上线前的一次测试，而可能成为产品能力。</p>
         <div class="verdict">
-          <p><strong>今天只讨论两个问题：</strong><br>① 产品是否需要正式的 Security feature？<br>② 如果需要，第一阶段应先完善 Agent platform，还是先加入 safety
+          <p><br>① 产品是否需要正式的 Security feature？<br>② 如果需要，第一阶段应先完善 Agent platform，还是先加入 safety
             判断模型？</p>
         </div>
         <div class="ribbon"><i></i>先定义决策，再比较路径</div>
       </div>
-      <div class="source">给高级经理 / 产品经理 · 本地类 Claw 个人 Agent</div>
     </section>
     
-    <section class="slide" data-title="比较两条路径">
+    <section class="slide" data-title="两条实施路径">
       <div class="stage">
-        <div class="topline"><b>THE DECISION</b><span>先完善 platform，还是先加判断模型？</span></div>
-        <div class="eyebrow">00 · TWO INVESTMENT PATHS</div>
-        <h2>真正的优先级问题：Platform-first vs Model-first</h2>
+        <div class="topline"><b>IMPLEMENTATION PATHS</b><span>平台边界与模型判断是两条互补路径</span></div>
+        <div class="eyebrow">10-1 · TWO IMPLEMENTATION PATHS</div>
+        <h2>Agent Security 的两条建设路径</h2>
         <div class="grid two">
-          <div class="card orange"><span class="pill orange">PATH A · PLATFORM-FIRST</span>
-            <h3>先把边界做实</h3>
+          <div class="card orange"><span class="pill orange">PATH A · PLATFORM CONTROL</span>
+            <h3>平台边界路径</h3>
             <p>投入权限、工具网关、workspace sandbox、网络、凭证、审批、trace 和回滚。</p>
             <ul>
               <li>即使模型判断错，也尽量做不到越权</li>
@@ -47,18 +46,18 @@
               <li>需要较多平台工程改造</li>
             </ul>
           </div>
-          <div class="card teal"><span class="pill teal">PATH B · MODEL-FIRST</span>
-            <h3>先增强风险判断</h3>
+          <div class="card teal"><span class="pill teal">PATH B · MODEL JUDGMENT</span>
+            <h3>模型判断路径</h3>
             <p>投入 SingGuard / SingGuard-NSFA 推理、策略、阈值和模型服务。</p>
             <ul>
-              <li>更快覆盖复杂内容、意图偏离和动作风险</li>
+              <li>覆盖复杂内容、意图偏离和动作风险</li>
               <li>可能复用已有 Agent 事件流</li>
               <li>需要验证误报、漏报、延迟和资源占用</li>
             </ul>
           </div>
         </div>
         <div class="verdict">
-          <p><strong>本页不预设答案。</strong>后续内容将比较两条路径的风险覆盖、产品收益、性能代价、实施难度和可验证性，最后再提出建议。</p>
+          <p><strong>两条路径互补。</strong>平台控制负责授权、阻断、隔离和恢复；模型判断负责发现复杂意图与内容风险。模型信号最终仍需进入确定性策略与审批闭环。</p>
         </div>
       </div>
     </section>
@@ -934,41 +933,163 @@ security_envelope / prior_actions / observed_effect / expected_side_effect</div>
       </div>
     </section>
     
+        <section class="slide" data-title="综合实现方案">
+      <div class="stage">
+        <div class="topline"><b>IMPLEMENTATION PROPOSAL</b><span>从平台底座到模型辅助</span></div>
+        <div class="eyebrow">13 · IMPLEMENTATION PROPOSAL</div>
+        <h2>综合实现方案</h2>
+        
+        <div class="grid two" style="margin-bottom: 20px;">
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">方案边界与基本原则</h3>
+            <ul style="font-size: 12.5px; padding-left: 16px; margin: 0; line-height: 1.5; color: #444;">
+              <li><b>模型护栏</b>：发现“这看起来危险”</li>
+              <li><b>平台策略</b>：决定“是否授权”</li>
+              <li><b>运行时隔离</b>：保证“即使判断错也做不到”</li>
+              <li><b>恢复系统</b>：保证“发生异常后能止损和回滚”</li>
+            </ul>
+            <p style="font-size: 11px; margin-top: 8px; color: #555; line-height: 1.4;">授权边界始终是确定性的 Policy Gateway + OpenWork approval + sandbox。NSFA/SingGuard 只产生 risk signal，不能单独 allow，不绕过 P0 deny/approval。</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">P0/P1 的责任边界 (Lifecycle)</h3>
+            <table class="table" style="font-size: 10.5px; margin-top: 6px;">
+              <thead><tr><th>层</th><th>P0 负责什么</th><th>P1/NSFA 负责什么</th></tr></thead>
+              <tbody>
+                <tr><td>工具执行</td><td>确定性规则、审批、沙箱限制副作用</td><td>识别复杂意图、异常 action 链</td></tr>
+                <tr><td>审计</td><td>记录 pre/post、审批与副作用关联</td><td>离线分析发现攻击模式、校准阈值</td></tr>
+                <tr><td>输入/结果</td><td>高风险动作不被 prompt injection 越权</td><td>发现内容注入，标记不可信来源</td></tr>
+                <tr><td>恢复/降级</td><td>先阻断高危动作。支持 fallback 策略</td><td>用历史 trace 辅助调查改进</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3 style="font-size: 15px; margin-top: 16px; margin-bottom: 8px;">完整实施路径与交付门槛 (Exit Gates)</h3>
+        <table class="table" style="font-size: 11px;">
+          <thead>
+            <tr>
+              <th style="width:12%">阶段</th>
+              <th style="width:28%">预期可交付</th>
+              <th style="width:30%">责任边界</th>
+              <th style="width:30%">进入下一阶段门槛</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>P0-A<br>动作与骨架</b></td>
+              <td>Policy engine、脱敏 audit schema、关联 ID、兼容报告</td>
+              <td>Plugin 动作归一化；Security Manager 策略面；模型不参与授权</td>
+              <td>被拒绝动作无副作用；每次工具尝试可关联；关键 hook 验证</td>
+            </tr>
+            <tr>
+              <td><b>P0-B<br>执行护栏</b></td>
+              <td>Critical policy、Sandbox 兜底、OpenWork 审批、DLP</td>
+              <td>Policy 不直接执行工具；审批与最终输出</td>
+              <td>删除/外发等动作默认 block/approval；阻断测试无副作用</td>
+            </tr>
+            <tr>
+              <td><b>P1-A<br>Shadow 观察</b></td>
+              <td>Risk-signal adapter、脱敏基线、模型遥测、性能 benchmark</td>
+              <td>NSFA 只产出标签；Gateway 仍是唯一授权源；不保存原文</td>
+              <td>目标设备取得延迟/内存/准确率 benchmark；合法任务影响小</td>
+            </tr>
+            <tr>
+              <td><b>P1-B<br>风险辅助收窄</b></td>
+              <td>规则灰度 policy bundle、规则效果报告</td>
+              <td>Gateway 组合风险与确定性；NSFA 不单独放行</td>
+              <td>规则可独立回退；误报可接受；失败/超时 fallback 验证</td>
+            </tr>
+            <tr>
+              <td><b>P2<br>规模化治理</b></td>
+              <td>防篡改审计、SKU 安全 profile、Checkpoint/rollback</td>
+              <td>资源投影；产品 SKU 门槛；事件复盘</td>
+              <td>隐私、性能与成本可接受；恢复演练通过</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="verdict" style="margin-top: 16px; padding: 12px 18px;">
+          <p style="font-size: 13.5px; line-height: 1.5; margin: 0;"><strong>性能、产品折衷与工程验收：</strong>不能用 A100 数据作产品 SLA，须建立设备/模型/输入的多维 benchmark。工程验收包括：blocked destructive action 无副作用；审批 deny/timeout 不执行；pre/post 事件可关联无 secret；模型缺位或超时等 failure degrade 场景下不可扩大权限。</p>
+        </div>
+      </div>
+    </section>
     <section class="slide" data-title="最终建议">
-      <div class="stage hero">
-        <div class="topline"><b>FINAL RECOMMENDATION</b><span>把研究转成可验证的产品决策</span></div>
-        <div class="eyebrow">00 · FINAL DECISION</div>
-        <h2>建议做，但先做“可控 Agent”而不是“更多模型”</h2>
-        <div class="grid three">
-          <div class="card red"><span class="pill red">必须</span>
-            <h3>平台安全底座</h3>
-            <p>权限、sandbox、网络、凭证、trace、审批、恢复。</p>
+      <div class="stage hero" style="min-height: 70vh;">
+        <div class="topline"><b>FINAL DECISION</b><span>面向管理层的决策建议</span></div>
+        <div class="eyebrow">14 · FINAL DECISION</div>
+        <h2 style="margin-bottom: 24px; font-size: clamp(30px, 4.5vw, 55px);">最终决策建议</h2>
+        
+        <div class="grid three" style="margin-bottom: 24px;">
+          <div class="card red">
+            <span class="pill red">需批准：P0 平台底座</span>
+            <h3 style="font-size: 14px; margin-top: 8px;">确保底线安全</h3>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">统一策略决策、危险动作拦截、审批和 fail-closed 边界。优先证明“即使模型漏判，高危动作仍不能越权”。</p>
           </div>
-          <div class="card teal"><span class="pill teal">优先试点</span>
-            <h3>NSFA 0.8B / 2B</h3>
-            <p>先离线审计，再 shadow mode，再高影响动作有限阻断。</p>
+          <div class="card teal">
+            <span class="pill teal">需批准：P1 模型观察与 Pilot</span>
+            <h3 style="font-size: 14px; margin-top: 8px;">基于真实数据验证</h3>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">在 P0 闭环后引入 NSFA shadow observation。通过真实设备的延迟、功耗与误报 benchmark 决定上线策略，而非盲目在线阻断。</p>
           </div>
-          <div class="card orange"><span class="pill orange">按需启用</span>
-            <h3>SingGuard</h3>
-            <p>产品有图片、截图、网页图文时，补充多模态内容安全。</p>
+          <div class="card orange">
+            <span class="pill orange">权衡：收益与成本折衷</span>
+            <h3 style="font-size: 14px; margin-top: 8px;">产品维度的取舍</h3>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">用增加的延迟与运维复杂度，换取更低的 secret 泄露和破坏性写入风险。产品能够对不同设备 SKU 交付不同安全等级。</p>
           </div>
         </div>
-        <div class="verdict">
-          <p><strong>请批准：</strong>4–6 周 pilot，并以真实本地 SKU benchmark 作为是否产品化的依据。若应用纯文本且资源受限，不要为了“两个模型都上”而增加同步路径成本。</p>
+
+        <h3 style="font-size: 16px; margin-bottom: 12px;">核心 Release Gates（放行门槛）</h3>
+        <div class="grid two" style="margin-bottom: 24px;">
+          <div class="card" style="padding: 12px;">
+            <b style="font-size: 13px;">P0 放行标准：</b>
+            <ul style="font-size: 12px; margin-top: 6px; padding-left: 16px; color: #444;">
+              <li>被拒绝的 Shell/file/network 动作可确切证明无副作用。</li>
+              <li>审批拒绝或超时坚决不执行。</li>
+              <li>关键日志可关联，且绝不保存原始 secret/PII。</li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <b style="font-size: 13px;">P1 放行标准：</b>
+            <ul style="font-size: 12px; margin-top: 6px; padding-left: 16px; color: #444;">
+              <li>目标 SKU 完成性能和质量 benchmark。</li>
+              <li>模型不可用/超时等异常 fallback 绝不扩大高危权限。</li>
+              <li>每条模型辅助规则均可独立回退。</li>
+            </ul>
+          </div>
         </div>
-        <p class="lead">最终目标：用户敢用，OEM 敢交付，产品出事能解释、能止损、能恢复。</p>
+
+        <div class="verdict" style="margin-top: 10px; padding: 12px 18px;">
+          <p class="lead" style="font-size: 17px; margin: 0;"><strong>最终决策标准：</strong>建议投入。请按 <i>P0 平台底座 → P1 影子观察 → P2 规模化</i> 实施。不因模型“低风险”分数掩盖运行时的确定性漏洞。（工程清单详见第 12、13 章）</p>
+        </div>
       </div>
-      <div class="source">资料底稿：Survey Slides.md · LLM 与 Agent Security 总览 · Task Decomp · SingGuard / NSFA / AgentAegis 调研
-      </div>
+      <div class="source">资料底稿：Survey Slides.md (Sections 12, 13, 14)</div>
     </section>
   </main>
   <nav class="chapter-nav" aria-label="章节导航">
-    <a href="#section-01">01 基本概念</a>
-    <a href="#section-02">02 问题维度</a>
-    <a href="#section-03">03 Model / Agent</a>
-    <a href="#section-04">04 攻击谱系</a>
-    <a href="#section-05">05–08 控制体系</a>
-    <a href="#section-09">09–12 落地</a>
+    <div class="chapter-group model-security">
+      <b>模型安全介绍 · 00–04</b>
+      <a href="#section-00-decision">00 Intro</a>
+      <a href="#section-01">01 基本概念</a>
+      <a href="#section-02">02 问题维度</a>
+      <a href="#section-03">03 Model / Agent</a>
+      <a href="#section-04">04 攻击谱系</a>
+    </div>
+    <div class="chapter-group agent-control">
+      <b>Agent 执行风险控制体系 · 05–09</b>
+      <a href="#section-05">05 全生命周期</a>
+      <a href="#section-06">06 Unsafe Action</a>
+      <a href="#section-07">07 安全维度</a>
+      <a href="#section-08">08 Security Envelope</a>
+      <a href="#section-09">09 收益</a>
+    </div>
+    <div class="chapter-group implementation">
+      <b>Implementation · 10–14</b>
+      <a href="#section-10">10 任务划分</a>
+      <a href="#section-10-1">10-1 两条路径</a>
+      <a href="#section-11-models">11 模型判断</a>
+      <a href="#section-12">12 平台控制</a>
+      <a href="#section-13">13 实施方案</a>
+      <a href="#section-14">14 最终决策</a>
+    </div>
   </nav>
   <style>
     html{scroll-behavior:smooth}
@@ -978,9 +1099,14 @@ security_envelope / prior_actions / observed_effect / expected_side_effect</div>
     .vertical-report .slide:first-child{border-top:0}
     .vertical-report .slide.active{animation:none}
     .vertical-report .controls{display:none}
-    .chapter-nav{position:fixed;top:18px;right:24px;z-index:30;display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:700px}
-    .chapter-nav a{background:rgba(255,253,247,.92);backdrop-filter:blur(8px);color:var(--ink);border:1px solid var(--line);padding:6px 9px;border-radius:3px;font-size:11px;text-decoration:none;box-shadow:0 3px 12px rgba(21,34,32,.08)}
-    .chapter-nav a:hover{border-color:var(--teal);color:var(--teal)}
+    .chapter-nav{position:fixed;top:14px;right:20px;z-index:30;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:min(980px,calc(100vw - 40px))}
+    .chapter-group{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:4px;background:rgba(255,253,247,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:5px;box-shadow:0 3px 12px rgba(21,34,32,.08)}
+    .chapter-group b{padding:3px 6px;color:var(--ink);font:700 10px Georgia,serif;letter-spacing:.02em;white-space:nowrap}
+    .chapter-group a{color:var(--muted);padding:4px 6px;border-radius:3px;font-size:10px;text-decoration:none}
+    .chapter-group a:hover{background:var(--teal2);color:var(--teal)}
+    .chapter-group.model-security{border-top:3px solid var(--teal)}
+    .chapter-group.agent-control{border-top:3px solid var(--orange)}
+    .chapter-group.implementation{border-top:3px solid var(--red)}
     .vertical-report .source{position:static;margin-top:28px}
     .vertical-report .hero{min-height:62vh}
     .cia-grid{margin-top:18px}
@@ -990,7 +1116,7 @@ security_envelope / prior_actions / observed_effect / expected_side_effect</div>
     (() => {
       const slides = [...document.querySelectorAll('.slide')];
       document.body.classList.add('vertical-report');
-      const sectionIds = ['section-00-decision', 'section-00-paths', 'section-01', 'section-02', 'section-03', 'section-04', 'section-05', 'section-06', 'section-08', 'section-09', 'section-10', 'section-11-models', 'section-11-integration', 'section-11-performance', 'section-11-pilot', 'section-12', 'section-00-final'];
+      const sectionIds = ['section-00-decision', 'section-01', 'section-02', 'section-03', 'section-04', 'section-05', 'section-06', 'section-07', 'section-08', 'section-09', 'section-10', 'section-10-1', 'section-11-models', 'section-11-candidates', 'section-11-integration', 'section-11-pilot', 'section-12', 'section-13', 'section-14'];
       slides.forEach((slide, index) => {
         slide.classList.add('active');
         slide.id = sectionIds[index];

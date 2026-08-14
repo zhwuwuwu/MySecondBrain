@@ -733,8 +733,9 @@ AgentAegis、Acacian Aegis 不是 SuperClaw 现有组件，只作为生命周期
 
 模型（SingGuard / SingGuard-NSFA）产出风险信号；本节的 `SecurityAction`、Policy Gateway、审批与审计闭环才是唯一能把风险信号转成 `allow / observe / redact / require_approval / block` 并留下证据的地方。两者的接口就是第 11 章 NSFA/SingGuard 的输出，被本节的统一决策点消费，而不是让模型直接触发副作用。
 
-### 13 综合实现path
-#### 思路 1 与思路 2 的关系
+### 13 综合实现方案：从平台底座到模型辅助
+
+#### 13.1 方案边界与基本原则
 
 ```text
 模型护栏：发现“这看起来危险”
@@ -743,156 +744,88 @@ AgentAegis、Acacian Aegis 不是 SuperClaw 现有组件，只作为生命周期
 恢复系统：保证“发生异常后能止损和回滚”
 ```
 
-不能只选模型或只选平台：
+本方案的授权边界始终是确定性的 Policy Gateway + OpenWork approval + sandbox/network egress；NSFA/SingGuard 只能产生 risk signal，不能单独 `allow`，不能绕过 P0 deny/approval。section 12 是完整任务 backlog，本节将其编排成可执行 proposal；section 14 只做管理层决策，不重复工程明细。
+##### P0/P1 的责任边界
 
-- 只有模型，没有平台：模型漏判时仍可能执行危险动作；
-- 只有平台，没有判断：规则难以理解复杂意图和外部内容；
-- 没有恢复：一次误操作可能变成不可逆事故。
+| 层     | P0 负责什么                                   | P1/NSFA 负责什么                                                 | 不应承诺什么                                                 |
+| ----- | ----------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
+| 工具执行  | 在副作用前用确定性规则、审批、sandbox/egress 限制危险动作。     | 识别复杂意图、外部内容和异常 action 链，为 P0 策略提供附加风险信号。                     | 不因模型“低风险”而跳过 P0 deny/approval。                         |
+| 审计    | 记录 pre/post、决策、审批、effect 摘要与 correlation。 | 用离线 trace 分析发现攻击模式、校准规则和阈值。                                  | 不保存 chain of thought、原始敏感内容，也不把本地 JSONL 称为不可篡改。        |
+| 输入/结果 | 保证高风险动作即使被 prompt injection 诱导也无法越权。      | Observe 用户输入、网页/MCP/文档结果的 injection/jailbreak/外发风险，并标记不可信来源。 | 不能保证检测所有变体；post-tool 检查不能撤销已经发生的副作用。                   |
+| 恢复    | 对高危动作先阻断，减少必须恢复的事故。                       | 用历史 trace 帮助调查和策略改进。                                         | 不承诺所有 Shell、网络或删除动作可回滚；checkpoint/rollback 只对可逆操作单独设计。 |
+#### 13.2 完整实施路径与交付门槛
 
----
-
-#### 建议的综合实施顺序：先 P0 平台边界，再引入 NSFA 观察
-
-NSFA 不应作为 P0 的前置依赖，也不应在现有 trace 尚不能可靠回答“哪个工具实际执行、是否审批、实际 effect 是什么”时直接接入同步阻断主路径。正确顺序是：先让危险动作在模型漏判时也无法越权，再把 NSFA 的判断接入这个已存在的策略与审计闭环。
-
-| 阶段 | 平台/策略交付物 | NSFA / SingGuard 的位置 | 是否阻断 | 进入下一阶段的门槛 |
+| 阶段 | 重点任务（对应 section 12） | 预期可交付 | 责任边界 | 进入下一阶段的门槛 |
 |---|---|---|---|---|
-| **A. P0-A：动作与证据骨架** | 最小 `SecurityAction`/`SecurityDecision`、规则优先级、`trajectoryId/sessionId/toolCallId`、工具 `pre/post` 事件、审批关联；先覆盖 bash/file/network/MCP。 | **不接在线 NSFA。** 仅采集脱敏 action 摘要、决策和 effect，形成真实 trace 基线与攻击样本。 | 确定性 critical 规则可 block/approval。 | 能证明被拒绝动作无副作用；审计不记录原始 prompt/tool output/secret。 |
-| **B. P0-B：高影响边界** | 危险 Shell、受保护路径、SSRF/metadata、下载执行、外发和最终输出 DLP；sandbox/网络 egress 兜底；OpenWork 审批接入。 | **离线 NSFA Generative Reasoning。** 对 A/B 的脱敏 trace 做离线审计、样本标注、规则缺口发现，不影响用户执行。 | P0 仍只依赖确定性 policy + 审批。 | 已知高影响动作都有 pre/post/approval/outbound 证据；可计算漏拦截、误拦截和性能基线。 |
-| **C. P1-A：NSFA shadow observation** | 固定 policy/审批的真实决策仍为唯一授权源；增加 risk-signal adapter 和审计字段。 | **首次引入在线 NSFA Real-Time Classification，默认 shadow/observe。** 先接在用户输入、外部 tool result、以及高危工具调用提案前；输出 label/confidence/model version，不改 allow/block。纯文本工具型 Agent 优先 NSFA 0.8B/2B；多模态入口另评估 SingGuard。 | 否；模型超时/OOM 只记录 fallback，绝不扩大权限。 | 在目标 SKU 上获得 P50/P95、内存/功耗、Precision/Recall、漏报、误报、合法任务拒绝率；完成与人工标签及 P0 policy 决策的对比。 |
-| **D. P1-B：风险信号辅助收窄** | 将稳定的风险信号传给 Policy Gateway；外部结果加 provenance/untrusted 标记；memory write observe。 | 对“高置信 NSFA 信号 + 已有 P0 高危动作”组合提高风险等级、缩小 scope 或要求审批；不让 NSFA 单独 `allow`。Generative Reasoning 继续用于计划复核、事件调查和规则调优，不进入所有低风险同步调用。 | 仅组合规则可 require_approval/选择性 block。 | 每条规则可单独回滚；测得的误报可接受；各 capability grade 的 projection 和 fallback 已验证。 |
-| **E. P2：规模化治理** | 审计留存/完整性、查询 UI、策略灰度、OEM/SKU 配置、恢复能力按可逆操作类型推进。 | 根据 benchmark 决定是否扩大 NSFA 模型、加入 SingGuard 多模态输入/输出检查或启用更多在线阶段。 | 按规则/grade 配置。 | 留存、隐私、性能和产品支持成本可接受。 |
+| **P0-A：动作与证据骨架** | 策略决策引擎与执行骨架；`SecurityAction/Decision`；规则优先级、scope、fail-closed；工具 pre/post、审批 correlation；兼容性契约矩阵 | 最小可用 policy engine、脱敏 audit schema、`trajectoryId/toolCallId/approvalId` 关联、OpenCode/OpenWork hook 兼容报告 | OpenCode Plugin：动作归一化；OpenWork：请求/审批边界；Security Manager/ServiceHub：策略与审计控制面；模型不参与授权 | 被拒绝动作无副作用；schema 不接收原文/secret；每次工具尝试可关联；关键 hook 版本已验证 |
+| **P0-B：高影响执行护栏** | 危险 Shell/文件、受保护路径、编码混淆、下载执行、SSRF/metadata、网络 egress、重复调用、plugin 自保护、最终输出 DLP | critical policy bundle、capability projection/hash gate、sandbox/Docker/DNS egress 兜底、OpenWork approval、response/artifact/channel sanitizer | Plugin：pre-tool block；OpenWork：require approval 与最终输出；Sandbox/host：OS、网络和容器兜底；Policy：不直接执行工具 | 删除/外发/部署/改权限/读 secret 等高影响动作默认 block/approval；阻断测试证明无 effect；模型缺席不扩大权限 |
+| **P1-A：NSFA Shadow Observation** | 不可信输入/工具结果治理；intent risk signal；provenance/untrusted 标记；memory observe；离线 Generative Reasoning | risk-signal adapter、脱敏 trace 基线、NSFA observe 遥测、攻击/合法样本集、误报/漏报和本地 SKU benchmark | NSFA：只产出 label/confidence/category；Policy Gateway：仍是唯一授权源；Audit：记录模型版本和结果但不保存原文 | 目标设备取得 P50/P95、内存/功耗、Precision/Recall、漏报/误报和合法任务影响；fallback 不扩大权限 |
+| **P1-B：风险辅助收窄** | 将稳定 NSFA 信号送入 Gateway；高置信 signal + P0 高危动作提升风险等级、缩小 scope、require approval 或选择性 block；memory/tool-result 规则从 observe 逐条升级 | 可按规则灰度/回退的 policy bundles、capability-grade projection、规则效果报告 | Gateway：组合风险与确定性规则；OpenWork：审批；NSFA：不可单独放行；Plugin：保留 pre/post 证据 | 规则可独立回退；误报与体验可接受；各 capability grade 的 projection、timeout/OOM/fallback 已验证 |
+| **P2：规模化治理** | 审计完整性/留存、查询/导出、策略灰度、OEM/SKU 配置、可逆操作恢复、选择性 SingGuard 多模态扩展 | durable/append-only 或签名审计、保留与访问策略、SKU 安全 profile、checkpoint/rollback 与 incident runbook | Security Manager：审计查询/策略发布；SandboxManager：资源投影；产品/OEM：SKU 门槛与隐私策略；支持团队：事件复盘 | 隐私、性能、支持成本和收益可接受；审计和恢复能力可演练 |
 
-**NSFA 的最早合适引入点是阶段 C，而不是阶段 A。** 阶段 B 的离线 Generative Reasoning 可以更早启动，因为它不在用户同步主路径；但它的输入必须是脱敏 audit/trajectory 摘要，不能把完整 prompt、文件内容、工具输出或 secret 批量喂给审计模型。
+#### 13.3 设计建议：不要把所有检查都放进同步主路径
 
-#### NSFA 接入契约与降级规则
+| 场景           | 推荐方式                                                                        |
+| ------------ | --------------------------------------------------------------------------- |
+| 普通低风险对话      | 轻量规则或异步审计，不阻塞主回答                                                            |
+| 外部网页、图片、文档   | P1 shadow 期先做轻量 provenance/规则与异步/采样检查；多模态入口的 SingGuard 仅在 benchmark 后进入在线路径 |
+| 工具调用前        | P0 确定性 Policy Gateway 必经；P1 后 NSFA 分类仅作为 risk signal 辅助收窄，不单独放行             |
+| 删除、外发、部署、改权限 | 强制审批或默认拒绝                                                                   |
+| 历史日志和复杂攻击链   | NSFA Generative Reasoning 离线审计                                              |
+| 模型超时/不可用     | 按动作风险选择 fallback；高影响动作 fail-safe                                            |
 
-```text
-SecurityAction（工具、输入或结果的脱敏结构化摘要）
-  → NSFA risk signal { categories, confidence, model_version, latency, fallback_reason? }
-  → Policy Gateway（身份、scope、确定性规则、审批状态、risk signal）
-  → allow | observe | redact | require_approval | block
-```
-
-- NSFA/SingGuard **只能产生 risk signal**；唯一授权源仍是 Policy Gateway + OpenWork approval + sandbox/network 边界。
-- 普通低风险对话不应每轮同步调用 NSFA；优先轻量规则、异步审计或按风险采样。
-- 模型超时、OOM、不可用时：低风险只读 allowlist 动作可按策略 `observe` 后继续；删除、外发、改权限、读取 secret、私网/metadata 访问仍由 P0 确定性规则保持 `block` 或 `require_approval`。
-- NSFA 输入和审计输出默认不包含原文或 secret：传入 action 类型、目标类别、脱敏参数摘要、前序 action 摘要和 policy context；必要时只传 hash/计数/类别。
-- 只有在 shadow 数据证明某类信号稳定，且与 P0 高危动作组合时，才从 `observe` 升级到审批或阻断；每条升级规则必须可单独回退。
-
-#### P0/P1 的责任边界
-
-| 层 | P0 负责什么 | P1/NSFA 负责什么 | 不应承诺什么 |
-|---|---|---|---|
-| 工具执行 | 在副作用前用确定性规则、审批、sandbox/egress 限制危险动作。 | 识别复杂意图、外部内容和异常 action 链，为 P0 策略提供附加风险信号。 | 不因模型“低风险”而跳过 P0 deny/approval。 |
-| 审计 | 记录 pre/post、决策、审批、effect 摘要与 correlation。 | 用离线 trace 分析发现攻击模式、校准规则和阈值。 | 不保存 chain of thought、原始敏感内容，也不把本地 JSONL 称为不可篡改。 |
-| 输入/结果 | 保证高风险动作即使被 prompt injection 诱导也无法越权。 | Observe 用户输入、网页/MCP/文档结果的 injection/jailbreak/外发风险，并标记不可信来源。 | 不能保证检测所有变体；post-tool 检查不能撤销已经发生的副作用。 |
-| 恢复 | 对高危动作先阻断，减少必须恢复的事故。 | 用历史 trace 帮助调查和策略改进。 | 不承诺所有 Shell、网络或删除动作可回滚；checkpoint/rollback 只对可逆操作单独设计。 |
-
----
-
-#### 性能影响与产品取舍
-
-##### 可能增加的成本
-
-1. **延迟**：同步调用模型会增加 P50/P95；多次检查比一次检查更明显；
-2. **本地资源**：模型权重、KV cache、图片编码和并发会占用内存/显存/CPU；
-3. **回答体验**：误报会导致合法任务被拒绝、额外确认或 fallback；
-4. **产品复杂度**：需要配置策略、阈值、超时、审批、日志和回滚；
-5. **可用性风险**：护栏模型加载失败或资源不足时，必须决定 fail-open 还是 fail-safe。
-
-##### 可能带来的正向收益
-
-- 降低 secret 泄露、越权修改和错误外发的概率；
-- 减少高影响事故的潜在损失，而不是提升普通回答速度；
-- 通过完整 trace 缩短问题定位和售后时间；
-- 让 OEM 能够按设备 SKU 交付不同安全等级；
-- 将安全策略变成可配置、可测试、可审计的产品能力。
-
-#### 设计建议：不要把所有检查都放进同步主路径
-
-| 场景 | 推荐方式 |
-|---|---|
-| 普通低风险对话 | 轻量规则或异步审计，不阻塞主回答 |
-| 外部网页、图片、文档 | P1 shadow 期先做轻量 provenance/规则与异步/采样检查；多模态入口的 SingGuard 仅在 benchmark 后进入在线路径 |
-| 工具调用前 | P0 确定性 Policy Gateway 必经；P1 后 NSFA 分类仅作为 risk signal 辅助收窄，不单独放行 |
-| 删除、外发、部署、改权限 | 强制审批或默认拒绝 |
-| 历史日志和复杂攻击链 | NSFA Generative Reasoning 离线审计 |
-| 模型超时/不可用 | 按动作风险选择 fallback；高影响动作 fail-safe |
-
-#### 必须自己测量的本地 benchmark
-
+#### 13.4 必须自己测量的本地 benchmark
 不能直接使用论文中的 A100 45–57 ms 作为本地产品承诺。至少建立以下矩阵：
 
-| 变量 | 测试维度 |
-|---|---|
-| 模型 | NSFA 0.8B/2B/4B；SingGuard 2B/4B/8B（按多模态需求选择） |
-| 设备 | 不同内存/显存 SKU、CPU-only 与 GPU/NPU |
-| 输入 | 短文本、长上下文、图片、工具参数和历史 trace |
-| 并发 | 单用户、多个 Agent、后台审计并行 |
-| 指标 | P50/P95 延迟、峰值内存、CPU/GPU、功耗、加载时间、吞吐 |
-| 质量 | Precision、Recall、F1、漏报、误报、合法任务拒绝率 |
-| 稳定性 | 超时、OOM、模型崩溃、断网、低电量和 fallback |
-
+| 变量  | 测试维度                                         |
+| --- | -------------------------------------------- |
+| 模型  | NSFA 0.8B/2B/4B；SingGuard 2B/4B/8B（按多模态需求选择） |
+| 设备  | 不同内存/显存 SKU、CPU-only 与 GPU/NPU               |
+| 输入  | 短文本、长上下文、图片、工具参数和历史 trace                    |
+| 并发  | 单用户、多个 Agent、后台审计并行                          |
+| 指标  | P50/P95 延迟、峰值内存、CPU/GPU、功耗、加载时间、吞吐           |
+| 质量  | Precision、Recall、F1、漏报、误报、合法任务拒绝率            |
+| 稳定性 | 超时、OOM、模型崩溃、断网、低电量和 fallback                 |
 最终上线门槛应由产品定义：高影响安全风险优先降低漏报；普通合法任务则控制误报和体验损失。
+工程验收至少包括：blocked destructive action 无副作用；审批 deny/timeout 不执行；pre/post/approval/outbound 事件可关联且无原文/secret；各 capability grade projection 正确；超时/OOM/崩溃/断网 fallback 正确；负向测试覆盖 command obfuscation、prompt/tool-result injection、metadata URL、secret、memory poisoning 和重复调用。
 
 ---
 
 ### 14 最终建议：面向管理层的决策页
 
-#### 是否要做？
+#### 14.1 方案的收益与代价
 
-**要做，且应批准为平台能力，而不是一次性模型评测或单点内容审核。** 只要本地类 Claw 能访问用户文件、记忆、网络、Shell、MCP 或外部 API，Agent Security 就是可控交付的基础能力。
+| 选择           | 能获得什么                              | 必须接受什么                             |
+| ------------ | ---------------------------------- | ---------------------------------- |
+| 先做平台底座       | 模型漏判、超时或未部署时，高影响动作仍不能越权；证据和责任边界清楚  | 平台工程量更大，初期看不到“模型分数”收益              |
+| 引入 NSFA 观察   | 发现复杂意图、外部内容和异常 action chain，帮助降低漏报 | 增加延迟、内存/功耗、误报和运维复杂度；观察不等于授权        |
+| 扩展 SingGuard | 覆盖网页/截图/图片/图文等多模态内容风险              | 需要图像处理和更高本地资源；必须按 SKU benchmark    |
+| 不做统一平台       | 短期开发成本较低                           | 插件规则分散，审批可能绕过，无法证明阻断无副作用，事故责任与恢复困难 |
+##### 性能影响与产品取舍
 
-本次建议的决策不是“是否立刻把一个安全模型放到每个请求前”，而是：
+**可能增加的成本**
+1. **延迟**：同步调用模型会增加 P50/P95；多次检查比一次检查更明显；
+2. **本地资源**：模型权重、KV cache、图片编码和并发会占用内存/显存/CPU；
+3. **回答体验**：误报会导致合法任务被拒绝、额外确认或 fallback；
+4. **产品复杂度**：需要配置策略、阈值、超时、审批、日志和回滚；
+5. **可用性风险**：护栏模型加载失败或资源不足时，必须决定 fail-open 还是 fail-safe。
+**可能带来的正向收益**
+- 降低 secret 泄露、越权修改和错误外发的概率；
+- 减少高影响事故的潜在损失，而不是提升普通回答速度；
+- 通过完整 trace 缩短问题定位和售后时间；
+- 让 OEM 能够按设备 SKU 交付不同安全等级；
+- 将安全策略变成可配置、可测试、可审计的产品能力。
+#### 14.2 批准事项 & 放行门槛
 
-1. 批准 P0 平台边界，使高影响动作在模型漏判、超时或不可用时仍不能越权；
-2. 批准在 P0 证据闭环形成后引入 NSFA 的离线审计与 P1 shadow observation；
-3. 在真实设备、真实 trace 和明确回退门槛上决定哪些模型规则值得进入强制路径。
-
-#### 建议批准的实施路径
-
-| 阶段 | 管理层批准的交付物 | NSFA / SingGuard 决策 | 放行条件 |
-|---|---|---|---|
-| **P0-A：动作与证据骨架** | 统一 `SecurityAction`/Policy、工具前后 audit、审批关联、关键动作 correlation；不记录原始敏感内容。 | 不接在线模型；建立脱敏 trace 基线与攻击样本。 | 被拒绝的 Shell/file/network/MCP 动作可证明没有副作用。 |
-| **P0-B：高影响边界** | 危险 Shell/文件、SSRF/metadata、网络 egress、审批、最终输出 DLP；P0 critical rule 用确定性 policy enforce。 | 对脱敏 trace 做离线 NSFA Generative Reasoning，用于发现规则缺口和标注数据，不影响用户执行。 | 高影响动作均有 pre/post/approval/outbound 证据；模型缺席不扩大权限。 |
-| **P1-A：Shadow observation** | 接入 risk-signal adapter、输入/工具结果 provenance、memory observe。 | 首次在线引入 NSFA Real-Time Classification，默认 shadow/observe；纯文本工具 Agent 从 0.8B/2B benchmark 起步。 | 目标 SKU 上完成 P50/P95、内存/功耗、Precision/Recall、漏报、误报与合法任务影响测量。 |
-| **P1-B：选择性收窄** | 将经验证的风险信号送入 Policy Gateway，并保持每条规则可回退。 | 仅“高置信模型信号 + P0 高危动作”可升级为 require approval 或选择性 block；模型永不单独 allow。 | 误报、体验和 fallback 可接受；capability grade 和回退已验证。 |
-| **P2：规模化治理** | 审计完整性/留存、查询 UI、OEM/SKU 策略、可逆操作的恢复能力。 | 根据 benchmark 决定扩大 NSFA、加入 SingGuard 多模态检查或更多在线阶段。 | 隐私、性能、支持成本和产品收益可接受。 |
-
-#### 明确的安全与产品原则
-
-1. **平台先于模型。** Policy Gateway、OpenWork approval、sandbox/network egress 与确定性工具规则是唯一授权边界；模型只产生 risk signal。
-2. **P0 先防副作用，P1 再提升识别。** P0 对删除、外发、改权限、读取 secret、私网/metadata 等高影响动作保持 block/approval，即使 NSFA 超时、OOM 或未部署。
-3. **不把 debug trace 当审计。** P0 建立最小、脱敏、可关联的 pre/post/approval/outbound 审计骨架；不可篡改留存、长期查询 UI 和可逆恢复是 P2 工作，不应在第一版过度承诺。
-4. **不让模型成为唯一拦截器。** Prompt Injection、Jailbreak 和 tool-result injection 在 P1 先 observe；只有与 P0 高危动作组合并经测量后，才选择性升级为审批或阻断。
-5. **性能按风险分层。** 普通低风险对话不强制每轮同步模型检查；离线 NSFA 审计可先于在线 NSFA 启动；SingGuard 仅在有多模态攻击面且 benchmark 证明可接受时引入。
-
-#### 两个模型是否都要做？
-
-- **纯文本、工具型个人 Agent**：P0 不依赖模型；P1 优先评估 NSFA 0.8B/2B shadow observation，SingGuard 延后。
-- **网页/截图/图片/图文产品**：仍先完成 P0；在 P1 用 benchmark 决定 NSFA + SingGuard 是否形成内容层与动作层互补。
-- **资源受限设备**：保留 P0 确定性规则和审批；若 NSFA 不满足性能/功耗门槛，继续离线审计或不上在线模型，不降低 P0 保护。
-- **OEM 多 SKU**：基于 benchmark 为每个 SKU 决定模型大小、是否启用在线 observation、以及可用安全等级；不强制所有设备加载最大模型。
-
-#### 建议批准的 pilot 成功标准
-
-试点不以“模型分数最高”为唯一成功标准。P0 完成后应先能回答：
-
-- 被 block/deny 的高危操作是否确实没有副作用；
-- 是否能关联一次请求的工具前后、审批、最终输出与安全决策，同时不保存原始 secret/PII；
-- 哪些确定性规则已经覆盖最常见的高影响风险，哪些仍需模型辅助判断；
-- P0 模型缺席、超时或故障时，是否始终不会扩大高危权限。
-
-满足这些门槛后，再在 P1 shadow 中回答：
-
-- 哪些真实输入/工具结果风险是 NSFA 能够比规则更早、更准确发现的；
-- NSFA/SingGuard 对这些风险的 Precision、Recall、漏报、误报和合法任务影响是什么；
-- 增加 observation 后的 P50/P95、内存/显存、CPU/GPU、功耗和 fallback 是否符合目标 SKU；
-- 哪些“高置信风险信号 + P0 高危动作”组合值得升级为审批或阻断；
-- 是否值得将模型 observation 产品化为 OEM/SKU 安全等级。
-
-> **最终判断标准不是“模型 benchmark 最高”，而是：在可接受的本地性能成本下，平台能否先阻断高影响未授权动作、留下可解释证据；模型观察是否在此基础上显著降低漏报，而不造成不可接受的误报和体验损失。**
+**批准事项**
+1. **批准 P0 平台底座**：统一策略决策、危险动作拦截、审批、最终输出 DLP、pre/post/approval 审计和 fail-closed 边界。
+2. **批准 P1 模型观察**：P0 证据闭环形成后，引入 NSFA 离线审计和 shadow observation；模型只提供 risk signal。
+3. **批准有限 pilot**：使用真实 trace、真实设备 SKU 和脱敏样本评估模型收益，而不是直接承诺全量在线阻断。
+4. **批准 P2 规模化方向**：是否建设不可变审计、OEM/SKU 安全 profile、恢复演练和 SingGuard 多模态扩展，由 pilot 结果决定。
+**放行门槛**
+- **P0 放行**：被拒绝的 Shell/file/network/MCP 动作可证明无副作用；审批拒绝/超时不执行；关键 pre/post/approval/outbound 证据可关联且不保存原始 secret/PII。
+- **P1 放行**：目标 SKU 完成性能和质量 benchmark；NSFA 的 risk signal 与人工标签/P0 policy 对比可解释；fallback 不扩大高危权限；每条模型辅助规则可独立回退。
+- **P2 放行**：审计留存、隐私、支持成本和恢复演练结果可接受；OEM/SKU 安全等级有可验证配置。
 
 ---
 
