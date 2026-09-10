@@ -31,37 +31,6 @@
       </div>
     </section>
     
-    <section class="slide" data-title="两条实施路径">
-      <div class="stage">
-        <div class="topline"><b>IMPLEMENTATION PATHS</b><span>平台边界与模型判断是两条互补路径</span></div>
-        <div class="eyebrow">10-1 · TWO IMPLEMENTATION PATHS</div>
-        <h2>Agent Security 的两条建设路径</h2>
-        <div class="grid two">
-          <div class="card orange"><span class="pill orange">PATH A · PLATFORM CONTROL</span>
-            <h3>平台边界路径</h3>
-            <p>投入权限、工具网关、workspace sandbox、网络、凭证、审批、trace 和回滚。</p>
-            <ul>
-              <li>即使模型判断错，也尽量做不到越权</li>
-              <li>能力可解释、确定、可审计</li>
-              <li>需要较多平台工程改造</li>
-            </ul>
-          </div>
-          <div class="card teal"><span class="pill teal">PATH B · MODEL JUDGMENT</span>
-            <h3>模型判断路径</h3>
-            <p>投入 SingGuard / SingGuard-NSFA 推理、策略、阈值和模型服务。</p>
-            <ul>
-              <li>覆盖复杂内容、意图偏离和动作风险</li>
-              <li>可能复用已有 Agent 事件流</li>
-              <li>需要验证误报、漏报、延迟和资源占用</li>
-            </ul>
-          </div>
-        </div>
-        <div class="verdict">
-          <p><strong>两条路径互补。</strong>平台控制负责授权、阻断、隔离和恢复；模型判断负责发现复杂意图与内容风险。模型信号最终仍需进入确定性策略与审批闭环。</p>
-        </div>
-      </div>
-    </section>
-    
     <section class="slide" data-title="安全是什么">
       <div class="stage">
         <div class="topline"><b>THE BASICS</b><span>给非安全背景的决策者</span></div>
@@ -543,7 +512,28 @@
         </div>
       </div>
     </section>
-    
+
+    <section class="slide" data-title="两条实施路径">
+      <div class="stage">
+        <div class="topline"><b>IMPLEMENTATION PATHS</b><span>平台边界与模型判断是两条互补路径</span></div>
+        <div class="eyebrow">10-1 · TWO IMPLEMENTATION PATHS</div>
+        <h2>Agent Security 的两条建设路径</h2>
+        <div class="grid two">
+          <div class="card orange"><span class="pill orange">PATH A · PLATFORM CONTROL</span>
+            <h3>平台边界路径</h3>
+            <p>投入权限、工具网关、workspace sandbox、网络、凭证、审批、trace 和回滚。</p>
+            <ul><li>即使模型判断错，也尽量做不到越权</li><li>能力可解释、确定、可审计</li><li>需要较多平台工程改造</li></ul>
+          </div>
+          <div class="card teal"><span class="pill teal">PATH B · MODEL JUDGMENT</span>
+            <h3>模型判断路径</h3>
+            <p>投入 SingGuard / SingGuard-NSFA 推理、策略、阈值和模型服务。</p>
+            <ul><li>覆盖复杂内容、意图偏离和动作风险</li><li>可能复用已有 Agent 事件流</li><li>需要验证误报、漏报、延迟和资源占用</li></ul>
+          </div>
+        </div>
+        <div class="verdict"><p><strong>两条路径互补。</strong>平台控制负责授权、阻断、隔离和恢复；模型判断负责发现复杂意图与内容风险。模型信号最终仍需进入确定性策略与审批闭环。</p></div>
+      </div>
+    </section>
+
     <section class="slide" data-title="模型判断概述">
       <div class="stage">
         <div class="topline"><b>MODEL-BASED JUDGMENT</b><span>使用模型同步判断多种风险类型</span></div>

@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LLM / Agent Security: Decision briefing for senior managers and product managers">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23152220%22/><path d=%22M8 18h16M8 12h10M8 24h12%22 stroke=%22%23f0a35b%22 stroke-width=%223%22 stroke-linecap=%22round%22/></svg>">
+  <title>LLM Security · Decision Canvas</title>
+  <style>
+    :root{--paper:#f4f0e8;--paper2:#ebe5da;--ink:#152220;--muted:#5f6a65;--line:#c9c5bb;--orange:#d87537;--teal:#147f79;--teal2:#d7ebe5;--red:#bd4c3d;--yellow:#f1cf91;--white:#fffdf7;--shadow:0 18px 48px rgba(21,34,32,.12)}
+    *{box-sizing:border-box}html,body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI","Arial",sans-serif}body{overflow:hidden}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;background-image:radial-gradient(rgba(21,34,32,.09) .7px,transparent .7px);background-size:7px 7px;mask-image:linear-gradient(120deg,#000,transparent 70%)}
+    .deck{height:100vh}.slide{display:none;height:100vh;overflow:auto;position:relative;padding:50px clamp(28px,7vw,110px) 62px}.slide.active{display:block;animation:arrive .38s ease both}@keyframes arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .topline{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:13px;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase}.topline b{color:var(--orange);font-family:Georgia,serif;letter-spacing:.04em}.number{font:700 13px Georgia,serif;color:var(--muted)}.stage{max-width:1160px;margin:0 auto}.eyebrow{color:var(--orange);font:700 12px/1.2 Georgia,serif;letter-spacing:.17em;text-transform:uppercase;margin-top:38px}h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400;line-height:1.04;margin:0}h1{font-size:clamp(48px,8.4vw,116px);letter-spacing:-.07em;max-width:1000px;margin:20px 0 26px}h2{font-size:clamp(35px,5.4vw,70px);letter-spacing:-.055em;max-width:1000px;margin:15px 0 30px}h3{font-size:23px;margin-bottom:9px}.orange{color:var(--orange)}.teal{color:var(--teal)}.red{color:var(--red)}.muted{color:var(--muted)}p{font-size:16px;line-height:1.68;color:var(--muted);max-width:900px}.lead{font-size:clamp(20px,2.3vw,28px);line-height:1.45;color:var(--ink);max-width:910px}.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;position:relative}.hero:after{content:"C  I  A";position:absolute;right:-5vw;top:19vh;color:rgba(20,127,121,.08);font:900 clamp(100px,20vw,270px)/1 Georgia,serif;letter-spacing:-.12em;z-index:-1}.ribbon{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:4px;font-size:12px;font-weight:700;width:max-content}.ribbon i{display:block;width:8px;height:8px;border-radius:50%;background:var(--orange)}.verdict{border-left:6px solid var(--orange);background:#fff8ed;padding:19px 22px;margin:28px 0;max-width:890px;box-shadow:var(--shadow)}.verdict p{color:var(--ink);font-size:19px;margin:0}.grid{display:grid;gap:16px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:var(--white);border-radius:10px;padding:28px 30px;box-shadow:var(--shadow)}.card.teal{border-top:4px solid var(--teal)}.card.orange{border-top:4px solid var(--orange)}.card.red{border-top:4px solid var(--red)}.card ul{margin-top:12px;padding-left:20px;line-height:1.75;font-size:15px;color:var(--muted)}.card ul li{margin-bottom:5px}.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;background:var(--paper2);color:var(--muted)}.pill.teal{background:var(--teal2);color:var(--teal)}.pill.orange{background:#fdefd9;color:var(--orange)}.pill.red{background:#fce8e6;color:var(--red)}.big{font:700 clamp(32px,5vw,60px)/1 Georgia,serif;color:var(--orange);display:block;margin-bottom:8px}.metric-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}.map{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin:30px 0;background:var(--line)}.node{background:var(--white);padding:24px 18px;border-right:1px solid var(--line);position:relative}.node:last-child{border-right:0}.node b{display:block;font:700 11px/1.2 Georgia,serif;letter-spacing:.09em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}.node span{font-size:13px;color:var(--muted);line-height:1.5}.node:not(:last-child):after{content:"→";position:absolute;right:-11px;top:50%;transform:translateY(-50%);color:var(--orange);font-weight:700;z-index:2;background:var(--white);padding:2px 0}.flow{display:flex;gap:0;align-items:stretch;margin:20px 0}.step{flex:1;background:var(--white);border-right:1px solid var(--line);padding:18px 16px;position:relative}.step:last-child{border-right:0}.step b{display:block;font:700 12px/1.3 Georgia,serif;letter-spacing:.07em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}.step:not(:last-child):after{content:"→";position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--orange);font-weight:700;z-index:2;background:var(--white);padding:2px 0}.matrix{display:grid;grid-template-columns:1fr 2.5fr 2fr;gap:1px;background:var(--line);margin:24px 0}.matrix>div{background:var(--white);padding:14px 16px;font-size:14px;line-height:1.55;color:var(--muted)}.head{background:var(--paper2)!important;font:700 11px/1.4 Georgia,serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)!important}.label{font-weight:700;color:var(--ink)!important;font-size:14px!important}.code{background:#1e1e1e;color:#d4d4d4;font:13px/1.7 "Consolas","Courier New",monospace;padding:22px 24px;border-radius:8px;margin:22px 0;overflow-x:auto;white-space:pre}.caption{font-size:13px;color:var(--muted);margin-top:8px}.note{font-size:13.5px;line-height:1.65;color:var(--muted);background:var(--paper2);padding:14px 18px;border-radius:6px;margin-top:16px}.quote{font:italic clamp(18px,2.5vw,28px)/1.5 Georgia,serif;color:var(--orange);max-width:900px;margin:20px 0 30px}.table{width:100%;border-collapse:collapse;margin:20px 0}.table th{text-align:left;padding:10px 14px;background:var(--paper2);font:700 12px/1.3 Georgia,serif;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--line)}.table td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);vertical-align:top}.table tr:last-child td{border-bottom:0}.source{position:fixed;left:clamp(28px,7vw,110px);bottom:20px;font-size:11px;color:var(--line);letter-spacing:.06em}.controls{position:fixed;right:clamp(28px,7vw,110px);bottom:22px;display:flex;gap:10px;z-index:20}.btn{background:var(--ink);color:var(--paper);border:0;padding:9px 18px;border-radius:4px;cursor:pointer;font:700 11px/1 Georgia,serif;letter-spacing:.07em;text-transform:uppercase;transition:opacity .2s}.btn:hover{opacity:.78}.progress{background:var(--paper2);width:100px;height:3px;border-radius:2px;align-self:center}.bar{background:var(--orange);height:3px;border-radius:2px;transition:width .3s}
+    @media(max-width:800px){body{overflow:auto}.slide{height:auto;min-height:100vh;padding:30px 21px 80px}.topline{font-size:9px}.two,.three,.four{grid-template-columns:1fr}.map{grid-template-columns:1fr}.map .node{min-height:auto;border-right:0;border-bottom:1px solid var(--line)}.map .node:not(:last-child):after{content:"↓";right:50%;top:auto;bottom:-13px}.matrix{grid-template-columns:1fr}.matrix>div{border-right:0}.matrix .head{display:none}.flow .step:not(:last-child):after{display:none}.source{left:21px}.controls{right:21px}.progress{width:70px}h2{margin-bottom:22px}}
+    .table-container{overflow-x:auto!important}.table-container>div{min-width:860px}@media print{body{overflow:visible;background:#fff}.slide{display:block!important;height:100vh;page-break-after:always}.controls{display:none}}
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <section class="slide active" data-title="Introduction">
+      <div class="stage hero">
+        <div class="topline"><b>LLM / AGENT SECURITY</b><span>Management decision canvas · 2026.08</span></div>
+        <div class="eyebrow">00 · DECISION QUESTIONS</div>
+        <h1>Should we make<br><span class="teal">Security a product feature?</span></h1>
+        <p class="lead">When a local Claw-like assistant can read files, invoke tools, access the network, and execute tasks autonomously, security is no longer just a pre-launch test — it can become a core product capability.</p>
+        <div class="verdict">
+          <p><br>① Does the product need a formal Security feature?<br>② If so, in the first phase: should we focus on strengthening the Agent platform, or first integrate a safety-judgment model?</p>
+        </div>
+        <div class="ribbon"><i></i>Define the decisions first, then compare the paths</div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="What is Security">
+      <div class="stage">
+        <div class="topline"><b>THE BASICS</b><span>For decision-makers without a security background</span></div>
+        <div class="eyebrow">01 · INTRODUCTION</div>
+        <h2>Why do we need a Security feature? Start by distinguishing five core concepts</h2>
+        <p class="lead">Once an Agent produces external side effects, the product must protect not just answer quality, but also the confidentiality, integrity, and availability of models, data, credentials, tools, runtime state, and external systems.</p>
+        <div class="matrix">
+          <div class="head">Concept</div>
+          <div class="head">The question to ask</div>
+          <div class="head">Claw-like example</div>
+          <div class="label">Security</div>
+          <div>Is there an adversarial or unauthorized path that can compromise confidentiality, integrity, or availability?</div>
+          <div>A webpage tricks the Agent into reading a secret key and sending it externally</div>
+          <div class="label">Safety</div>
+          <div>Even without an attacker, could the outcome still cause unacceptable harm?</div>
+          <div>Agent accidentally deletes files or incorrectly modifies code</div>
+          <div class="label">Privacy</div>
+          <div>Does the user control how their data is collected, remembered, inferred, and disclosed?</div>
+          <div>A private conversation is written into long-term memory</div>
+          <div class="label">Reliability</div>
+          <div>Does the system work stably, and can it recover after failure?</div>
+          <div>Tool failure causes an infinite retry loop</div>
+          <div class="label">Robustness</div>
+          <div>When inputs, tools, or network conditions change, do security properties hold?</div>
+          <div>A changed tool response format still causes privilege escalation</div>
+        </div>
+        <div class="note">Refusal rate ≠ security; stable operation ≠ correct permissions; content moderation ≠ runtime isolation.</div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="Describing security problems">
+      <div class="stage">
+        <div class="topline"><b>THREAT MODEL</b><span>Making the problem discussable by engineering and product together</span></div>
+        <div class="eyebrow">02 · PROBLEM DIMENSIONS</div>
+        <h2>Translating "there is a risk" into a verifiable chain</h2>
+        <p class="quote"><span class="teal">Attack Surface</span> → Technique → Asset → Impact → Control → Evidence</p>
+        <div class="grid two">
+          <div class="card">
+            <h3>Example: webpage-induced exfiltration</h3>
+            <ul>
+              <li>Attack surface: webpage / browser tool result</li>
+              <li>Technique: indirect prompt injection</li>
+              <li>Asset: local files, tool permissions, network egress</li>
+              <li>Impact: secret read and exfiltration</li>
+              <li>Control: content judgment + Policy Gateway + sandbox</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Metrics to watch post-launch</h3>
+            <ul>
+              <li>Unauthorized Action Rate</li>
+              <li>Secret Disclosure Rate</li>
+              <li>Denied-call Bypass Rate</li>
+              <li>Privilege Escalation Distance</li>
+              <li>Recovery / Rollback Success Rate</li>
+            </ul>
+          </div>
+        </div>
+        <div class="verdict">
+          <p><strong>Product framing:</strong> We are not trying to make the Agent never make mistakes, but to ensure that high-impact mistakes cannot land without approval, and can be detected, revoked, and reviewed.</p>
+        </div>
+      </div>
+    </section>
+        
+    <section class="slide" data-title="Model vs Agent Security">
+      <div class="stage">
+        <div class="topline"><b>MODEL VS AGENT</b><span>From the model lifecycle to the Agent runtime</span></div>
+        <div class="eyebrow">03 · MODEL SECURITY &amp; AGENT SECURITY</div>
+        <h2>From <span class="teal">model refusals</span> to <span class="orange">side-effect control</span></h2>
+        
+        <div class="grid two" style="margin-top:40px;">
+          <div class="card teal" style="padding: 35px 40px;">
+            <span class="pill teal">MODEL SECURITY</span>
+            <h3>Model lifecycle security</h3>
+            <p>Primarily focuses on data, training, and inference APIs, for example:</p>
+            <ul style="color:var(--muted); line-height:1.7; font-size:15px; margin-top:20px; padding-left:20px;">
+              <li>Data acquisition, cleaning, annotation, licensing, and privacy;</li>
+              <li>Pre-training, fine-tuning, alignment, and evaluation configuration;</li>
+              <li>Weights, checkpoints, quantization files, and dependency supply chain;</li>
+              <li>Inference API, authentication, rate-limiting, logging, and multi-tenant isolation;</li>
+              <li>Model behavior: jailbreaks, Prompt Injection, and refusal bypasses.</li>
+            </ul>
+            <div class="note" style="margin-top:25px;">Typical controls: data provenance, dependency hashing, access control.</div>
+          </div>
+          
+          <div class="card orange" style="padding: 35px 40px;">
+            <span class="pill orange">AGENT SECURITY</span>
+            <h3>Agent runtime security</h3>
+            <p>Agent Security adds the following on top of Model Security:</p>
+            <ul style="color:var(--muted); line-height:1.7; font-size:15px; margin-top:20px; padding-left:20px;">
+              <li>Harness / Orchestrator and task goals;</li>
+              <li>Prompt/context assembly;</li>
+              <li>Memory/RAG/state persistence;</li>
+              <li>Tool/API/MCP/connectors;</li>
+              <li>Identity, permissions, approvals, and user confirmation;</li>
+              <li>Sandbox, host machine, network, and credentials;</li>
+              <li>Monitoring, rollback, and incident response.</li>
+            </ul>
+            <div class="note" style="margin-top:25px;">For local Claw-like products, the main security focus is Agent Security — not just refusal-rate optimization.</div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 25px 30px; background: white; border: 1px solid var(--line); border-radius: 8px;">
+          <div class="flow" style="margin-bottom: 20px;">
+            <div class="step"><b>Content</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">web/doc/skill/tool results</span></div>
+            <div class="step"><b>Orchestration</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">goal/planning/retry/sub-agent</span></div>
+            <div class="step"><b>Memory</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">RAG/state/long-term memory</span></div>
+            <div class="step"><b>Tools &amp; Runtime</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">MCP/Shell/API/network/sandbox</span></div>
+          </div>
+          <div class="flow">
+            <div class="step"><b>Model</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">data/weights/inference</span></div>
+            <div class="step"><b>Agent</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">harness/context/memory/tools</span></div>
+            <div class="step"><b>Boundary</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">identity/permissions/network/host</span></div>
+            <div class="step"><b>Response</b><span style="display:block;font-size:12px;margin-top:6px;opacity:0.85;font-weight:normal;">monitor/isolate/revoke/rollback</span></div>
+          </div>
+          <div class="note" style="margin-top: 25px;">Both decompositions apply simultaneously: the top row "Content → Orchestration → Memory → Tools &amp; Runtime" partitions by Agent runtime attack surface; "Model → Agent → Boundary → Response" partitions by system control layer. The former helps find attack entry points; the latter helps assign control responsibility.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="An attack chain">
+      <div class="stage">
+        <div class="topline"><b>WHY AGENT SECURITY</b><span>From a single sentence to real side effects</span></div>
+        <div class="eyebrow">04 · ATTACK SPECTRUM</div>
+        <h2>A chat model's mistake is "wrong answer"; an Agent's mistake may be "already done"</h2>
+        <div class="map">
+          <div class="node"><b>UNTRUSTED</b><span>Web pages, documents, Skills, MCP results</span></div>
+          <div class="node"><b>CONTEXT</b><span>Content enters prompt / memory</span></div>
+          <div class="node"><b>PLAN</b><span>Goal is altered, planning continues</span></div>
+          <div class="node"><b>TOOL</b><span>Shell, file, network, API</span></div>
+          <div class="node"><b>EFFECT</b><span>Read/write, exfiltration, deploy, persist</span></div>
+        </div>
+        <div class="grid two">
+          <div class="card red">
+            <h3>An attack chain is not a single-point problem</h3>
+            <p>OpenAI–Hugging Face research demonstrates how a capable Agent, a loosely-constrained Harness, code-execution tools, a data pipeline, credentials, and a network boundary can combine into a cross-boundary attack chain.</p>
+          </div>
+          <div class="card teal">
+            <h3>The product must control combined capabilities</h3>
+            <p>It is not enough to ask "is this sentence dangerous?" — we also need to ask who is acting, on what resource, with what parameters, what side effects will occur, and how to recover if something goes wrong.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+        
+    <section class="slide" data-title="Full-lifecycle security architecture">
+      <div class="stage">
+        <div class="topline"><b>ARCHITECTURE</b><span>Security decisions before side effects</span></div>
+        <div class="eyebrow">05 · FULL-LIFECYCLE SECURITY</div>
+        <h2>Place security decisions<br><span class="teal">before side effects occur</span></h2>
+        <p class="lead" style="max-width: 1000px;">Models and rules are responsible for detecting risk; runtime policy is responsible for deciding whether an action can actually be taken. At every step from untrusted content to real side effects, bind <b>user goals, identity/permissions, resource scope, and recoverability</b> as enforceable constraints.</p>
+
+        <div class="flow" style="margin-top:35px;margin-bottom:30px;">
+          <div class="step"><b>INPUT / CONTEXT</b><span>Source tagging · Injection detection</span></div>
+          <div class="step"><b>GOAL / PLAN</b><span>Goal binding · Budget pre-check</span></div>
+          <div class="step"><b>MEMORY</b><span>Isolation · Provenance · TTL</span></div>
+          <div class="step"><b>TOOL / ACTION</b><span>Gateway · Sandbox · Parameters</span></div>
+          <div class="step"><b>OUTPUT / EGRESS</b><span>Redaction · Destination · Confirmation</span></div>
+        </div>
+        
+        <div class="table-container" style="margin: 0 0 30px 0; background: rgba(255,253,247,.75); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow);">
+          <div style="display: grid; grid-template-columns: 1.2fr 1.6fr 2.2fr 1.2fr; gap: 1px; background: var(--line);">
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">Node</div>
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">Key risks</div>
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">Pre-execution controls</div>
+            <div style="background: var(--paper2); padding: 10px 15px; font-size: 11px; font-weight: bold; color: var(--muted); text-transform: uppercase;">Required evidence</div>
+
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">Input / Context</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Prompt injection<br>Malicious web/Skill/tool results</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Tag untrusted sources; isolate data from instructions; risk scoring</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Source, content summary<br>Trust level, determination</div>
+
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">Goal / Plan</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Goal drift, implicit privilege escalation<br>Infinite loops</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Bind user goals to allowed resources and actions; limit steps, retries, and sub-Agents</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Goal, scope, plan version<br>Budget and approval rationale</div>
+
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">Memory</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Memory poisoning<br>Cross-task propagation, covert persistence</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Isolate by user/project/task; record provenance; apply policy checks and TTL to writes</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Read/write provenance, namespace<br>Retention period, contamination handling</div>
+
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--red); font-weight: bold;">Tool / Action</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Unauthorized read/write, dangerous Shell<br>SSRF, credential abuse</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Capability Gateway authorizes by identity, resource, parameters, and time window; execute in sandbox</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Tool, parameters<br>Authorization decision, actual effect</div>
+
+            <div style="background: var(--white); padding: 12px 15px; font-size: 14px; color: var(--teal); font-weight: bold;">Output / Egress</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--ink); line-height: 1.5;">Sensitive data leakage, wrong publish/send<br>Irreversible external side effects</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Redact secrets/PII; require confirmation for external sends; restrict egress destination</div>
+            <div style="background: var(--white); padding: 12px 15px; font-size: 13px; color: var(--muted); line-height: 1.5;">Destination, recipient<br>Redaction result, confirmation record</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+          <div>
+            <h3 style="font-size:15px; color:var(--ink); margin-bottom:8px; border-bottom:1px solid var(--orange); padding-bottom:6px; display:inline-block;">Runtime Enforcement &amp; Recovery</h3>
+            <p style="font-size:14px; color:var(--muted); line-height:1.6;">All high-impact actions pass through a unified gateway. A complete trace threads through everything, supporting anomaly detection, workspace isolation, credential revocation, reversal of reversible actions, and post-incident review. Irreversible actions raise the approval level by default; the final outcome can only be <b>Allow / Block / Approval</b>.</p>
+          </div>
+          <div>
+            <h3 style="font-size:15px; color:var(--ink); margin-bottom:8px; border-bottom:1px solid var(--teal); padding-bottom:6px; display:inline-block;">Observe before Enforce</h3>
+            <p style="font-size:14px; color:var(--muted); line-height:1.6;">First run in observe mode to record actions that would be blocked, calibrating false positives and user experience; then enable enforcement for high-confidence policies. Policies are promoted in tiers by risk level — not all blocked at once.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="slide" data-title="Unsafe Action">
+      <div class="stage">
+        <div class="topline"><b>UNSAFE ACTION JUDGE</b><span>Breaking down "dangerous" into judgeable objects</span></div>
+        <div class="eyebrow">06 · BASIC DEFINITION</div>
+        <h2>A security judgment must answer simultaneously: what is intended, what is authorized, and what actually happens</h2>
+        <div class="grid three">
+          <div class="card teal"><span class="big">01</span>
+            <h3>Intent</h3>
+            <p>Does the Agent's plan and tool parameters serve the user's task?</p>
+            <p class="caption">"Organize the project" should not automatically expand into reading secrets, accessing a production database, or sending emails.</p>
+          </div>
+          <div class="card orange"><span class="big">02</span>
+            <h3>Authorization</h3>
+            <p>Is the current user, task, resource, and time window actually authorized?</p>
+            <p class="caption">A user's goal is not a permissions grant; read ≠ delete; project A ≠ project B.</p>
+          </div>
+          <div class="card red"><span class="big">03</span>
+            <h3>Observed Effect</h3>
+            <p>What are the actual file, network, credential, memory, and external side effects?</p>
+            <p class="caption">We cannot rely only on the Agent's natural-language explanation — we need to see the full parameters and real trace.</p>
+          </div>
+        </div>
+        <div class="grid two" style="margin-top:18px">
+          <div class="card">
+            <h3>Unsafe Action dimensions</h3>
+            <p>Authorization overstep, intent misalignment, excessive capability, secret disclosure, action integrity, external side effects, runtime boundary breach, persistent propagation, resource abuse.</p>
+          </div>
+          <div class="card">
+            <h3>Why not just one classifier?</h3>
+            <p>A single action may be low-risk, but a sequence of actions can form a complete exfiltration chain: secret → context → tool → external API. State and historical trace must be factored in.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Security Dimensions">
+      <div class="stage">
+        <div class="topline"><b>DIMENSIONS</b><span>Not simply Prompt + Classifier</span></div>
+        <div class="eyebrow">07 · AGENT SECURITY DIMENSIONS</div>
+        <h2>Decomposing Agent security dimensions</h2>
+        <div class="grid three" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>1. Authorization Boundary</h3>
+            <p><b>Authorization overstep</b>: allowed to read but performs deletion; accesses project B; normal user calls admin API; query becomes write.</p>
+          </div>
+          <div class="card">
+            <h3>2. Intent Alignment</h3>
+            <p><b>Intent misalignment</b>: action deviates from the task or the Agent autonomously adds goals. Suitable for model or human review — cannot solely determine permissions.</p>
+          </div>
+          <div class="card">
+            <h3>3. Excessive Agency</h3>
+            <p><b>Excessive capability</b>: arbitrary Shell/SQL; tool permissions cross boundaries; high-impact actions require no approval or rollback.</p>
+          </div>
+          <div class="card">
+            <h3>4. Confidentiality</h3>
+            <p><b>Confidentiality violation</b>: exfiltrating confidential data. Without explicit declassification, data flows should be refused.</p>
+          </div>
+          <div class="card">
+            <h3>5. Integrity</h3>
+            <p><b>Integrity violation</b>: wrong goal or parameters; modifying the wrong file, paying the wrong amount, or using untrusted content as a parameter.</p>
+          </div>
+          <div class="card">
+            <h3>6. External Side Effect</h3>
+            <p><b>External side effects</b>: single-step or cumulative impact of an action. Deletions, payments, emails, and public publications typically require approval.</p>
+          </div>
+          <div class="card">
+            <h3>7. Runtime Boundary</h3>
+            <p><b>Runtime breach</b>: accessing files outside the workspace or host machine credentials. Must be enforced by the OS and runtime.</p>
+          </div>
+          <div class="card">
+            <h3>8. Persistence</h3>
+            <p><b>Persistent propagation</b>: malicious content entering long-term memory, RAG, other Agents, configs, or the next session.</p>
+          </div>
+          <div class="card">
+            <h3>9. Availability</h3>
+            <p><b>Resource abuse</b>: infinite loops, retry storms, tool-call storms, token exhaustion, large-scale cloud resource operations.</p>
+          </div>
+        </div>
+
+        <div class="verdict" style="margin: 0;">
+          <p><b>Unified input for Unsafe Action judgment</b>: action type + target resource + full parameters + current state + user authorization + action history + expected side effects</p>
+          <p class="muted" style="font-size:14px; margin-top:8px;">* Security judgment must never pass a natural-language answer snippet to a single classifier alone.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Security Envelope">
+      <div class="stage">
+        <div class="topline"><b>SECURITY ENVELOPE</b><span>Writing capability boundaries as a product contract</span></div>
+        <div class="eyebrow">08 · SECURITY ENVELOPE</div>
+        <h2>Security Envelope: within what boundaries can an Agent act?</h2>
+        <p class="lead">It is not a system prompt — it is an enforceable boundary binding identity, task, resources, time, and side effects.</p>
+        <div class="grid four">
+          <div class="card"><span class="big">Who</span>
+            <div class="metric-title">Identity</div>
+            <p>Who is requesting? Under whose identity does the Agent execute?</p>
+          </div>
+          <div class="card"><span class="big">Goal</span>
+            <div class="metric-title">Intent</div>
+            <p>What is the current task's objective and prohibited actions?</p>
+          </div>
+          <div class="card"><span class="big">Capability</span>
+            <div class="metric-title">Capability</div>
+            <p>Which read, write, delete, send, and execute actions are permitted?</p>
+          </div>
+          <div class="card"><span class="big">Resource</span>
+            <div class="metric-title">Resource</div>
+            <p>Which paths, domains, databases, MCPs, and Skills are allowed?</p>
+          </div>
+          <div class="card"><span class="big">Time</span>
+            <div class="metric-title">Time</div>
+            <p>How long is the authorization valid; does it require re-confirmation?</p>
+          </div>
+          <div class="card"><span class="big">Impact</span>
+            <div class="metric-title">Impact</div>
+            <p>Which actions can run automatically; which require approval?</p>
+          </div>
+          <div class="card"><span class="big">Recovery</span>
+            <div class="metric-title">Recovery</div>
+            <p>How to revoke, isolate, rollback, and preserve evidence?</p>
+          </div>
+        </div>
+        <div class="code" style="font-size: 13px; text-align: left; background: #1e1e1e; padding: 12px; border-radius: 6px;">
+          <div style="color: #6a9955; margin-bottom: 8px;"># Example: user says "organize the project"</div>
+          <pre style="margin: 0; color: #d4d4d4;"><code><span style="color: #9cdcfe;">identity</span>: <span style="color: #ce9178;">current_user</span>
+<span style="color: #9cdcfe;">intent</span>: <span style="color: #ce9178;">summarize_and_format_project</span>
+<span style="color: #9cdcfe;">allowed_paths</span>:
+  - <span style="color: #ce9178;">current_workspace</span>
+<span style="color: #9cdcfe;">allowed_operations</span>:
+  - <span style="color: #ce9178;">read</span>
+  - <span style="color: #ce9178;">write_markdown</span>
+<span style="color: #9cdcfe;">blocked_operations</span>:
+  - <span style="color: #ce9178;">read_secrets</span>
+  - <span style="color: #ce9178;">delete</span>
+  - <span style="color: #ce9178;">external_upload</span>
+  - <span style="color: #ce9178;">install_package</span>
+<span style="color: #9cdcfe;">network</span>: <span style="color: #ce9178;">deny_by_default</span>
+<span style="color: #9cdcfe;">approval_required</span>:
+  - <span style="color: #ce9178;">delete</span>
+  - <span style="color: #ce9178;">external_send</span>
+  - <span style="color: #ce9178;">deploy</span>
+<span style="color: #9cdcfe;">expires_in</span>: <span style="color: #b5cea8;">30m</span></code></pre>
+        </div>
+        <p class="muted" style="font-size:14px; margin-top:8px;">* Models can help understand intent, identify risks, and explain decisions, but the Security Envelope must ultimately rest on deterministic policy, a tool gateway, OS permissions, network controls, and sandbox.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Benefits">
+      <div class="stage">
+        <div class="topline"><b>WHY INVEST</b><span>Security is product trustworthiness, not just compliance cost</span></div>
+        <div class="eyebrow">09 · BENEFITS</div>
+        <h2>Investing in security earns: "safe to use, deliverable, and recoverable when things go wrong"</h2>
+        <div class="grid two">
+          <div class="card teal"><span class="pill teal">C-END USER</span>
+            <h3>For end users of locally-deployed Claw-like apps</h3>
+            <ul>
+              <li><strong>Lower fear cost:</strong> users know the Agent will not casually read and exfiltrate local files just because of a webpage;</li>
+              <li><strong>Protect personal assets:</strong> local documents, photos, browser sessions, SSH keys, cloud credentials, and long-term memory have clear boundaries;</li>
+              <li><strong>High-impact actions are controllable:</strong> deletions, sends, deployments, and permission changes can be previewed, confirmed, or rolled back;</li>
+              <li><strong>Less invisible data leakage:</strong> network egress and tool parameters are controlled;</li>
+              <li><strong>Problems are explainable:</strong> when a denial occurs, it is possible to state which policy, which resource, and which action triggered it.</li>
+            </ul>
+          </div>
+          <div class="card orange"><span class="pill orange">OEM / PLATFORM</span>
+            <h3>For OEMs deploying local applications</h3>
+            <ul>
+              <li><strong>Lower incident cost:</strong> reduce data breaches, privilege escalation, malicious Skill/MCP events, and supply-chain incidents;</li>
+              <li><strong>Improve delivery credibility:</strong> security policies, audit logs, and versioned configs can become part of the product contract;</li>
+              <li><strong>Reduce post-sale diagnostic cost:</strong> with a full trace, model issues, tool issues, and platform permission issues can be distinguished;</li>
+              <li><strong>Support product tiering:</strong> standard SKUs use lightweight rules; premium SKUs offer local security models and stronger auditing;</li>
+              <li><strong>Create differentiation:</strong> "controllable Agent" as an OEM delivery capability, rather than just comparing model answer quality.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="verdict">
+          <p><strong>Mistaken expectations to avoid:</strong></p>
+          <ul style="margin-top: 8px; margin-bottom: 0;">
+            <li>A security layer does not automatically improve model factual accuracy;</li>
+            <li>Model guardrails do not replace source code and dependency vulnerability scanning;</li>
+            <li>Security capabilities will have false positives, false negatives, and resource costs;</li>
+            <li>A single benchmark cannot prove all user scenarios are secure.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Task classification">
+      <div class="stage">
+        <div class="topline"><b>TASK CLASSIFICATION</b><span>Decomposing security tasks from different perspectives</span></div>
+        <div class="eyebrow">10 · IMPLEMENTATION</div>
+        <h2 style="margin-bottom: 20px;">Three classification perspectives for implementation tasks</h2>
+        
+        <div class="eyebrow" style="margin-top: 15px; margin-bottom: 15px;">Classification 1: by lifecycle and supply side</div>
+        <div class="grid four">
+          <div class="card">
+            <h3 style="font-size: 16px;">Model / Data supply chain</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>Models, weights, datasets, dependencies</li>
+              <li>Skill/MCP source and version</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 16px;">Agent runtime</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>Harness, Prompt/context</li>
+              <li>Memory/RAG, tools, identity</li>
+              <li>Approvals, Sandbox</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 16px;">External effect</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>Files, databases, network, messages</li>
+              <li>Deploy and business APIs</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 16px;">Observability / Response</h3>
+            <ul style="margin-top: 8px; padding-left: 20px;">
+              <li>Logging, alerting, revocation, isolation</li>
+              <li>Rollback and post-incident review</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="eyebrow" style="margin-top: 30px; margin-bottom: 15px;">Classification 2: by "judgment/scanning" vs "execution/blocking" action type</div>
+        <div class="matrix">
+          <div class="head">Category</div>
+          <div class="head">Primary capability</div>
+          <div class="head">Example</div>
+          <div class="label">Judgment / Scanning</div>
+          <div>Models, rules, red-teaming, log analysis, human review</div>
+          <div>SingGuard, SingGuard-NSFA, static scanning</div>
+          <div class="label">Authorization</div>
+          <div>Binding user, task, resource, time, and side effects</div>
+          <div>Policy Gateway, Capability Gateway</div>
+          <div class="label">Execution / Blocking</div>
+          <div>OS, network, container, tool, and credential restrictions</div>
+          <div>Sandbox, allowlist, IAM, approvals</div>
+          <div class="label">Recovery</div>
+          <div>Revocation, isolation, rollback, reconstruction, evidence preservation</div>
+          <div>Incident Response</div>
+        </div>
+
+        <div class="eyebrow" style="margin-top: 30px; margin-bottom: 15px;">Classification 3: different threat types at the same entry point (using "tool call" as an example)</div>
+        <div class="grid three">
+          <div class="card">
+            <h3 style="font-size: 15px;">Prompt Injection</h3>
+            <p>Do tool parameters originate from untrusted content?</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Authorization</h3>
+            <p>Is the user authorized to invoke this?</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Data Leakage</h3>
+            <p>Do the parameters carry out a secret?</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Integrity</h3>
+            <p>Have the goal and parameters been tampered with?</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Runtime</h3>
+            <p>Does the path or network exceed permitted boundaries?</p>
+          </div>
+          <div class="card">
+            <h3 style="font-size: 15px;">Availability</h3>
+            <p>Does the call exceed its time, count, or resource budget?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Two implementation paths">
+      <div class="stage">
+        <div class="topline"><b>IMPLEMENTATION PATHS</b><span>Platform boundary and model judgment are two complementary paths</span></div>
+        <div class="eyebrow">10-1 · TWO IMPLEMENTATION PATHS</div>
+        <h2>Two build paths for Agent Security</h2>
+        <div class="grid two">
+          <div class="card orange"><span class="pill orange">PATH A · PLATFORM CONTROL</span>
+            <h3>Platform boundary path</h3>
+            <p>Invest in permissions, tool gateway, workspace sandbox, network, credentials, approvals, trace, and rollback.</p>
+            <ul><li>Even if the model judges incorrectly, privilege escalation is still prevented by the platform</li><li>Capabilities are explainable, deterministic, and auditable</li><li>Requires significant platform engineering work</li></ul>
+          </div>
+          <div class="card teal"><span class="pill teal">PATH B · MODEL JUDGMENT</span>
+            <h3>Model judgment path</h3>
+            <p>Invest in SingGuard / SingGuard-NSFA inference, policies, thresholds, and model serving.</p>
+            <ul><li>Covers complex content, intent misalignment, and action risk</li><li>May reuse existing Agent event streams</li><li>Requires validating false positives, false negatives, latency, and resource usage</li></ul>
+          </div>
+        </div>
+        <div class="verdict"><p><strong>The two paths are complementary.</strong> Platform controls handle authorization, blocking, isolation, and recovery; model judgment handles discovery of complex intent and content risks. Model signals must ultimately feed into a deterministic policy and approval loop.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Model-based judgment overview">
+      <div class="stage">
+        <div class="topline"><b>MODEL-BASED JUDGMENT</b><span>Using models to simultaneously judge multiple risk types</span></div>
+        <div class="eyebrow">11-0 · OVERVIEW</div>
+        <h2>Approach 1: Use models to simultaneously judge multiple risk types</h2>
+        <div class="grid two">
+          <div class="card">
+            <h3>Model 1: SingGuard</h3>
+            <p>A policy-adaptable multimodal LLM safety guardrail. Part of a two-tier model architecture, primarily responsible for safety of multimodal inputs and content.</p>
+          </div>
+          <div class="card">
+            <h3>Model 2: SingGuard-NSFA</h3>
+            <p>A text guardrail framework for Agent operation risks. Prioritized for text-only, tool-based local Agents. Focused on intent and action risk judgment during operation and execution.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="Candidate model comparison">
+      <div class="stage">
+        <div class="topline"><b>COMPARISON</b><span>Model capability comparison</span></div>
+        <div class="eyebrow">11-1 · COMPLEMENTARY RELATIONSHIP</div>
+        <h2 style="font-size: clamp(28px, 4vw, 48px); margin-bottom: 15px;">SingGuard &amp; SingGuard-NSFA comprehensive comparison</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-height: 55vh; overflow-y: auto; padding-right: 10px;">
+          
+          <div style="background: var(--white); border-radius: 8px; padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;">
+            <h3 style="color: var(--teal); border-bottom: 2px solid var(--teal); padding-bottom: 8px; margin: 0; font-size: 18px;">SingGuard</h3>
+            
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">1. Model positioning</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Policy-adaptable multimodal LLM safety guardrail.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">2. Capability coverage</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Judges whether text, images, and combined image-text content violates policy; covers Prompt Injection, jailbreaks, sensitive content, and custom business policy violations.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">3. Input/output adaptation</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Input: text, images, image-text, natural-language <code>policy</code>. Output: <code>safe/unsafe</code>, matched risk categories, policy-related analysis.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">4. Base model and scale</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Qwen3-VL, 2B/4B/8B, Apache 2.0.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">5. Training architecture</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Unified text/multimodal safety data SFT; paper reports Fast-Slow Decoupled DAPO for dynamic reasoning optimization. Full training set source, scale, and mix ratios are not fully public.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">6. Risk taxonomy and safety benchmark</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">SingGuard-Bench ~56,340 samples. 8B reported: Image Safety F1 0.903, Text Query F1 0.874, Multimodal Safety F1 0.877, Text Response F1 0.893; Dynamic Rule (2,000 samples) policy-following accuracy 0.7415.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">7. Deployment benchmark / caveats</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Multimodal models require image processing and higher memory/VRAM; public resources contain no directly committable local end-to-end SLA — benchmark model loading, image resolution, context length, concurrency, and P95 latency per device SKU.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">8. Claw-like integration point</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Before user input/web pages/images enter the Agent, and before Agent output/content to be displayed returns to the user. Can also inspect text descriptions of tool calls.</div>
+            </div>
+          </div>
+          
+          <div style="background: var(--white); border-radius: 8px; padding: 20px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 12px;">
+            <h3 style="color: var(--blue); border-bottom: 2px solid var(--blue); padding-bottom: 8px; margin: 0; font-size: 18px;">SingGuard-NSFA</h3>
+            
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">1. Model positioning</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Text guardrail framework for Agent operation risks.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">2. Capability coverage</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Judges Prompt Injection/Jailbreak, malicious code and network attacks, sensitive information theft/exfiltration, dangerous operations/tool abuse, resource abuse and dangerous action generation.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">3. Input/output adaptation</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Input: user requests, external content, plans, tool name/full parameters, tool results, text representation of final output; recommend distinguishing <code>untrusted_input</code> from <code>untrusted_output</code>. Output: risk category, generative risk analysis, or real-time classification risk probability.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">4. Base model and scale</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Qwen3.5-Base, 0.8B/2B/4B/9B, Apache 2.0.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">5. Training architecture</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Risk-analysis data SFT; after freezing the SFT backbone, lightweight MLP classification heads are trained for different risk domains; new risks require only training a new classification head.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">6. Risk taxonomy and safety benchmark</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">7 first-level domains, 28 second-level risks, 185 third-level variants; 93,000+ purpose-built multilingual samples (133 languages), 3,435 cross-source samples. All four scales purpose-built ≥94% F1; 9B cross-source F1 91.29%; 6–12 F1 percentage points above competing products.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">7. Deployment benchmark / caveats</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">Real-Time Classification on A100 is ~45–57 ms/sample; for reference only — <strong>not a local device SLA</strong>. Locally, benchmark model loading memory, CPU/GPU, concurrency, context length, P50/P95 latency, and timeout behavior.</div>
+            </div>
+
+            <div>
+              <strong style="color: var(--ink); font-size: 13px; display: block; margin-bottom: 2px;">8. Claw-like integration point</strong>
+              <div style="font-size: 13px; color: var(--muted); line-height: 1.4;">User input inspection, Agent plan and tool parameter inspection, result and outbound content inspection; thereafter the result must pass into a deterministic Policy Gateway to decide execution or refusal.</div>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 20px; background: var(--offwhite); padding: 15px; border-radius: 6px; border-left: 4px solid var(--red); font-size: 14px; line-height: 1.4; color: var(--ink);">
+          <strong>Shared boundary:</strong> Neither model replaces deterministic authorization and execution controls; neither is responsible for real file permissions, API authorization, network isolation, sandbox, source/dependency vulnerability scanning, or recovery systems.
+        </div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="11-2 · Integration">
+      <div class="stage">
+        <div class="topline"><b>INTEGRATION</b><span>Modes, integration, and deployment considerations</span></div>
+        <div class="eyebrow">11-2 · NSFA MODES &amp; INTEGRATION</div>
+        <h2>NSFA operating modes and runtime integration chain</h2>
+        
+        <p>NSFA should be integrated as a <strong>risk judge for the Agent runtime</strong>, not as a replacement for the tool gateway or a direct action executor. The Orchestrator is recommended to assemble structured context at every observable event and call NSFA; then pass the risk result, user identity, Security Envelope, and deterministic rules together to the Policy Gateway for decision-making.</p>
+
+        <div class="grid two" style="margin-bottom: 24px;">
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">Lifecycle data flow</h3>
+            <div class="code" style="font-size: 12px; line-height: 1.5; padding: 12px; white-space: pre;">User / External content
+    ↓  [input check]
+Agent Planner
+    ↓  [plan check]
+Tool call proposal (tool + full parameters)
+    ↓  [pre-action check]
+Policy Gateway (identity+scope+risk+deterministic rules)
+    ├─ allow  → Sandbox / tool execution
+    ├─ approval → execute after user confirmation
+    └─ block  → return explainable refusal
+                        ↓
+             Tool result / outbound content / memory write
+                        ↓  [result, egress &amp; persistence check]
+                    Audit Trace / Recovery</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">Call contract (structured context)</h3>
+            <p style="font-size: 13px; margin-bottom: 10px;">Each call must retain at least the following structure, rather than just passing a prompt:</p>
+            <div class="code" style="font-size: 12px; line-height: 1.5; padding: 12px; white-space: pre;">&lt;untrusted_input&gt;user request, web pages, documents, etc.&lt;/untrusted_input&gt;
+&lt;untrusted_output&gt;Agent plan, tool calls, results, etc.&lt;/untrusted_output&gt;
+
+task / intent / user_identity / session_id
+tool_name / full_parameters / target_resource
+security_envelope / prior_actions / observed_effect / expected_side_effect</div>
+            <p style="font-size: 13px; margin-top: 10px;">NSFA outputs risk categories/probabilities/generative analysis (<strong>as signals and audit evidence only</strong>). Final authorization is made by the Policy Gateway.</p>
+          </div>
+        </div>
+
+        <h3 style="font-size: 18px; margin-bottom: 12px;">Recommended five integration stages</h3>
+        <div style="overflow-x: auto; margin-bottom: 24px;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--line); color: var(--ink);">
+                <th style="padding: 8px 4px; width: 18%;">Stage</th>
+                <th style="padding: 8px 4px; width: 28%;">Events to send to NSFA</th>
+                <th style="padding: 8px 4px; width: 24%;">Key judgments</th>
+                <th style="padding: 8px 4px; width: 30%;">How to use the result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">1. Input and context ingestion</td>
+                <td style="padding: 8px 4px; color: var(--muted);">User requests, web page/document/Skill/MCP tool results, retrieval results</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Prompt Injection, Jailbreak, malicious code/network attack instructions, secret extraction attempts</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Tag risk and provenance; high-risk content must not directly become Agent instructions — downgrade/isolate/rephrase.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">2. After plan generation</td>
+                <td style="padding: 8px 4px; color: var(--muted);">User goal, current Security Envelope, Agent plan, proposed tool set</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Intent misalignment, implicit privilege escalation, excessive autonomy, cross-task goal propagation</td>
+                <td style="padding: 8px 4px; color: var(--muted);">If plan fails, require reduced scope, removal of high-risk steps, or escalation to human confirmation.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">3. Before each tool call</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Tool name, full parameters, target path/account, current identity, action history, expected side effects</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Tool abuse, sensitive data exfiltration, dangerous operations, SSRF, resource abuse</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Feed risk to Policy Gateway; combine with allowlist/permissions to produce <strong>allow / approval / block</strong>.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">4. After tool result is written</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Tool stdout/stderr, actual file effect, memory write candidates, retry chain</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Tool result injection, secret flowing back into context, memory poisoning, abnormal retries</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Tag results by trust level; block high-risk writes to long-term memory; trigger termination/scope tightening.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 8px 4px; font-weight: bold; color: var(--teal);">5. Before final output and egress</td>
+                <td style="padding: 8px 4px; color: var(--muted);">User-facing response, email/message/API payload, attachments and recipient</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Sensitive information leakage, dangerous action instructions being re-executed, wrong destination, irreversible send</td>
+                <td style="padding: 8px 4px; color: var(--muted);">Redact or rewrite output; high-impact actions like external sends are still decided by Policy Gateway/user.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid two">
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">How the two modes divide work</h3>
+            <ul style="font-size: 13px; color: var(--muted); padding-left: 20px; line-height: 1.5; margin: 0;">
+              <li style="margin-bottom: 8px;"><strong>Real-Time Classification</strong>: placed in the online path of stages 1, 3, 4, and 5; suitable for high-frequency, latency-sensitive input, tool call, result, and egress checks; timeout budgets should be set by action level.</li>
+              <li><strong>Generative Reasoning</strong>: used for complex plan review in stage 2, as well as offline trace auditing, incident investigation, human review, and policy tuning; should not become a synchronous upstream dependency for all low-risk tool calls.</li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px;">Failure, degradation, and recoverability</h3>
+            <ul style="font-size: 13px; color: var(--muted); padding-left: 20px; line-height: 1.5; margin: 0;">
+              <li style="margin-bottom: 8px;"><strong>Must not default to allow</strong>: if NSFA times out or crashes, do not default to expanding permissions or allowing high-impact actions; continuation is determined by existing policy.</li>
+              <li style="margin-bottom: 8px;"><strong>Differentiate degradation strategy</strong>: low-impact, read-only actions covered by allowlist can log risk and continue; actions involving secret reads, external uploads, or deletions maintain block/approval.</li>
+              <li><strong>Trace closed loop</strong>: all requests, decisions, and degradation reasons are written to trace, supporting post-incident review and rollback.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="verdict" style="margin-top: 24px;">
+          <p><strong>Deployment consideration:</strong> 0.8B/2B can serve as candidate scales for a local pilot. Model loading memory, CPU/GPU, concurrency, context length, P50/P95 latency, and timeout behavior must be tested on the actual device SKU. The A100 figure of 45–57 ms/sample is reference only — <strong>not a local device SLA</strong>.</p>
+        </div>
+      </div>
+    </section>
+    <section class="slide" data-title="Pilot plan">
+      <div class="stage">
+        <div class="topline"><b>PILOT PLAN</b><span>4 phases and acceptance criteria</span></div>
+        <div class="eyebrow">11-3 · PILOT PLAN &amp; METRICS</div>
+        <h2>Pilot plan and acceptance criteria</h2>
+        <div class="grid four" style="margin-bottom: 20px;">
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">Phase 0: Establish baseline (1 week)</h3>
+            <p style="font-size: 13px; line-height: 1.4;">Record traces of existing Agent user requests, plans, tool calls, results, memory writes, and external side effects; measure P50/P95 latency, answer success rate, tool success rate, and resource usage for typical tasks; annotate high-impact actions and sensitive resources.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">Phase 1: Offline audit and dataset (1–2 weeks)</h3>
+            <p style="font-size: 13px; line-height: 1.4;">Use NSFA Generative Reasoning to audit historical traces; construct samples for legitimate tasks, Prompt Injection, unauthorized read/write, secret exfiltration, MCP/Skill poisoning, and resource abuse; record human labels and expected handling for each sample.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">Phase 2: Shadow mode (1–2 weeks)</h3>
+            <p style="font-size: 13px; line-height: 1.4;">NSFA online classification is placed before tool calls but does not change execution outcomes; SingGuard is placed at multimodal entry/exit points; record differences between model judgment, rule judgment, and human labels; measure memory, speed, and accuracy curves for different model sizes and device SKUs.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px;">Phase 3: Limited enforce (1 week)</h3>
+            <p style="font-size: 13px; line-height: 1.4;">Only block high-confidence, high-impact, irreversible actions (e.g., read credentials, exfiltrate, delete, deploy — default deny or approval); clarify fallback behavior when the model times out, crashes, or the Policy Gateway is unavailable.</p>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Dimension</th>
+              <th>Pilot acceptance criteria</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Security</td>
+              <td>Secret Disclosure Rate, Unauthorized Action Rate, Denied-call Bypass Rate</td>
+            </tr>
+            <tr>
+              <td>Judgment quality</td>
+              <td>Precision, Recall, F1, false positive rate, false negative rate, confusion matrix broken down by risk domain</td>
+            </tr>
+            <tr>
+              <td>Experience</td>
+              <td>Agent success rate, legitimate task refusal rate, user confirmation rate, answer quality change</td>
+            </tr>
+            <tr>
+              <td>Performance</td>
+              <td>Additional P50/P95 latency, model load time, peak memory/VRAM, CPU/GPU, power consumption</td>
+            </tr>
+            <tr>
+              <td>Stability</td>
+              <td>timeout, fallback, retry storm, model crash, offline and low-resource scenarios</td>
+            </tr>
+            <tr>
+              <td>Recovery</td>
+              <td>Success rate for: revoke credentials, isolate runtime, rollback files/state, preserve evidence</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="slide" data-title="Platform strategy">
+      <div class="stage">
+        <div class="topline"><b>PLATFORM WORK</b><span>Beyond the model — the boundary must be made real</span></div>
+        <div class="eyebrow">12 · PLATFORM STRATEGY</div>
+        <h2>Execution-layer platform controls to implement (by control type × phase)</h2>
+        <div class="grid two" style="margin-bottom: 20px;">
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">Three assumptions to correct first</h3>
+            <ul style="font-size: 12.5px; padding-left: 16px; margin: 0; line-height: 1.5; color: #444;">
+              <li><b>Trajectory ≠ complete audit</b>: cannot prove coverage of network/approvals/memory/files; no tamper-resistant retention.</li>
+              <li><b>Workspace/Sandbox ≠ isolated closed loop</b>: the container can still exfiltrate data or produce side effects.</li>
+              <li><b>Shell Guard ≠ command security closed loop</b>: lacks a unified policy engine for dangerous commands, obfuscation, and network exfiltration.</li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">Classification dimension notes</h3>
+            <ul style="font-size: 12.5px; padding-left: 16px; margin: 0; line-height: 1.5; color: #444;">
+              <li><b>Type</b>: Observe (log), Guardrail (redact/gate), Refuse (block), Execution (foundation)</li>
+              <li><b>Phase</b>: inbound, prompt, pre_tool, post_tool, memory_write, outbound, cross</li>
+              <li><b>Priority</b>: P0 (no autonomous execution without the foundation), P1 (narrow risk), P2 (scalable governance and verifiability)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid four" style="margin-bottom: 16px;">
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill red" style="font-size: 10px; padding: 2px 6px;">P0</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Execution</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">1. Policy decision engine &amp; skeleton</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Unified SecurityAction schema and decision engine; policy priority and scope rules; fail-closed default policy; integrated control plane.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill red" style="font-size: 10px; padding: 2px 6px;">P0</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Refuse</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">pre_tool</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">2. Dangerous action execution guardrail</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Plugin self-protection; intercept dangerous commands, destructive writes, network egress/SSRF; limit resource abuse; prove that blocking has no side effects.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill red" style="font-size: 10px; padding: 2px 6px;">P0</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Guardrail</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">pre/outbound</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">3. Approval &amp; final output boundary</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Integrate approvals with persistent association; unified response/artifact sanitization (sanitizer); credential/sensitive-info hits default to enforce.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill orange" style="font-size: 10px; padding: 2px 6px;">P0/P2</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Execution</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">4. Audit events &amp; retention governance</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Verifiable, tamper-resistant evidence; events linked to policy decisions; restricted ACL and immutable storage; no raw text/keys retained by default.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Observe/Guard</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">in/prompt/post</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">5. Untrusted input &amp; results</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Treat external content and tool results as independent untrusted boundaries; risk detection; context annotation; result injection detection and handling before entering context.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Observe/Guard</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">memory_write</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">6. Memory write governance</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Prevent low-trust content from becoming high-trust future instructions; provenance/contamination checks (observe before enforce); shorten TTL for PII mappings.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1/P2</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Obs/Guard/Ref</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">7. Observation and selective enforce</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Tighten rules one by one after calibrating with real data; promote high-confidence rules from observe to enforce; each individual rule can be independently rolled back.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <div style="margin-bottom: 6px; display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="pill teal" style="font-size: 10px; padding: 2px 6px;">P1</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">Execution</span>
+              <span class="pill" style="font-size: 10px; padding: 2px 6px; background: #eee; color: #333;">cross_phase</span>
+            </div>
+            <h3 style="font-size: 13px; line-height: 1.3; margin-bottom: 4px;">8. Security testing &amp; verification matrix</h3>
+            <p style="font-size: 11px; line-height: 1.4; margin: 0; color: #555;">Prove that blocking is effective and has no side effects; adversarial test fixtures (obfuscation, poisoning, etc.); negative integration tests covering all boundaries.</p>
+          </div>
+        </div>
+        <div class="note" style="margin-top: 10px; padding: 12px;"><b>Division of work with Approach 1 (model guardrails)</b>: models only produce risk signals; the policy gateway and audit closed loop in this section are the only execution layer that can convert signals into <code>allow / observe / redact / require_approval / block</code> and leave evidence. The two cannot substitute for each other.</div>
+      </div>
+    </section>
+    
+    <section class="slide" data-title="Comprehensive implementation proposal">
+      <div class="stage">
+        <div class="topline"><b>IMPLEMENTATION PROPOSAL</b><span>From platform foundation to model assistance</span></div>
+        <div class="eyebrow">13 · IMPLEMENTATION PROPOSAL</div>
+        <h2>Comprehensive implementation proposal</h2>
+        
+        <div class="grid two" style="margin-bottom: 20px;">
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">Proposal boundaries &amp; core principles</h3>
+            <ul style="font-size: 12.5px; padding-left: 16px; margin: 0; line-height: 1.5; color: #444;">
+              <li><b>Model guardrail</b>: detects "this looks dangerous"</li>
+              <li><b>Platform policy</b>: decides "is this authorized"</li>
+              <li><b>Runtime isolation</b>: ensures "even if judgment is wrong, it still cannot happen"</li>
+              <li><b>Recovery system</b>: ensures "after an anomaly, loss can be stopped and rolled back"</li>
+            </ul>
+            <p style="font-size: 11px; margin-top: 8px; color: #555; line-height: 1.4;">Authorization boundary is always the deterministic Policy Gateway + OpenWork approval + sandbox. NSFA/SingGuard only produce risk signals — they cannot allow independently, and they do not bypass P0 deny/approval.</p>
+          </div>
+          <div class="card" style="padding: 10px;">
+            <h3 style="font-size: 14px; margin-bottom: 8px;">P0/P1 responsibility boundary (Lifecycle)</h3>
+            <table class="table" style="font-size: 10.5px; margin-top: 6px;">
+              <thead><tr><th>Layer</th><th>P0 responsibility</th><th>P1/NSFA responsibility</th></tr></thead>
+              <tbody>
+                <tr><td>Tool execution</td><td>Deterministic rules, approvals, sandbox-limited side effects</td><td>Identify complex intent, abnormal action chains</td></tr>
+                <tr><td>Audit</td><td>Record pre/post, approval, and side-effect association</td><td>Offline analysis to find attack patterns, calibrate thresholds</td></tr>
+                <tr><td>Input/result</td><td>High-risk actions cannot be escalated via prompt injection</td><td>Detect content injection, tag untrusted sources</td></tr>
+                <tr><td>Recovery/degradation</td><td>Block high-risk actions first; support fallback policy</td><td>Assist investigation with historical traces</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3 style="font-size: 15px; margin-top: 16px; margin-bottom: 8px;">Complete implementation path and delivery gates (Exit Gates)</h3>
+        <table class="table" style="font-size: 11px;">
+          <thead>
+            <tr>
+              <th style="width:12%">Phase</th>
+              <th style="width:28%">Expected deliverables</th>
+              <th style="width:30%">Responsibility boundary</th>
+              <th style="width:30%">Gate to next phase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>P0-A<br>Actions &amp; skeleton</b></td>
+              <td>Policy engine, redacted audit schema, correlation IDs, compatible reporting</td>
+              <td>Plugin action normalization; Security Manager policy plane; model not involved in authorization</td>
+              <td>Rejected actions have no side effects; each tool attempt can be correlated; critical hook verified</td>
+            </tr>
+            <tr>
+              <td><b>P0-B<br>Execution guardrail</b></td>
+              <td>Critical policy, Sandbox backstop, OpenWork approval, DLP</td>
+              <td>Policy does not directly execute tools; approval and final output</td>
+              <td>Delete/external-send etc. actions default to block/approval; blocking tests have no side effects</td>
+            </tr>
+            <tr>
+              <td><b>P1-A<br>Shadow observation</b></td>
+              <td>Risk-signal adapter, redacted baseline, model telemetry, performance benchmark</td>
+              <td>NSFA only produces labels; Gateway remains the only authorization source; no raw text retained</td>
+              <td>Target device benchmarks for latency/memory/accuracy obtained; minimal impact on legitimate tasks</td>
+            </tr>
+            <tr>
+              <td><b>P1-B<br>Risk-assisted narrowing</b></td>
+              <td>Rule gray-scale policy bundle, rule effectiveness report</td>
+              <td>Gateway combines risk and deterministic rules; NSFA cannot allow independently</td>
+              <td>Rules can be independently rolled back; false positive rate acceptable; failure/timeout fallback verified</td>
+            </tr>
+            <tr>
+              <td><b>P2<br>Scalable governance</b></td>
+              <td>Tamper-resistant audit, SKU security profile, checkpoint/rollback</td>
+              <td>Resource projection; product SKU thresholds; incident post-mortem</td>
+              <td>Privacy, performance, and cost acceptable; recovery drill passed</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="verdict" style="margin-top: 16px; padding: 12px 18px;">
+          <p style="font-size: 13.5px; line-height: 1.5; margin: 0;"><strong>Performance, product tradeoffs, and engineering acceptance:</strong> A100 data cannot be used as a product SLA — a multi-dimensional benchmark across device/model/input must be established. Engineering acceptance includes: blocked destructive actions have no side effects; approval deny/timeout does not execute; pre/post events can be correlated without secrets; in failure-degrade scenarios such as model absence or timeout, permissions must not be expanded.</p>
+        </div>
+      </div>
+    </section>
+    <section class="slide" data-title="Final recommendation">
+      <div class="stage hero" style="min-height: 70vh;">
+        <div class="topline"><b>FINAL DECISION</b><span>Decision recommendations for management</span></div>
+        <div class="eyebrow">14 · FINAL DECISION</div>
+        <h2 style="margin-bottom: 24px; font-size: clamp(30px, 4.5vw, 55px);">Final decision recommendations</h2>
+        
+        <div class="grid three" style="margin-bottom: 24px;">
+          <div class="card red">
+            <span class="pill red">Approve: P0 platform foundation</span>
+            <h3 style="font-size: 14px; margin-top: 8px;">Establish baseline safety</h3>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">Unified policy decision, dangerous action interception, approvals, and fail-closed boundary. Priority: prove "even if the model misjudges, high-risk actions still cannot escalate privileges."</p>
+          </div>
+          <div class="card teal">
+            <span class="pill teal">Approve: P1 model observation &amp; pilot</span>
+            <h3 style="font-size: 14px; margin-top: 8px;">Validate with real data</h3>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">After the P0 closed loop, introduce NSFA shadow observation. Use real-device latency, power consumption, and false-positive benchmarks to decide the go-live strategy — not blind online blocking.</p>
+          </div>
+          <div class="card orange">
+            <span class="pill orange">Tradeoff: benefits vs. cost</span>
+            <h3 style="font-size: 14px; margin-top: 8px;">Product-dimension tradeoffs</h3>
+            <p style="font-size: 12px; margin-top: 8px; color: #555;">Use added latency and operational complexity to purchase lower secret-leakage and destructive-write risk. The product can deliver different security levels for different device SKUs.</p>
+          </div>
+        </div>
+
+        <h3 style="font-size: 16px; margin-bottom: 12px;">Core Release Gates</h3>
+        <div class="grid two" style="margin-bottom: 24px;">
+          <div class="card" style="padding: 12px;">
+            <b style="font-size: 13px;">P0 release criteria:</b>
+            <ul style="font-size: 12px; margin-top: 6px; padding-left: 16px; color: #444;">
+              <li>Denied Shell/file/network actions can be definitively proven to have no side effects.</li>
+              <li>Approval deny or timeout must never execute.</li>
+              <li>Critical logs can be correlated and must never store raw secrets/PII.</li>
+            </ul>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <b style="font-size: 13px;">P1 release criteria:</b>
+            <ul style="font-size: 12px; margin-top: 6px; padding-left: 16px; color: #444;">
+              <li>Target SKU has completed performance and quality benchmarks.</li>
+              <li>Abnormal fallback scenarios such as model unavailability/timeout must never expand high-risk permissions.</li>
+              <li>Each model-assisted rule can be independently rolled back.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="verdict" style="margin-top: 10px; padding: 12px 18px;">
+          <p class="lead" style="font-size: 17px; margin: 0;"><strong>Final decision criterion:</strong> Recommend proceeding. Implement in the order <i>P0 platform foundation → P1 shadow observation → P2 scale-up governance</i>. Do not allow a model "low risk" score to mask deterministic runtime gaps. (See chapters 12 and 13 for the engineering checklist.)</p>
+        </div>
+      </div>
+      <div class="source">Source material: Survey Slides.md (Sections 12, 13, 14)</div>
+    </section>
+  </main>
+  <nav class="chapter-nav" aria-label="Chapter navigation">
+    <div class="chapter-group model-security">
+      <b>Model Security Introduction · 00–04</b>
+      <a href="#section-00-decision">00 Intro</a>
+      <a href="#section-01">01 Core concepts</a>
+      <a href="#section-02">02 Problem dimensions</a>
+      <a href="#section-03">03 Model / Agent</a>
+      <a href="#section-04">04 Attack spectrum</a>
+    </div>
+    <div class="chapter-group agent-control">
+      <b>Agent Execution Risk Control · 05–09</b>
+      <a href="#section-05">05 Full lifecycle</a>
+      <a href="#section-06">06 Unsafe Action</a>
+      <a href="#section-07">07 Security dimensions</a>
+      <a href="#section-08">08 Security Envelope</a>
+      <a href="#section-09">09 Benefits</a>
+    </div>
+    <div class="chapter-group implementation">
+      <b>Implementation · 10–14</b>
+      <a href="#section-10">10 Task classification</a>
+      <a href="#section-10-1">10-1 Two paths</a>
+      <a href="#section-11-models">11 Model judgment</a>
+      <a href="#section-12">12 Platform controls</a>
+      <a href="#section-13">13 Implementation proposal</a>
+      <a href="#section-14">14 Final decision</a>
+    </div>
+  </nav>
+  <style>
+    html{scroll-behavior:smooth}
+    body.vertical-report{overflow:auto}
+    .vertical-report .deck{height:auto}
+    .vertical-report .slide{display:block!important;height:auto;min-height:0;overflow:visible;padding:72px clamp(28px,7vw,110px);border-top:14px solid var(--paper2);scroll-margin-top:0}
+    .vertical-report .slide:first-child{border-top:0}
+    .vertical-report .slide.active{animation:none}
+    .vertical-report .controls{display:none}
+    .chapter-nav{position:fixed;top:14px;right:20px;z-index:30;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:min(980px,calc(100vw - 40px))}
+    .chapter-group{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:4px;background:rgba(255,253,247,.94);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:5px;box-shadow:0 3px 12px rgba(21,34,32,.08)}
+    .chapter-group b{padding:3px 6px;color:var(--ink);font:700 10px Georgia,serif;letter-spacing:.02em;white-space:nowrap}
+    .chapter-group a{color:var(--muted);font-size:11px;text-decoration:none;padding:3px 7px;border-radius:3px;white-space:nowrap;transition:background .15s,color .15s}
+    .chapter-group a:hover{background:var(--teal2);color:var(--teal)}
+    .vertical-report .source{position:static;margin-top:28px}
+    .vertical-report .hero{min-height:62vh}
+    .cia-grid{margin-top:18px}
+    @media(max-width:800px){.chapter-nav{display:none}.vertical-report .slide{padding:54px 21px}.vertical-report .topline{padding-right:0}}
+  </style>
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      document.body.classList.add('vertical-report');
+      const sectionIds = ['section-00-decision', 'section-01', 'section-02', 'section-03', 'section-04', 'section-05', 'section-06', 'section-07', 'section-08', 'section-09', 'section-10', 'section-10-1', 'section-11-models', 'section-11-candidates', 'section-11-integration', 'section-11-pilot', 'section-12', 'section-13', 'section-14'];
+      slides.forEach((slide, index) => {
+        slide.classList.add('active');
+        slide.id = sectionIds[index];
+      });
+
+      const introduction = slides[2].querySelector('.stage');
+      introduction.insertAdjacentHTML('beforeend', `
+        <div class="verdict"><p><strong>Working definition of LLM / Agent Security:</strong> Protecting the confidentiality (C), integrity (I), and availability (A) of models, data, credentials, tools, runtime state, and external systems, while ensuring that Agent behavior stays within authorized goals.</p></div>
+        <div class="grid three cia-grid">
+          <div class="card teal"><span class="pill teal">C · CONFIDENTIALITY</span><h3>Confidentiality</h3><p>Unauthorized parties cannot read, infer, or exfiltrate user files, personal data, credentials, system prompts, and long-term memory.</p></div>
+          <div class="card orange"><span class="pill orange">I · INTEGRITY</span><h3>Integrity</h3><p>Task goals, tool parameters, files, configurations, and external state cannot be changed by unauthorized parties or hijacked by untrusted content.</p></div>
+          <div class="card red"><span class="pill red">A · AVAILABILITY</span><h3>Availability</h3><p>The Agent and device cannot be deprived of service, budget, or recovery capacity through loops, retry storms, resource exhaustion, or attacks.</p></div>
+        </div>
+        <div class="card" style="margin-top:18px"><h3>Once an Agent can execute external actions, the product needs to answer whether high-impact actions:</h3><ul><li>Cannot happen automatically just because of a piece of untrusted content;</li><li>Have explicit authorization and risk judgment before execution;</li><li>Can be discovered, isolated, revoked, and rolled back if something goes wrong;</li><li>Preserve evidence explaining why they were allowed or blocked.</li></ul></div>
+        <div class="note"><strong>C/I/A are the outcome dimensions of Security.</strong> Safety, Privacy, Reliability, and Robustness are adjacent but distinct product quality/risk dimensions; they overlap, but refusal rate ≠ security, security ≠ answer correctness, reliable operation ≠ correct permissions, content moderation ≠ runtime isolation.</div>
+      `);
+
+      // const lifecycle = slides[4].querySelector('.stage');
+      // lifecycle.insertAdjacentHTML('beforeend', `
+      //   <div class="grid two" style="margin-top:18px">
+      //     <div class="card orange"><span class="pill orange">MODEL SECURITY · Lifecycle</span><h3>The model itself and the supply chain</h3><ul><li>Data acquisition, cleaning, annotation, licensing, and privacy</li><li>Pre-training, fine-tuning, alignment, and evaluation configuration</li><li>Weights, checkpoints, quantization files, and dependency supply chain</li><li>Inference API, authentication, rate-limiting, logging, and multi-tenant isolation</li><li>Jailbreaks, extraction, Prompt Injection, refusal bypasses</li></ul></div>
+      //     <div class="card teal"><span class="pill teal">AGENT SECURITY · Runtime</span><h3>Action capabilities added beyond the model</h3><ul><li>Harness / Orchestrator and task goals</li><li>Prompt / context assembly and planning loop</li><li>Memory / RAG / state persistence</li><li>Tool / API / MCP / connectors</li><li>Identity, permissions, approvals, sandbox, monitoring, and response</li></ul></div>
+      //   </div>
+      //   <div class="note"><strong>Both decompositions apply simultaneously:</strong> the top "Content → Orchestration → Memory → Tools &amp; Runtime" partitions by Agent runtime attack surface; "Model → Agent → Boundary → Response" partitions by system control layer. The former helps find attack entry points; the latter helps assign control responsibility.</div>
+      // `);
+
+      const attackSpectrum = slides[5].querySelector('.stage');
+      attackSpectrum.insertAdjacentHTML('beforeend', `
+        <table class="table" style="margin-top:18px"><thead><tr><th>Attack surface</th><th>Common risks</th><th>Impact</th></tr></thead><tbody>
+          <tr><td><strong>User input / External content</strong></td><td>Prompt Injection, jailbreaks, malicious web pages/documents</td><td>Alters Agent goals or induces tool invocation</td></tr>
+          <tr><td><strong>Harness / Planning loop</strong></td><td>Goal mismatch, excessive retry budget, infinite loops</td><td>Long-horizon autonomous behavior, resource exhaustion</td></tr>
+          <tr><td><strong>Memory / RAG</strong></td><td>Memory poisoning, cross-task contamination, malicious retrieval results</td><td>Cross-session, cross-Agent persistent propagation</td></tr>
+          <tr><td><strong>Skill / Plugin / MCP</strong></td><td>Malicious tools, tool result injection, supply chain dependencies</td><td>Gains unexpected code, network, or data capabilities</td></tr>
+          <tr><td><strong>Shell / Code execution</strong></td><td>Arbitrary commands, dangerous parameters, install scripts</td><td>File destruction, credential theft, host risk</td></tr>
+          <tr><td><strong>File / Database / API</strong></td><td>Unauthorized read/write, query-becomes-write, cross-project access</td><td>Data leakage, state tampering</td></tr>
+          <tr><td><strong>Network / Runtime</strong></td><td>SSRF, metadata, internal network access, sandbox escape</td><td>Credentials and internal services exposed</td></tr>
+          <tr><td><strong>Output / Egress</strong></td><td>Sensitive information leakage, wrong publish, wrong send</td><td>User privacy and business loss</td></tr>
+        </tbody></table>
+        <div class="code" style="margin-top:18px">External content injection
+→ Agent receives incorrect goal
+→ Reads local secret
+→ Tool parameters carry hidden exfiltration
+→ Network egress allows the request
+→ Result enters memory or external system</div>
+        <div class="note">High-risk events are typically not a single vulnerability, but an attack chain. The OpenAI–Hugging Face incident shows: a capable Agent, a weakly-constrained evaluation harness, code-execution tools, a data processing pipeline, credentials, and a network boundary can combine into a cross-organization attack chain. This is not "the model has malicious intent" — it is multiple traditional boundaries being combined and exploited by an Agent.</div>
+      `);
+      if (location.hash.startsWith('#section-')) {
+        window.setTimeout(() => {
+          const target = document.querySelector(location.hash);
+          if (target) window.scrollTo({ top: target.offsetTop, behavior: 'auto' });
+        }, 50);
+      }
+    })();
+  </script>
+</body>
+</html>

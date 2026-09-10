@@ -9,13 +9,13 @@
 - [SingGuard-NSFA](<03 蚂蚁集团 AI Security 产品地图/03 SingGuard-NSFA>)
 - [AgentAegis](<03 蚂蚁集团 AI Security 产品地图/04 AgentAegis>)
 
-| 产品/项目 | 类型 | 主要关注点 | 当前资料 |
-|---|---|---|---|
-| [蚁天鉴](<03 蚂蚁集团 AI Security 产品地图/01 蚁天鉴>) | 企业级大模型安全检测与防御方案 | 模型、Agent 和应用的安全评估、治理与防御 | 官方发布、清华资料 |
-| [SingGuard](<03 蚂蚁集团 AI Security 产品地图/02 SingGuard>) | 多模态 LLM 安全护栏模型 | 内容和图文组合的安全判断 | 论文、GitHub |
-| [SingGuard-NSFA](<03 蚂蚁集团 AI Security 产品地图/03 SingGuard-NSFA>) | Agent 行为安全护栏模型/框架 | Prompt injection、工具滥用、数据外泄等 Agent 风险 | 论文、GitHub |
-| [AgentAegis](<03 蚂蚁集团 AI Security 产品地图/04 AgentAegis>) | Agent runtime 开源安全插件 | 在特定 Agent 运行时附近执行检查和拦截 | GitHub README |
-| 蚂蚁密算 | 隐私计算/安全计算方向 | 数据使用过程中的隐私保护与安全协作 | 本页暂缺足够一手资料 |
+| 产品/项目                                                          | 类型                   | 主要关注点                                | 当前资料          |
+| -------------------------------------------------------------- | -------------------- | ------------------------------------ | ------------- |
+| [蚁天鉴](<03 蚂蚁集团 AI Security 产品地图/01 蚁天鉴>)                       | 企业级大模型安全检测与防御方案      | 模型、Agent 和应用的安全评估、治理与防御              | 官方发布、清华资料     |
+| [SingGuard](<03 蚂蚁集团 AI Security 产品地图/02 SingGuard>)           | 多模态 LLM 安全护栏模型       | 内容和图文组合的安全判断                         | 论文、GitHub     |
+| [SingGuard-NSFA](<03 蚂蚁集团 AI Security 产品地图/03 SingGuard-NSFA>) | Agent 行为安全护栏模型/框架    | Prompt injection、工具滥用、数据外泄等 Agent 风险 | 论文、GitHub     |
+| [AgentAegis](<03 蚂蚁集团 AI Security 产品地图/04 AgentAegis>)         | Agent runtime 开源安全插件 | 在特定 Agent 运行时附近执行检查和拦截               | GitHub README |
+| 蚂蚁密算                                                           | 隐私计算/安全计算方向          | 数据使用过程中的隐私保护与安全协作                    | 本页暂缺足够一手资料    |
 
 ## 2. 蚁天鉴
 
