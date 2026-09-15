@@ -1,3 +1,6 @@
+---
+Reading: 在读
+---
 # MiniMax 离线上下文组织与 Model Dreaming
 
 > **Quicknotes 主题**：`Minimax → context organization offline aka “model dreaming”`
