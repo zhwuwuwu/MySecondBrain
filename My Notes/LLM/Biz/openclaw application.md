@@ -13,7 +13,7 @@
 	3. 卖垂类AI员工： design + 部署，收取服务费+维护费
 		e.g. 行政助手、销售团队, 
 		e.g. clawmart 卖调好的agent，
-		![[openclaw application_assets/Pasted image 20260304054706.png]]
+		![[Pasted image 20260304054706.png]]
 	
 3. 基础设施
 	1. token monitor
